@@ -1,0 +1,78 @@
+% !TeX root = lpdintro.tex
+
+\chapter{Notation and Preliminaries}\label{chap:intro-notation}
+\minisec{Notation}
+We use the symbols $ℕ$ and $ℤ$ for the natural (starting with $1$) and integral numbers, respectively, $\F_2$ for the binary field (which is sometimes called $\GF 2$), $ℚ$ for the rational numbers and $ℝ$ for the reals. If $x∈ℝ$, then $⌊x⌋$ and $⌈x⌉$ denote the largest integer $≤x$ and the smallest integer $≥x$, respectively.
+
+For a set $R$ and $n ∈ ℕ$, $R^n$ denotes the $n$-dimensional vector space over $R$ if $R$ is a field, and the set of $n$-tuples of elements of $R$ otherwise. In either case, the $n$-tuples are called \emph{vectors} and operations like addition or comparison, whenever applicable, are understood element-wise: if $x = (x_1,\dotsc,x_n)$ and $y = (y_1,\dotsc,y_n)$, then
+\[ x + y = (x_1+y_1,\dotsc, x_n + y_n)\]
+and
+\[ x ≤ y \text{ if and only if }x_i ≤ y_i\text{ for }i=1,\dotsc,n\tp\]
+
+\minisec{Matrices and Vectors}
+By $X^{m×n}$ we denote the set of matrices with $m$ rows and $n$ columns and entries from the set $X$. For a matrix $A$, by $A_{i,j}$ we denote the element at the $i$-th row and $j$-th column of $A$, $A_{i,•}$ and $A_{•,j}$ are \emph{the} $i$-th row and $j$-th column, respectively, and the transpose of $A$ is the $n×m$ matrix $A^T$ with entries $A^T_{j,i} = A_{i,j}$. Throughout the text we regard vectors $x ∈ X^n$ as \emph{column} vectors, \ie, identify them with $k×1$ matrices. We sometimes use \emph{(ordered) index sets} instead of individual indexes: for instance, if $x ∈ X^n$ and $I = (i_1,\dotsc,i_k)$, where $\{i_1,\dotsc,i_k\} ⊆ \{1,\dotsc,n\}$, then $x_I = (x_{i_1},\dotsc, x_{i_k})$. The same notation is used for row and column indexing, respectively, of matrices.
+
+\mpar{
+  \begin{tikzpicture}[
+      hl/.style={fill=Cyan!20},
+      node distance=3mm]
+      \justifying
+    \matrix [pmatrix] (mat) at (0,0)
+    {
+        1 \& 2 \& 3 \\
+        4 \& |[draw]| 2  \& 6 \\
+    };
+    \matrix [pmatrix] (matt) at (0,-1.4)
+    {
+        1 \& |[draw]| 2 \& 3 \\
+        2 \& 1 \& 3 \\
+    };
+    \matrix [pmatrix] (mattt) at (0,-2.8)
+    {
+        -3 \& 0 \& -3 \\
+        2 \& 1 \& 3 \\
+    };
+    \begin{scope}
+      [on background layer,
+       every node/.style={
+         single arrow,
+         single arrow head extend=1mm,
+         rotate=-90,
+         fill=Gray,
+         minimum height=4mm,
+         minimum width=6mm
+       }]
+      \fill[hl] (mat-2-1.south west) rectangle (mat-2-3.north east);
+      \fill[hl] (matt-1-1.south west) rectangle (matt-1-3.north east);
+      \filldraw[fill=Lime!20] (mattt-1-2.north west) rectangle (mattt-2-2.south east);
+      \node at ($ (mat-2-2)!.4!(matt-1-2) $) {};
+      \node at ($ (matt-2-2)!.4!(mattt-1-2) $) {};
+    \end{scope}
+  \end{tikzpicture}\\
+  example Gaussian pivot operation
+}
+When $A ∈R^{m×n}$ is an $m×n$ matrix over a ring $R$, an \emph{elementary row operation} on $A$ is one of the following operations: \begin{inlinelist} \item multiply a row of $A$ by a scalar: $A_{i,•} ← s A_{i,•}$, or \item replace a row by the weighted sum of itself and another row: $A_{i,•} ← s A_{i,•} + t A_{j,•}$ \end{inlinelist}. If $R$ is a field, any finite sequence of elementary row operations (taking the scalars from $R$) leaves the range $\set{Ax\colon x ∈ R^n}$ of $A$ unaltered. Such a sequence is called a \emph{Gaussian pivot} on $A_{i,j}$ if it turns the $j$-th column of $A$ into the $i$-th unit vector, and \emph{Gaussian elimination} if it changes a submatrix of $A$ into a triangular or diagonal matrix (the terms Gauss-Jordan pivot and, for diagonalization, Gauss-Jordan elimination are also used).
+
+\minisec{Graphs}
+A \emph{graph} $G = (V,E)$ is defined by a finite set $V$, called the \emph{nodes} or \emph{vertices} of $G$, and a set $E ⊆ V×V$ of \emph{edges} or \emph{arcs} of $G$. There are both \emph{undirected} graphs, in which an edge $(u,v) ∈ E$ is identified with the unordered set $\{u,v\}$, and \emph{directed graphs}, where $(u,v)$ is perceived as an ordered pair. For a node $v ∈ V$ of a directed graph, we define $δ^+(v) = \set{ (v,u)\colon (v,u) ∈ E}$ and $δ^-(v) = \set{ (u,v)\colon (u,v) ∈ E}$ as the \emph{outbound} and \emph{inbound} edges, respectively, of $v$.
+
+\mpar{
+  {\centering
+  \begin{tikzpicture}[margintikz]
+  \graph[spring layout,nodes=v]
+    { "$v_1$" -> ["$e_1$"] "$v_2$";
+      "$v_1$" -> [mypath,"$e_2$"] "$v_3$";
+      "$v_3$" -> ["$e_3$"] "$v_2$";
+      "$v_3$" -> [mypath,"$e_4$"] "$v_4$"; };
+  \end{tikzpicture}}\\ 
+  An acyclic directed graph with the path $P=(v_1,v_3,v_4)$ (using vertices) or $P = (e_2,e_4)$ (using edges) highlighted
+}
+A finite sequence $P = (v_1, \dotsc, v_k) ∈ V^k$ is called a \emph{$v_1$–$v_k$ path}, or simply \emph{path}, of $G$, if $(v_i, v_{i+1}) ∈ E$ for $i=1,\dotsc, k-1$. Each path can alternatively be defined by a sequence of edges, $P=(e_1,\dotsc,e_{k-1})$, where $e_i = (v_i, v_{i+1})$ for $i=1,\dotsc, k-1$. The path $P$ is called a \emph{cycle} if $v_1 = v_k$. A graph is \emph{acyclic} if no cycle exists.
+
+For a graph $G= (V,E)$ and $V' ⊆ V$, the \emph{subgraph induced by $V'$} is the graph $G'= (V', E')$ where $E' = \set{(u,v) ∈ E\colon u∈V'\text{ and }v ∈ V'}$ consists of all edges that connect two vertices of $V'$. Finally, a graph is called \emph{bipartite} if there is a partition $V = V_1 \dot\cup V_2$ such that $E ⊆ \{V_1 \times V_2\} ∪ \{V_2 \times V_1\}$, \ie, no edge connects two vertices of the same set $V_i$, $i=1,2$.
+
+\minisec{Complexity}
+The symbols \textsf{P} and \textsf{NP} are used to denote the complexity classes of problems that are \emph{solvable} (\textsf{P}) and \emph{verifiable} (\textsf{NP}) in polynomial time, and a problem is called \emph{\textsf{NP}-hard} if it is \enquote{at least as hard} as \emph{every} problem in \textsf{NP}, \ie, each problem in \textsf{NP} can be reduced to it in polynomial time. The \emph{Landau notation} $f(n) = O(g(n))$ states that the asymptotic growth rate of $f(n)\colon ℕ→ℝ$ is upper bounded by $g(n)$, \ie, there exist $M>0$ and $n_0 ∈ ℕ$ such that $f(n) ≤ M g(n)$ for $n>n_0$. Note that a thorough understanding of complexity theory is not a prerequisite to reading this text.
+
+\minisec{Probability}
+Since we only come across basic probability calculations and they are not central to our text, we use simplified notation. Namely, we frequently denote both a random variable and its outcomes by the same symbol, say $x$, and use $P(x)$ for the probability mass or density function of $x$, whatever applies—the exact meaning of the symbols will always become clear from the context. If $y$ is another random variable, $P(x∣y_0)$ is the conditional probability function of $x$ given the event $\{y∈y_0\}$. Similarly, $P(x_0∣y)$ is called the likelihood function of $y$, given $\{x∈x_0\}$. \emph{Bayes' theorem} states that $P(x_0∣y_0) = \frac{P(y_0∣x_0)P(x_0)}{P(y_0)}$ for any two events $x_0$ of $x$ and $y_0$ of $y$, provided $P(y_0) ≠ 0$.

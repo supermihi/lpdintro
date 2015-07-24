@@ -1,0 +1,570 @@
+% !TeX root = lpdintro.tex
+
+\chapter{Optimization Into Coding: The Connection}
+\label{chap:intro-optcoding}
+So far, the two subjects introduced above—linear and integer optimization in \cref{chap:intro-opt} on the one hand and coding theory in \cref{chap:intro-coding} on the other—may seem to have little in common: while the first consists of a mixture of (linear) algebra and probability, the latter is concerned with solution algorithms for specific linear or discrete problems. The two areas become linked, however, by the observation that \emph{de}coding a received signal, in particular the (optimal) ML decoding as introduced in \cref{sec:intro-mapml}, amounts to solving a combinatorial optimization problem that can be formulated as an IP.
+
+Therefore, this section introduces the abovementioned connection by reviewing the IP formulation of ML decoding and is then mainly concerned with a particular LP relaxation of that formulation, called \emph{LP decoding}. The style of writing is intentionally a little more verbose than it was in the two previous chapters because, first, this part is the most probable for the audience to be unfamiliar with and, secondly, due to the recency of the subject, we are not aware of any up-to-date, tutorial-like, yet mathematically stringent document that covers what we believe to be its most important aspects.
+
+A well-written resource for LP decoding is the dissertation of its inventor \citeauthor*{Feldman03PhD} \cite{Feldman03PhD}. Large parts of \cref{sec:intro-lp-analysis} are elaborately presented in \cite{VontobelKoetter05GraphCover} which is abounding in examples. Not least, \cite{Helmling+11MathProgDecoding} includes a literature survey of the algorithmic aspects of optimization-based decoding until the time of its writing, as well as a short coverage of the underlying theory.
+
+\section{ML Decoding as Integer Program}
+\label{sec:intro-ml-ip}
+While the perception of ML decoding (at least on the BSC) as a combinatorial optimization problem is probably as old as coding theory itself (for example, the proof of its \textsf{NP}-hardness by \citeauthor{Berlekamp+78IntractabilityCoding} in \citeyear{Berlekamp+78IntractabilityCoding} \cite{Berlekamp+78IntractabilityCoding} constitutes an obvious connection to the optimization community), it has been only in \citeyear{Breitbach+98SoftDecodingOpt} that an \emph{integer programming} formulation of the problem was given \cite{Breitbach+98SoftDecodingOpt}, which consists of linearizations (with respect to $ℝ$) of both the objective function and the code structure. In the following, we present a slightly modified version (as in \cite{Tanatmis+10SeparationAlgorithm}) of that construction.
+
+Recall that the ML codeword maximizes the likelihood function $P(y∣x)$ for a received channel output $y$ \cref{eq:intro-ml}. Since the channel is assumed to be memoryless, we have \cite{Breitbach+98SoftDecodingOpt,Feldman03PhD}
+\begin{subequations}\label{eq:intro-mld-linearobj}
+  \begin{align}
+    \hat x_\ML &= \argmax_{x ∈ \C} \prod_{i=1}^n P(y_i∣x_i) \\
+      &= \argmin_{x ∈ \C} -\sum_{i=1}^n \ln P(y_i∣x_i) \\
+      &= \argmin_{x ∈ \C} \sum_{i=1}^n \left(\ln P(y_i∣0) - \ln P(y_i∣x_i)\right)\\
+      &= \argmin_{x ∈ \C} \sum_{i:\, x_i=1} \ln\left(\frac{P(y_i∣0)}{P(y_i∣1)}\right)
+  \end{align}
+\end{subequations}
+Since the fraction in the last term exactly matches the LLR value $λ_i$ \cref{eq:intro-llr} which is known to the observer, we see that ML decoding is equivalent to minimizing the linear functional $λ^T x$ over all codewords $x ∈ \C$.
+
+\mpar{
+  \begin{tikzpicture}[scale=.6]
+    \draw [axis] (-.2, 0) -- (4.3, 0) node[above left] {$z_j$};
+    \draw [axis] (0, -.2) -- (0, 8.3) node[above] {$H_{j,•}x$};
+    \draw [setdraw,thick] (-.1,-.2) -- (4.1,8.2);
+    \foreach \i in {0,...,4}
+      \foreach \j in {0,...,8}
+        \node[dot=1mm,integral] at (\i,\j) {};
+    \foreach \i in {0,1,...,8}
+      \node[left] at (-.1, \i) {$\i$};
+    \foreach \i in {0,1,...,4} {
+      \node[below] at (\i,-.1) {$\i$};
+      \draw[feasint,dotted,thick] (\i,2*\i) node[dot=1.5mm,feasint] {} -- (0,2*\i) node[dot=1.5mm,draw=feasint,solid,fill=feasint!15] {};
+    }
+  \end{tikzpicture}\\
+  feasible \textcolor{feasint}{integer points} of the linearization $\textcolor{setbordercolor}{H_{j,•}x-2z_j=0}$%
+}
+How can we grasp this condition \enquote{$x ∈ \C$} by an IP? The answer lies in the code-defining equation $Hx=0$ \cref{eq:intro-hx0} for a given parity-check matrix $H ∈ \F_2^{m×n}$, which can be $ℝ$-linearized in virtue of \emph{auxiliary} integer variables $z ∈ ℤ^m$ as follows: The condition $x ∈ \C$ is eqivalent to $Hx = 0 \pmod 2$, which in turn is fulfilled if and only if the result of $Hx$, as an operation in the reals, is a vector whose entries are even numbers. It is thus clear that the formulation
+\begin{subequations}\label{eq:intro-2z}
+\begin{align} \min\quad&λ^Tx \label{eq:intro-2z-obj}\\
+ \st\quad&Hx - 2z = 0 \label{eq:intro-2z-code}\\
+ &x ∈ \F_2^n,\ z ∈ \Z^m \label{eq:intro-2z-var}
+\end{align}
+\end{subequations}
+models ML decoding because \cref{eq:intro-2z-code} can be achieved by an \emph{integral} vector $z$ if and only if $Hx$ is even.
+
+Note that any IP formulation of the ML decoding problem can be easily modified to output the minimum distance $\dmin$ of a code: in view of \cref{eq:intro-wmin}, this is equivalent to determine a codeword of minimum Hamming weight. By setting $λ=(1,\dotsc,1)$, the objective function value \cref{eq:intro-2z-obj} equals the Hamming weigth of $x$, and an additional linear constraint $\sum x_i ≥ 1$ excludes the all-zero codeword, such that the IP solution must be a codeword of minimum Hamming weight (\cite{Punekar+10MinDistance,KehaDuman10MinDistBranchCut}.
+
+Interestingly, the above linearization of the code was apparently \enquote{forgotten} and several years later reinvented in \citeyear{Tanatmis+09ValidInequalities} \cite{Tanatmis+09ValidInequalities} and \citeyear{KehaDuman10MinDistBranchCut} \cite{KehaDuman10MinDistBranchCut}. One possible explanation might be that while \cref{eq:intro-2z} is very compact in terms of size, its LP relaxation is essentially useless: if \cref{eq:intro-2z-var} is replaced by its continuous counterpart, then the feasible region of the $x$ variables is the entire unit hypercube—for any configuration of $x$, a corresponding real $z$ can be found such that \cref{eq:intro-2z-code} is fulfilled. It should be noted, however, that the formulation \cref{eq:intro-2z} has found recent justification by the fact that it appears to perform very well with commercial IP solvers \cite{Tanatmis+10NumericalComparison,Punekar+10MinDistance}.
+
+
+\section{LP Decoding}\label{sec:intro-lp-decoding}
+It was the \emph{LP decoder} introduced by \citeauthor{Feldman03PhD} \cite{Feldman03PhD,Feldman+05LPDecoding} that established linear programming in the field of decoding by providing several equivalent IP formulations for which even the LP relaxations exhibit a decoding performance that is of interest for practical considerations.
+
+\mpar{
+  \begin{tikzpicture}[semithick]
+    \foreach \i [count=\j] in {0,20,...,359}
+      \coordinate (int-\j) at (\i:1cm);
+    \path[fill=setcolor,fill opacity=.3]
+      (int-1)
+      \foreach \k [count=\i] in {1,3,7,9,13,15}
+        { -- (int-\k) coordinate (C1-\i) }
+      -- cycle;
+    \path[fill=altsetcolor,fill opacity=.3]
+      (int-1)
+      \foreach \k [count=\i] in {1,5,7,11,13,17}
+        { -- (int-\k) coordinate (C2-\i) }
+     -- cycle;
+    \draw[setdraw]     (C1-1) \foreach \i in {2,...,6} { -- (C1-\i) } -- cycle;
+    \draw[setdraw=alt] (C2-1) \foreach \i in {2,...,6} { -- (C2-\i) } -- cycle;
+    \node[setbordercolor,above=5mm] at (C1-2) {$\conv(\C_1)$} edge[setbordercolor] (35:8.5mm);
+    \node[altsetbordercolor,below=5mm] at (C2-6) {$\conv(\C_2)$} edge[altsetbordercolor] (-35:8.5mm);
+    \foreach \j in {1,...,18}
+      \node[dot=1mm,integral] at (int-\j) {};
+  \end{tikzpicture}\\
+  two constitutent polytopes $\textcolor{setbordercolor}{\conv(\C_1)}$ and $\textcolor{altsetbordercolor}{\conv(\C_2)}$ (the circular dots represent $\F_2^n$)%
+}
+The essence of Feldman's LP decoder lies in the representation \cref{eq:intro-ccapcj} of a code, together with the fact that for the SPC codes $\C_j$ (\cref{def:intro-supercodes}), a polynomially sized description of $\conv(\C_j)$ by means of (in)equalities and potential auxiliary variables is possible. Instead of providing an LP description of $\conv(\C)$ (which in view of the \textsf{NP}-hardness of ML decoding is unlikely to be tractable), the LP decoder thus operates on the relaxation polytope
+\mpar{
+  \begin{tikzpicture}[semithick]
+    \foreach \i [count=\j] in {0,20,...,359}
+      \coordinate (int-\j) at (\i:1cm);
+    \path[fill=setcolor,fill opacity=.3]
+      (int-1)
+      \foreach \k [count=\i] in {1,3,7,9,13,15}
+        { -- (int-\k) coordinate (C1-\i) }
+      -- cycle;
+    \path[fill=altsetcolor,fill opacity=.3]
+      (int-1)
+      \foreach \k [count=\i] in {1,5,7,11,13,17}
+        { -- (int-\k) coordinate (C2-\i) }
+     -- cycle;
+    \draw[setdraw]     (C1-1) \foreach \i in {2,...,6} { -- (C1-\i) } -- cycle;
+    \draw[setdraw=alt] (C2-1) \foreach \i in {2,...,6} { -- (C2-\i) } -- cycle;
+    \foreach \i in {1,2}
+      \foreach \j in {1,...,6}
+        \pgfmathparse{mod(\j,6)+1}
+        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+    \foreach \facetA/\facetB [count=\i] in {C2-1/C1-2,C1-2/C2-3,C2-3/C1-4,C1-4/C2-5,C2-5/C1-6,C1-6/C2-1} {
+      \coordinate[name intersections={of={\facetA} and \facetB,by=x\i}];
+    }
+    \foreach \j in {1,...,18}
+      \node[dot=1mm,integral] at (int-\j) {};
+    \draw[fill=lp!30,draw=lp] (x1) \foreach \i in {2,...,6} { -- (x\i) } -- cycle;
+    \foreach \i in {1,...,6}
+      \node[dot=.75mm,fill=lp] at (x\i) {};
+    \draw[pattern=north west lines,pattern color=feasint,draw=feasint,every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+    \node[feasint,fill=feasint!10,inner sep=0mm] at (.15, 0) {$\conv(\C)$};
+    \path[lp] (80:1.3cm) node {$\P(H)$} edge (60:7mm);
+  \end{tikzpicture}\\
+  $\textcolor{lp}{\P(H)}=\textcolor{setbordercolor}{\conv(\C_1)} ∩ \textcolor{altsetbordercolor}{\conv(\C_2)}$ is a superset of $\textcolor{feasint}{\conv(\C)}$ with additional \textcolor{lp}{fractional pseudocodewords} $\notin \F_2^n$%
+}
+\begin{equation}
+  \P(H) = \bigcap_j \conv(\C_j) ⊇ \conv(\C)\tk
+  \label{eq:intro-fundamentalpolytope}
+\end{equation}
+called the \emph{fundamental polytope} \cite{VontobelKoetter05GraphCover} of the parity-check matrix $H$. The vertices of $\P(H)$ are also called \emph{pseudocodewords}.
+\begin{definition}[LP decoder]\label{def:intro-lpdecoder}
+  Let $H$ be a parity-check matrix for the linear code $\C$ and $λ$ the vector of channel LLR values. The \emph{LP decoder} $\algname{LP-decode}(λ)$ outputs, for given $λ ∈ ℝ^n$, the optimal solution $\hat x$ of the LP
+  \begin{subequations} \label{eq:intro-lpdecoder}
+    \begin{align}
+      \min\quad & λ^Tx\\
+      \st\quad  & x ∈ \P(H)\tk \label{eq:intro-lpdecoder-p}
+    \end{align}
+  \end{subequations}
+  where $\P(H)$ is as defined in \cref{eq:intro-fundamentalpolytope}.
+\end{definition}
+
+The above definition is a meaningful relaxation of $\conv(\C)$ because one can easily show that $\P(H) ∩ \{0,1\}^n = \C$, \ie, the codewords of $\C$ and the integral vertices of $\P(H)$ coincide, which proves the following theorem.
+\begin{theorem}[ML certificate \cite{Feldman03PhD}]\label{thm:intro-mlcertificate}
+  The LP decoder has the \emph{ML certificate property}:
+  \[\hat x = \algname{LP-decode}(λ) ∈ \{0,1\}^n ⇒ \hat x = x_\ML\tk\]
+  \ie, if $\hat x$ is integral, it must be the ML codeword. Put another way, solving \cref{eq:intro-lpdecoder} as an \emph{IP} with the additional constraint $x ∈ \{0,1\}^n$ constitutes a true ML decoder.
+\end{theorem}
+
+\mpar{
+  \begin{tikzpicture}[semithick]
+    \foreach \i [count=\j] in {0,20,...,359}
+      \coordinate (int-\j) at (\i:1cm);
+    \path[fill=setcolor,fill opacity=.3]
+      (int-1)
+      \foreach \k [count=\i] in {1,3,7,9,13,15}
+        { -- (int-\k) coordinate (C1-\i) }
+      -- cycle;
+    \path[fill=altsetcolor,fill opacity=.3]
+      (int-1)
+      \foreach \k [count=\i] in {1,5,7,11,13,17}
+        { -- (int-\k) coordinate (C2-\i) }
+     -- cycle;
+    \draw[setdraw]     (C1-1) \foreach \i in {2,...,6} { -- (C1-\i) } -- cycle;
+    \draw[setdraw=alt] (C2-1) \foreach \i in {2,...,6} { -- (C2-\i) } -- cycle;
+    \foreach \i in {1,2}
+      \foreach \j in {1,...,6}
+        \pgfmathparse{mod(\j,6)+1}
+        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+    \foreach \facetA/\facetB [count=\i] in {C2-1/C1-2,C1-2/C2-3,C2-3/C1-4,C1-4/C2-5,C2-5/C1-6,C1-6/C2-1} {
+      \coordinate[name intersections={of={\facetA} and \facetB,by=x\i}];
+    }
+    \foreach \j in {1,...,18}
+      \node[dot=1mm,integral] at (int-\j) {};
+    \draw[fill=lp!30,draw=lp] (x1) \foreach \i in {2,...,6} { -- (x\i) } -- cycle;
+    \foreach \i in {1,...,6}
+      \node[dot=.75mm,fill=lp] at (x\i) {};
+    \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+    \draw[->,objective] (0,0) -- (112:6mm) node[right] {$λ$};
+    \draw[objline] (22:1.2cm) -- (202:1.2cm);
+    \draw[objline] (x5) ++(22:1cm) -- ++(202:2.4cm);
+    \node[dot=1mm,fill=lp,pin={[lp]below:$x_\LP$}] at (x5) {};
+  \end{tikzpicture}\\
+  LLR vector $\textcolor{objective}{λ}$ for which $\textcolor{lp}{x_\LP} \notin \F_2^n$ is optimal%
+}
+Note that if we had $\P(H) = \conv(\C)$, the LP decoder would actually be an ML decoder. Because this is not the case in general (moreover, it apparently does not hold for any interesting code; see \cite{Kashyap08DecompositionTheory}), the inclusion $\conv(\C) ⊆ \P(H)$ is usually strict, and the difference $\P(H) ⧵ \conv(\C)$ must be due to additional \emph{fractional} vertices of $\P(H)$, \ie, vectors for which at least one entry is neither $0$ nor $1$.
+
+Feldman gave three different formulations of $\conv(\C_j)$, the convex hull of the SPC codes constituting $\C$, to be used in \cref{eq:intro-lpdecoder-p}. In the context of this work, only the one described below, which is named $Ω$ in \cite{Feldman03PhD} and based on \cite{Jeroslow75HypercubeInequalities}, is relevant.
+\begin{theorem}
+  Let $H$ and $\C$ as above and let $N_j = \{i\colon H_{j,i} = 1\}$ be the indices covered by the $j$-th parity check $\C_j$ of $\C$. Then the inequalities
+  \begin{subequations}\label{eq:intro-lpdecoder-explicit}
+    \begin{align}
+      &\sum_{i ∈ S} x_i - \sum_{i ∈ N_j ⧵ S} x_i ≤ \abs S - 1
+        &\text{for all }S ⊆ \mathcal N_j\text{ with } \abs S \text{ odd}
+        \label{eq:intro-forbiddenset}\\
+      &0 ≤ x_i ≤ 1
+        &\text{for }i=1,\dotsc,n
+        \label{eq:intro-box}
+    \end{align}
+  \end{subequations}
+  precisely define the convex hull of $\C_j$.
+\end{theorem}
+As each inequality \cref{eq:intro-forbiddenset} explicitly forbids one odd-sized set $S$, \ie, a configuration for which $H_{j,•} x ≡ 1\pmod 2$ (it is violated by a binary vector $x$ if and only if $x_i=1$ for $i ∈ S$ and $x_i=0$ for $i ∈ N_j ⧵ S$), they are also called \emph{forbidden-set inequalities}. Note that the number of such inequalities is exponential in the size of $N_j$, which is why LP decoding was first proposed for codes defined by a \emph{sparse} matrix $H$, so-called \emph{LDPC} codes \cite{Gallager60Thesis,MacKay99GoodCodes}. It will however turn out in the following review of adaptive LP decoding that the inequalities \cref{eq:intro-forbiddenset} can be efficiently \emph{separated}, which renders their exponential quantity harmless in practice.
+
+\section{Adaptive LP Decoding}\label{sec:intro-adaptivelp}
+The prohibitive size of the LP decoding formulation \cref{eq:intro-lpdecoder}, especially for dense $H$ and larger block lengths, can be overcome by a cutting plane algorithm (cf.\ \cref{sec:intro-cuttingplanes}), called \emph{adaptive LP decoding}, as proposed in \cite{TaghaviSiegelALP,Taghavi+11EfficientLPD}. It starts with the trivial problem of minimizing the objective function over the unit hypercube:
+\begin{align*}
+  \min\quad & λ^Tx\\
+  \st\quad  & x ∈ [0,1]^n
+\end{align*}
+and then iteratively \emph{refines} the domain of optimization by inserting those forbidden-set inequalities \cref{eq:intro-forbiddenset} that are \emph{violated} by the current solution, and hence constitute valid \emph{cuts}. The procedure to find a cut in the $j$-th row of $H$ (it is shown in \cite{TaghaviSiegelALP} that, at any time, one row of $H$ can provide at most one cut) is based on the following reformulation of \cref{eq:intro-forbiddenset}:
+\begin{equation}
+  \sum_{i ∈ S} (1-x_i) + \sum_{i ∈ N_j ⧵ S} x_i ≥ 1\tp
+  \label{eq:intro-forbiddenset-alt}
+\end{equation}
+\mpar{
+adaptive LP decoding of the previous example:\\
+\begin{tikzpicture}[semithick]
+  \foreach \i [count=\j] in {0,20,...,359}
+    \coordinate (int-\j) at (\i:1cm);
+  \path
+    \foreach \k [count=\i] in {1,3,7,9,13,15}
+      {(int-\k) coordinate (C1-\i)};
+  \path
+    \foreach \k [count=\i] in {1,5,7,11,13,17}
+      {(int-\k) coordinate (C2-\i)};
+  \foreach \i in {1,2}
+    \foreach \j in {1,...,6}
+      \pgfmathparse{mod(\j,6)+1}
+      \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+  \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,18} { -- (int-\i) } -- cycle;
+  \foreach \j in {1,...,18}
+    \node[dot=1mm,integral] at (int-\j) {};
+  \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+  \draw[->,objective] (0,0) -- (112:6mm) node[right] {$λ$};
+  \draw[objline] (25:1.2cm) -- (205:1.2cm);
+  \draw[objline] (int-16) ++(25:1cm) -- ++(205:2.2cm);
+  \node[dot=1mm,lp,"$x^{(1)}$" {lp,below}] at (int-16) {};
+\end{tikzpicture}\\
+initial optimization over $\textcolor{lp}{[0,1]^n}$%
+}
+\mpar{
+  \begin{tikzpicture}[semithick,>=stealth]
+    \foreach \i [count=\j] in {0,20,...,359}
+      \coordinate (int-\j) at (\i:1cm);
+    \path
+      \foreach \k [count=\i] in {1,3,7,9,13,15}
+        {(int-\k) coordinate (C1-\i)};
+    \path
+      \foreach \k [count=\i] in {1,5,7,11,13,17}
+        {(int-\k) coordinate (C2-\i)};
+    \foreach \i in {1,2}
+      \foreach \j in {1,...,6}
+        \pgfmathparse{mod(\j,6)+1}
+        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+    \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,15} { -- (int-\i) } --  cycle;
+    \draw[cut,very thick,extend=2mm] (int-15) -- (int-1);
+    \foreach \j in {1,...,18}
+      \node[dot=1mm,integral] at (int-\j) {};
+    \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+    \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
+    \draw[objline] (25:1.2cm) -- (205:1.2cm);
+    \draw[objline] (int-15) ++(25:1.2cm) -- ++(205:2.2cm);
+    \node[dot=1mm,lp!50!Black] at (int-16) {};
+    \node[dot=1mm,lp,"$x^{(2)}$" {lp,below}] at (int-15) {};
+  \end{tikzpicture}\\
+  \textcolor{Orchid}{cut} for $\textcolor{lp!50!black}{x^{(1)}}$ leads to next solution $\textcolor{lp}{x^{(2)}}$%
+}
+\mpar{
+  \begin{tikzpicture}[semithick,>=stealth]
+    \foreach \i [count=\j] in {0,20,...,359}
+      \coordinate (int-\j) at (\i:1cm);
+    \path
+      \foreach \k [count=\i] in {1,3,7,9,13,15}
+        {(int-\k) coordinate (C1-\i)};
+    \path
+      \foreach \k [count=\i] in {1,5,7,11,13,17}
+        {(int-\k) coordinate (C2-\i)};
+    \foreach \i in {1,2}
+      \foreach \j in {1,...,6}
+        \pgfmathparse{mod(\j,6)+1}
+        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+    \path[name intersections={of=C1-6 and C2-5,by=X}];
+    \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,13} { -- (int-\i) } --  (X) -- cycle;
+    \draw[cut,very thick,extend=2mm] (int-13) -- (int-17);
+    \foreach \j in {1,...,18}
+      \node[dot=1mm,integral] at (int-\j) {};
+    \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+    \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
+    \draw[objline] (25:1.2cm) -- (205:1.2cm);
+    \draw[objline] (X) ++(25:1.2cm) -- ++(205:2.2cm);
+    \node[dot=1mm,lp!50!Black] at (int-16) {};
+    \node[dot=1mm,lp!50!Black] at (int-15) {};
+    \node[dot=1mm,lp,"$x_\LP$" {lp,above}] at (X) {};
+  \end{tikzpicture}\\
+  another \textcolor{cut}{cut} yields the same solution $\textcolor{lp}{x_\LP}$ as before%
+}
+
+To find a violating inequality (if it exists) of the form \cref{eq:intro-forbiddenset-alt}, an odd-sized set $S$ needs to be found that minimizes the left-hand side of \cref{eq:intro-forbiddenset-alt}. It is easy to show \cite{Taghavi+11EfficientLPD} that this can be accomplished by taking all $i$ with $x_i > 1/2$ and, if that set is even-sized, remove or add the index $i^*$ for which $x_{i^*}$ is closest to $1/2$.
+
+When no more violating inequalities are found, the solution equals that of \cref{eq:intro-lpdecoder} and the algorithm terminates. The total number of inequalities in the final model is however bounded by $n^2$, which shows that the adaptive approach indeed overcomes, with respect to size, the problems of the model \cref{eq:intro-lpdecoder-explicit}.
+
+An important advantage of the separation approach is that one can immediately incorporate \emph{additional} types of cutting planes—if it is known how to solve the corresponding separation problem, \ie, find violated cuts from the current LP solution—in order to tighten the LP relaxation \cref{eq:intro-lpdecoder}. A successful method of doing so is by using redundant parity-checks.
+\mpar{
+  \begin{tikzpicture}[semithick,>=stealth]
+    \foreach \i [count=\j] in {0,20,...,359}
+      \coordinate (int-\j) at (\i:1cm);
+    \path
+      \foreach \k [count=\i] in {1,3,7,9,13,15}
+        {(int-\k) coordinate (C1-\i)};
+    \path
+      \foreach \k [count=\i] in {1,5,7,11,13,17}
+        {(int-\k) coordinate (C2-\i)};
+    \foreach \i in {1,2}
+      \foreach \j in {1,...,6}
+        \pgfmathparse{mod(\j,6)+1}
+        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+    \path[name intersections={of=C1-6 and C2-5,by=X}];
+    \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,13} { -- (int-\i) } --  cycle;
+    \draw[lp] (int-13) -- (int-17) (int-15) -- (int-1);
+    \draw[cut, very thick,extend=2mm] (int-13) -- (int-1);  
+    \foreach \j in {1,...,18}
+      \node[dot=1mm,integral] at (int-\j) {};
+    \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+    \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
+    \draw[objline] (25:1.2cm) -- (205:1.2cm);
+    \draw[objline] (int-13) ++(25:2cm) -- ++(205:2.5cm);
+    \node[dot=1mm,lp!50!Black] at (int-16) {};
+    \node[dot=1mm,lp!50!Black] at (int-15) {};
+    \node[dot=1mm,lp!50!Black] at (X) {};
+    \node[feasint,"$x_\ML$" {feasint,below},dot=1.2mm] at (int-13) {};
+  \end{tikzpicture}\\
+  an example \textcolor{cut}{RPC cut} (in the picture, the cut is a facet of $\conv(\C)$) that would lead from the above LP solution to the ML codeword $\textcolor{feasint}{x_\ML}$%
+}
+\begin{definition}\label{def:intro-rpcs}
+  Let $\C$ be a linear code defined by a parity-check matrix $H$. A dual codeword $ξ ∈ \C^⊥$ that does not appear as a row of $H$ is called a \emph{redundant parity-check (RPC)}. An RPC $ξ$ is said to \emph{induce a cut} at the current LP solution $x$ if one of the inequalities \cref{eq:intro-forbiddenset} derived from $ξ$ is violated by $x$.
+\end{definition}
+RPCs are called \enquote{redundant} because the rows of $H$ already contain a basis of $\C^⊥$ by definition, thus every RPC must be the (modulo-$2$) sum of two or more rows of $H$.  The following result \cite{Tanatmis+10SeparationAlgorithm} gives a strong clue which RPCs might potentially induce cuts.
+\begin{lemma} \label{lemma:intro-rpccut}
+  Let $ξ ∈ \C^⊥$ be a dual codeword and $x$ an intermediate solution of the adaptive LP decoding algorithm. If
+  \[ \abs{\set{i\colon ξ_i = 1\text{ and }x_i \notin \{0,1\}}} = 1\tk \]
+  \ie, exactly one index of the fractional part of $x$ is contained in the support of $ξ$, then $ξ$ induces an RPC cut for $x$.
+\end{lemma}
+An efficient method to search for RPC cuts in view of the above observation works as follows \cite{Tanatmis+10SeparationAlgorithm,ZhangSiegel11AdaptiveCut}: Given an intermediate LP solution $x$,
+\mpar{
+  \begin{tikzpicture}
+    \justifying
+    \matrix
+      [matrix of math nodes,
+      nodes in empty cells,
+      every node/.style={inner sep=.5mm},
+       left delimiter=(,
+       right delimiter=),
+      ]
+       (mat)
+    {
+      1 \&[2mm]\&   \& * \&[12mm] *\\[2mm]
+        \&     \&   \&  \\
+        \&     \& 1 \& * \&       *\\
+    };
+    \begin{scope}[on background layer]
+      \fill[Gray!30] (mat-1-4.north west) rectangle (mat-3-5.south east);
+      \fill[Lime] (mat-1-1.north west) -- (mat-1-1.south west) -- (mat-3-3.south west) -- (mat-3-3.south east) -- (mat-3-3.north east) -- (mat-1-1.north east) -- cycle;
+    \end{scope}
+    \draw[thick] (mat-1-1) -- (mat-3-3);
+    \draw[thick] (mat-1-4) -- (mat-1-5) -- (mat-3-5) -- (mat-3-4) -- (mat-1-4);
+    \coordinate (start) at ($ (mat-1-1) + (0, .5) $);
+    \draw[Blue,->,very thick] (start) -- node[above] {$\abs{x_i-\frac12}↗$} (start -| mat-1-5);
+  \end{tikzpicture}\\
+  structure of $\bar H$: \textcolor{Lime!20!Black}{diagonalized part} at the left after \textcolor{Blue}{reordering of columns by $\abs{x_i-\frac 12}$}
+}
+\begin{enumerate}
+  \item sort the columns of $H$ according to an ascending ordering of $\abs{x_i-1/2}$,
+  \item perform Gaussian elimination on the reordered $H$ to diagonalize its leftmost part, resulting in an alternative parity-check matrix $\tilde H$, then
+  \item search for cuts among the rows of $\tilde H$ as in adaptive LP decoding.
+\end{enumerate}
+The motivation behind this approach is that, if the submatrix of $H$ corresponding to the fractional part of $x$ has full column rank, the leftmost part of $\tilde H$ will be a diagonal matrix, and hence by \cref{lemma:intro-rpccut} \emph{every row} of $\tilde H$ would induce a cut for $x$. The results reported in \cite{Tanatmis+10SeparationAlgorithm} and \cite{ZhangSiegel11AdaptiveCut} furthermore suggest that, even if this is not the case and thus the requirements of \cref{lemma:intro-rpccut} are not necessarily met, this \enquote{sort-\&-diagonalize} strategy very often leads to cuts and substantially improves the error-correcting capability of the plain LP decoder that does not involve RPCs.
+
+\section{Analysis of LP Decoding}
+\label{sec:intro-lp-analysis}
+While the aspects of LP decoding discussed so far include some useful theoretical results about an \emph{individual} run of the algorithm (most importantly, the ML certificate property given in \cref{thm:intro-mlcertificate}), there is no immediate theoretical approach to determine the \emph{average} error-correction performance \cref{eq:intro-fer} of a given code and channel under LP decoding, other than using simulations as described in \cref{sec:intro-awgn}.
+
+In the following, we briefly outline an approach to a theoretical performance analysis of LP decoding that is based on a channel-specific rating of the vertices of the LP decoding polytope, called \emph{pseudoweight}. The theory presented in this section is based on the \enquote{plain} LP decoder as defined in \cref{def:intro-lpdecoder}, \ie, does not take the improvement via RPC cuts (\cref{def:intro-rpcs} and the discussion thereafter) into account; most of the results can however be extended to that case in a straightforward manner.
+
+\subsection{All-Zero Decoding and the Pseudoweight}
+\label{sec:all-zero}
+First we introduce the very useful \emph{all-zeros assumption}.
+\begin{theorem}[Feldman \cite{Feldman03PhD}]\label{thm:intro-allzeros}
+  If the LP decoder \cref{eq:intro-lpdecoder} is used on a binary-input memoryless symmetric channel, the probability of decoding error is independent of the sent codeword: the FER \cref{eq:intro-fer} satisfies
+  \[ \mathrm{FER} = P(\algname{LP-decode}(λ) ≠ 0∣0\text{ was sent})\tp \]
+\end{theorem}
+The proof of \cref{thm:intro-allzeros} relies on the symmetry of both the channel and the polytope. The latter is due to the linearity of the code (which implies that $\conv(\C)$ basically \enquote{looks the same} from any codeword $x$) and the $\C$-symmetry \cite[Ch.~4.4]{Feldman03PhD} of $\P(H)$, which extends that symmetry to the relaxed LP polytope. As a consequence of the theorem, when examining the LP decoder's error probability we can always assume that the all-zero codeword $0 ∈ \C$ was sent, which greatly simplifies analysis.
+
+Assume now that the all-zero codeword is sent through a channel and the result $λ$ is decoded by the LP decoder which solves \cref{eq:intro-lpdecoder} to obtain the optimal solution $\hat x$. The decoder fails if there is a vertex $x$ of $\P(H)$ such that
+\begin{equation}
+  λ^Tx < λ^T0 = 0
+  \label{eq:intro-lperrorcondition}
+\end{equation}
+(we assume here and in the following that in case of ties, \ie, $λ^Tx =0$ for some non-zero vertex $x$, the LP decoder correctly outputs $0$; for the AWGN channel, ties can be neglected since they occur with probability $0$).
+The probability $P(λ^Tx<0)$ of the event \cref{eq:intro-lperrorcondition}, also called the \emph{pairwise error probability} between $x$ and $0$, depends on the channel. In case of the AWGN channel, by \cref{eq:intro-llr-awgn} we have
+\[ λ_i x_i \sim \mathcal N\left(4r⋅\SNR_\rb x_i, 8r⋅\SNR_\rb x_i^2\right) \]
+and because the channel treats symbols independently and furthermore the sum of independent Gaussian variables is again gaussian with mean and variance simply summing up, we obtain
+\begin{equation}
+  λ^T x \sim \mathcal N\left(4r·\SNR_\rb \norm{x}_1, 8r·\SNR_\rb\norm{x}_2^2\right)\tp
+  \label{eq:intro-lperrorprob}
+\end{equation}
+Hence, $λ^Tx$ is again Gaussian, and the probability that $λ^Tx<0$ computes as (using the abbreviations $μ=4r·\SNR_\rb \norm{x}_1$ and $σ^2 = 8r·\SNR_\rb\norm{x}_2^2$)
+\[
+  P(λ^Tx<0)
+    = \frac{1}{\sqrt{2πσ^2}} \int_{-∞}^0 e^{-\frac{(x-μ)^2}{2σ^2}} \mathrm dx
+    = \frac{1}{\sqrt{2π}} \int_{\frac μσ}^∞ e^{-\frac12 x^2}\mathrm dx\tp
+\]
+Introducing the $Q$-function as $Q(a) = \int_a^∞ \frac1{\sqrt{2π}} e^{-\frac{x^2}2} \mathrm dx$, we get
+\[
+    P(λ^Tx < 0)
+      = Q\left(\frac μσ \right)
+      = Q\left( \sqrt{2r·\SNR_\rb \frac{\norm{x}_1^2}{\norm{x}_2^2}}\right) = F\left(\frac{\norm{x}_1^2}{\norm{x}_2^2}\right)\tk
+\]
+for a monotone function $F$, which motivates the following definition.
+\begin{definition}[\cite{Forney+01EffectiveWeights,VontobelKoetter05GraphCover}]
+  Let $x$ be a non-zero vertex of $\P(H)$. The \emph{(AWGN) pseudoweight} of $x$ is defined as
+  \begin{equation}
+    \pw(x) = \left.\norm{x}_1^2\middle\fracslash \norm{x}_2^2\right.\tp
+  \end{equation}
+\end{definition}
+Observe that the pairwise error probability $P(λ^Tx<0)$ is a strictly monotonically decreasing function of $\pw(x)$: the lower the pseudoweight is, the higher is the probability that the LP decoder wrongly runs into $x$ instead of $0$. The AWGN pseudoweight is thus a compact expression that measures the \enquote{danger} of decoding error due to a specific vertex $x ∈ \P(H)$.
+
+\subsection{The Fundamental Cone}
+One simple parameter for estimating the average performance of the LP decoder, for a given code $\C$ and a parity-check matrix $H$, is the \emph{minimal pseudoweight} among the non-zero vertices of $\P(H)$,
+\[ w^\AWGN_{\rp,\mathrm{min}}(H) = \min\set{\pw(x)\colon x≠0\text{ is a vertex of } \P(H)}\tk\]
+which corresponds to the \emph{most probable} non-zero vertex that accidentally becomes optimal instead of the all-zero one. Note that for an integral vertex $x$ we have $\pw(x) = w_\rH(x)$ (cf.\ \cref{def:intro-dmin}), which shows that for an ML decoder the minimum Hamming weight takes on this role.
+
+The minimum pseudoweight alone is however still a rather rough estimate of the decoding performance: both the \emph{quantity} of minimum-pseudoweight vertices and the (quantities of the) next larger pseudoweights influence the error probability $P(\algname{LP-decode}(λ) ≠ 0)$. Therefore, the \emph{pseudoweight enumerator} of $\P(H)$, \ie, a table containing all occuring pseudoweights of the non-zero vertices alongside with their frequencies, would allow for a better estimation of the decoding performance. Finally, for an \emph{exact} computation of the error rate we would need a description of the region
+\begin{equation}
+  Λ = \set{λ\colon λ^Tx ≥ 0 \text{ for all }x ∈ \P(H)}\label{eq:intro-lambda}
+\end{equation}
+of channel outputs $λ$ for which $0$ is the optimal solution of \cref{eq:intro-lpdecoder}, and then compute the probability $1-P(λ ∈ Λ)$ by integrating the density function given by \cref{eq:intro-lperrorprob} over $Λ$. In optimization language, $Λ$ is called the \emph{dual cone} of $\P(H)$.
+
+While the three tasks stated above appear to be ascendingly difficult—no efficient algorithm is known to compute the minimum pseudoweight in general—it turns out that $Λ$ as defined in \cref{eq:intro-lambda} can be determined by LP duality: assume that the LP decoder \cref{eq:intro-lpdecoder} is given in the form
+\begin{subequations}\label{eq:intro-lpdecoder-axb}
+  \begin{align}
+    \min\quad&λ^Tx\\
+    \st\quad &Ax ≤ b\tk
+  \end{align}
+\end{subequations}
+where $A$ and $b$ represent \cref{eq:intro-lpdecoder-explicit}. The dual of \cref{eq:intro-lpdecoder-axb} is
+\begin{subequations}\label{eq:intro-lpdecoder-dual}
+  \begin{align}
+    \max \quad&-b^Ty\\
+    \st\quad  &A^Ty = -λ\\
+              &y ≥ 0\tp \label{eq:intro-lpdecoder-dual-y}
+  \end{align}
+\end{subequations}
+By\mpar{
+  \begin{tikzpicture}
+    \draw[axis] (-1,0) -- (1,0);
+    \draw[axis] (0,-1) -- (0,1);
+    \path[set] (0,0) -- (75:1cm) coordinate(A) -- (60:1.5cm) -- (45:1.8cm) -- (30:1.5cm) -- (15:1cm) coordinate (A') -- cycle;
+    \path[pattern=north west lines,pattern color=altsetcolor] (0,0) -- (165:1cm) |- (-75:1cm) -- cycle;
+    \draw[setdraw=alt] (0,0) -- (165:1.1cm) (0,0) -- (-75:1.1cm);
+    \draw[objline] (120:1cm) -- (-60:1cm);
+    \draw[setdraw,->,fill=setbordercolor] (0,0) coordinate (B) -- (165:6mm) coordinate (C) node[above] {$A_{1,•}$};
+    \pic["$.$",setbordercolor,draw,angle radius=2mm] {angle};
+    \draw[setdraw,->,fill=setbordercolor] (0,0) -- (-75:6mm) coordinate (C') node[right] {$A_{2,•}$};
+    \pic["$.$",setbordercolor,draw,angle radius=2mm] {angle=C'--B--A'};
+    \node[setbordercolor] at (45:9mm) {$\P(H)$};
+    \node[altsetbordercolor] at (225:8mm) {$Λ$};
+    \draw[objective,->] (0,0) -- (30:7mm) node[right] {$λ$};
+    \draw[objective,->,dashed] (0,0) -- (210:7mm) node[left] {$-λ$};
+  \end{tikzpicture}\\
+  dual cone $\textcolor{altsetbordercolor}{Λ}$ of $\textcolor{setbordercolor}{\P(H)}$ spanned by two rows $\textcolor{setbordercolor}{A_{1,•}, A_{2,•}}$, and an example $\textcolor{objective}{λ}$ with $-λ ∈ Λ$%
+}
+\cref{thm:intro-duality}, $0$ is optimal for \cref{eq:intro-lpdecoder-axb} if and only if there is an $y$ that is feasible for \cref{eq:intro-lpdecoder-dual} with $b^Ty=0$. Now $0$ is feasible for \cref{eq:intro-lpdecoder-axb}, hence $b ≥ 0$, which together with \cref{eq:intro-lpdecoder-dual-y} implies that $y_j=0$ whenever $b_j ≠ 0$ in a solution $y$ with $b^Ty=0$. Taking a closer look at \cref{eq:intro-lpdecoder-dual}, we conclude
+\[λ ∈ Λ ⇔ (-λ) ∈ \conic\left(\set{A_{j,•}\colon b_j = 0}\right)\tp\]
+Note that $Λ$ is also a polyhedron by \cref{thm:intro-minkowski}.
+
+As a by-product of the above calculations, it appears that the rows of $Ax≤b$ for which $b_j≠0$ are irrelevant for $Λ$ and hence for the question whether the decoder fails or not. It is easy to show that deleting those rows leads to $\conic(\P(H))$, which motivates the following definition.
+
+\begin{definition}
+  The conic hull of the fundamental polytope,
+  \[\K(H) = \conic(\P(H))\tk\]
+is\mpar{
+  \begin{tikzpicture}
+    \draw[axis] (-.5,0) -- (1.3,0);
+    \draw[axis] (0,-.5) -- (0,1.3);
+    \draw (.1,1) -- (-.1, 1) node[left] {$1$};
+    \draw (1, .1) -- (1,-.1) node[below] {$1$};
+    \path[draw=Black,fill=Gray,opacity=.3] (0,0) -- (75:1cm) -- (60:1.5cm) -- (45:1.8cm) -- (30:1.5cm) -- (15:1cm) -- cycle;
+    \path[pattern=north west lines,pattern color=altsetcolor] (0,0) -- (75:1.6cm)  -| (15:1.6cm) -- cycle;
+    \draw[setdraw=alt,name path=cone] (75:1.6cm) -- (0,0) -- (15:1.6cm);
+    \draw[name path=simplex,Blue] (-.5,1.5) -- (1.5,-.5) node[below,xshift=-2mm] {$\norm{x}_1 = 1$};
+    \draw[setdraw,very thick,name intersections={of=cone and simplex,name=x}] (x-1) -- (x-2);
+    \node[setbordercolor] at (-.6, .35) {$\mathcal H_1(H)$} edge[setbordercolor] (.5, .5);
+    \node[altsetbordercolor] at (.6, 1.7) {$\mathcal H(H)$};
+    \node[Gray] at (45:11mm) {$\P(H)$};
+  \end{tikzpicture}
+}
+  called the \emph{fundamental cone} of $H$. By
+  \[ \K_1(H) = \set{x∈\K(H)\colon \norm{x}_1 = 1} \]
+  we denote the intersection of $\K(H)$ with the unit simplex.
+\end{definition}
+From the above discussion we can now formulate the following equivalent conditions for the LP decoder to succeed.
+\begin{corollary}
+  The following are equivalent:
+  \begin{enumerate}
+    \item The LP decoder correctly decodes $λ$ to $0$.
+    \item $λ ∈ Λ$.
+    \item There is no $x ∈ \K(H)$ with $λ^Tx < 0$.
+    \item There is no $x ∈ \K_1(H)$ with $λ^Tx < 0$.
+  \end{enumerate}
+\end{corollary}
+As a consequence, we can study either of the three sets $\P(H)$, $\K(H)$ or $\K_1(H)$ in order to characterize the LP decoder. Note that while the set $\K(H)$ is larger than $\P(H)$, its description complexity is much lower, because we need only as many forbidden-set inequalities \cref{eq:intro-forbiddenset} as there are $1$-entries in $H$. In addition, observe that the pseudoweight is invariant to scaling, \ie, $\pw(τx) = \pw(x)$ for $τ>0$. Consequently, the search for minimum pseudoweight can be restrained to either $\K(H)$ or $\K_1(H)$ as well. For the latter, it takes on the particularly simple form
+\[ w^\AWGN_{\rp,\mathrm{min}}(H) = \max\,\left\{\norm{x}_2^2\colon x ∈ \K_1(H)\right\}\tp\]
+While the maximization of $\norm{·}_2^2$ over a polytope is \textsf{NP}-hard in general, the most effective algorithms to approach the minimum pseudoweight rely on the above formulation; see \cite{KoetterVontobel03GraphCovers,ChertkovStepanov11Polytope,Rosnes+14Pseudoweight3D}.
+
+\subsection{Graph Covers}
+\label{sec:intro-graph-covers}
+There is a fascinating \emph{combinatorial} characterization of the fundamental polytope $\P(H)$ derived from the factor graph $G$ of a parity-check matrix $H$ (cf.\ \cref{def:intro-factorgraph}). Central to it is the following definition.
+\begin{definition}[graph cover]
+\mpar{
+  \begin{tikzpicture}[scale=.75,node distance=5mm]
+    \foreach \col [count=\cp from 0] in {Blue,Red,Green} {
+      \begin{scope}[xshift=2*\cp mm,yshift=-2.5*\cp mm,draw=\col,text=\col,checkNode/.append style={fill=\col!20},varNode/.append style={fill=\col!20}]
+        \node[varNode] (var4-\cp) at (0,0) {};
+        \foreach \i/\v in {1/2,2/6,3/5} {
+          \node[checkNode] (check\i-\cp) at (270-120*\i:1.3cm) {};
+          \node[varNode] (var\v-\cp) at (210-120*\i:1.3cm) {};
+        }
+        \node[varNode,above=of check1-\cp] (var1-\cp) {};
+        \node[varNode,above=of check2-\cp] (var3-\cp) {};
+        \node[varNode,below=of check3-\cp] (var7-\cp) {};
+      \end{scope}
+    }
+    \foreach \n/\m in {var1/check1,var2/check1,var2/check2, var3/check2, var4/check1, var4/check2, var4/check3, var5/check1, var5/check3, var6/check2, var6/check3, var7/check3} {
+      \luadirect{ % random permutation of {0,1,2}
+        three = {0,1,2}
+        for i=1,2 do
+          j = math.random(i,3)
+          three[i], three[j] = three[j], three[i]
+        end
+      }
+      \foreach \i in {0,1,2}
+        \draw (\n-\i) -- (\m-\luav{three[\i+1]});
+    }
+  \end{tikzpicture}\\
+  a $3$-cover of the $(7,4)$ code shown on \cpageref{margin:hammingcode}
+}
+  Let $G = (V∪C, E)$ be the factor graph associated to a parity-check matrix $H$ with variable nodes $V$, check nodes $C$, and edge set $E$. For $m ∈ ℕ$, an \emph{$m$-cover} of $G$ is a factor graph $\bar G$ with variable nodes $\bar V = V × \{1,\dotsc,m\}$, check nodes $\bar C = C × \{1,\dotsc,m\}$ and a set of $\abs E$ permutations $\set{e ∈ \mathbb{S}_M\colon e ∈ E}$ such that the edge set of $\bar G$ is
+  \[ \bar E = \set{ (\C_j^{(k)}, x_i^{(l)})\colon (\C_j, x_i) = e ∈ E\text{ and }π_e(k) = l}\tk \]
+  where by $\C_j^{(k)} = (\C_j, k) ∈ \bar C$ we denote the $k$-th copy of $\C_j ∈ C$ (and $V_i^{(l)}$ analogously).
+\end{definition}
+Despite the somewhat heavy notation in the above definition, the idea of a graph cover is rather simple: make $m$ identical copies of $G$ and then, for every edge $e = (\C_j, x_i) ∈ E$, arbitrarily \enquote{rewire} the $m$ copies of $e$ in a one-to-one fashion between the copies of $\C_j$ and $x_i$.
+
+Since every graph cover of a factor graph $G$ defining a code $\C$ is a factor graph itself, it defines a code $\bar{\C} = \bar{\C}(\bar G)$ that has $m$ times the block length of $\C$. Let
+\[ \tilde x = ( x_1^{(1)},  \dotsc, x_1^{(m)}, \dotsc, x_n^{(1)}, \dotsc, x_n^{(m)}) ∈ \bar{\C} \]
+be such a codeword, where the entries are ordered in the obvious way. Then, the rational $n$-vector $x$ defined by
+\[x_i = \frac 1 m \sum_{k=1}^m x_i^{(k)} \]
+is called the \emph{scaled pseudocodeword} of $\C$ associated to $\tilde x$. Let $\mathcal Q(H)$ denote the union, over all $M>0$ and all $M$-covers $\bar G$ of $G$, of the scaled pseudocodewords associated to all the codewords of $\bar{\C}(\bar G)$. It then holds that
+ \[ \mathcal Q(H) = \P(H) ∩ ℚ^n\tk \]
+\ie, $\mathcal Q(H)$ contains exactly the rational points of $\P(H)$, and hence $\P(H) = \overline{\mathcal Q(H)}$.
+
+Graph covers have been proposed in \cite{VontobelKoetter05GraphCover}, among other things, to study the relationship between LP decoding and iterative methods, which can be shown to always compute solutions that are optimal for some graph cover of $G$.
+
+\section{LP Decoding of Turbo Codes}\label{sec:intro-turbo-decoding}
+Since one can show that turbo(-like) codes, as introduced in \cref{sec:intro-turbo}, are special instances of linear block codes, one could compute, for a given turbo code $\C_\TC$, a parity-check matrix $H$ defining $\C_\TC$, and apply all of the abovementioned theory and algorithms to decode them using linear and integer optimization. In doing so, however, one would neglect the immediate combinatorial structure embodied in $\C$ in virtue of the trellis graphs of the constituent convolutional codes.
+
+In fact, for an individual convolutional code $\C$, it can be shown that ML decoding can be performed by computing a shortest path (due to the simple structure of $T$, this can be achieved in $O(k)$ time) in the trellis $T$ of $\C$, after having introduced a cost value $c_e$ to each trellis edge $e = (v_{i,s}, v_{i+1,s'}) ∈ E$: as every time step produces $n/k$ output bits, $e$ determines the entries $x^{(i)} = (x_{(i-1)n/k+1},\dotsc,x_{in/k}) = x_I$, for an appropriate index set $I$, of the codeword $x$. In view of \cref{eq:intro-mld-linearobj}, we thus have to define
+\[c_e = \sum_{j\colon \op{out}(e)_j = 1} λ_{I_j}\]
+such that the edge cost $c_e$ reflects the portion of the objective function $λ^Tx$ contributed by including $e$ in the path.
+
+When making the transition to a turbo code $\C_\TC$, independently computing a shortest path $P_\ra$ and $P_\rb$ in each component trellis $T_\ra$ and $T_\rb$, respectively, would not ensure that $P_\ra$ and $P_\rb$ are \emph{agreeable}, \ie, fulfill \cref{eq:intro-turbo-eq}, and hence match a codeword of $\C_\TC$. An ML turbo decoding algorithm would thus need to compute the minimum-cost pair of paths $(P_\ra, P_\rb)$ in $T_\ra$ and $T_\rb$ that additionally is agreeable. While there is no known combinatorial algorithm that efficiently solves such a type of problem (which can be viewed as a generalization of what is called the \emph{equal flow problem} \cite{Ali+98EqualFlowProblem}), it is nontheless possible to combine LP decoding with the trellis structure of turbo codes.
+
+One approach is to resort to an LP formulation of the two shortest path problems on $T_\ra$ and $T_\rb$ as described in \cref{sec:intro-combopt}, and then link them by adding linear constraints that represent \cref{eq:intro-turbo-eq}: first, write down the constraints of \cref{eq:intro-path-polytope} for each trellis $T_\ra$ and $T_\rb$, where we assume that the decision variable representing an edge $e$ is called $f_e$ instead of $x_e$. Then, for $i=1,\dotsc,k$, add an additional contstraint
+\[ \sum_{\substack{e ∈ E^\ra_i\colon\\\op{in}(e) = 1}} f_e = \sum_{\substack{e ∈ E^\rb_{π(i)}\colon\\\op{in}(e) = 1}} f_e\]
+to model \cref{eq:intro-turbo-eq}, where $E^\rx_i$ is the edge set of the $i$th segment of trellis $T_\rx$, $\rx ∈ \{\ra,\rb\}$. By adding these constraints, the resulting polytope is no longer integral, \ie, the constraints introduce \emph{fractional} vertices that do not correspond to an agreeable pair of paths. Note that there are no $x$ variables for the codeword in the model, since their values are uniquely determined by the values of the $f_e$; it is hence not necessary to include them during the optimization process.
+
+In a similar way as described above (see \cite{HelmlingRuzika13CombinatorialTurbo} for the details), a cost value derived from the LLR vector can be assigend to each edge such that the \emph{integer} programming version of the model with additional constraints $f_e ∈ \{0,1\}$ is equivalent to ML decoding. Its LP relaxation, called the \emph{turbo LP decoder}, thus has similar properties to the LP decoder from \cref{def:intro-lpdecoder}; in particular, it exhibits the ML certificate property. 
+
+While the error-correction performance of the turbo LP decoder has shown to be better than that of the usual LP decoder run on a parity-check matrix representation of the turbo code, solving the turbo LP with a generic LP solver, such as the simplex method, does not exploit the abovementioned possibility to decode the constituent convolutional codes in linear time. Algorithms using this linear-time method as a subroutine to solve the turbo decoding LP efficiently have been proposed in \cite{Tanatmis+10Lagrangian,HelmlingRuzika13LPTurbo}.

@@ -1,0 +1,563 @@
+
+\chapter{Coding Theory Background}\label{chap:intro-coding}
+How can information be transmitted \emph{reliably} via an \emph{error-prone} transmission system? The mathematical study of this question initiated the emergence of \emph{information theory} and, since one particularly important answer lies in the use of error-correcting codes, of \emph{coding theory} as a mathematical discipline of its own right.
+\mpar{
+  \begin{tikzpicture}[node distance=5mm]
+    % draw the sender
+    \filldraw[thick,top color=DarkGray,bottom color=White]
+      (-.25,0) coordinate (senderLeftFoot) --
+      (0,1.8)   coordinate (senderTop) --
+      (.25, 0) coordinate (senderRightFoot);
+    \path [name path=senderLeft]  (senderLeftFoot)  -- (senderTop);
+    \path [name path=senderRight] (senderRightFoot) -- (senderTop);
+    \coordinate (x) at ($(senderLeftFoot)!.5!(senderRightFoot)$);
+    \foreach \i in {1,...,10} {
+      \path [name path=slope] (x) -- ++(25:5mm);
+      \draw [name intersections={of=slope and senderRight,by=y}] (x) -- (y);
+      \path [name path=slope] (y) -- ++(165:5mm);
+      \draw [name intersections={of=slope and senderLeft,by=x}] (y) -- (x);
+    }
+    \draw[thick] (senderTop) -- ++(0,3mm) node[dot] (antenna) {};
+    % draw radio arcs
+    \foreach \radius in {2mm,3mm,4mm} {
+      \draw[semithick] (antenna) ++(-30:\radius) arc [start angle=-30,end angle=30,radius=\radius];
+      \draw[semithick] (antenna) ++(150:\radius) arc [start angle=150,end angle=210,radius=\radius];
+    }
+    % the cloud
+    \node (cloud) [
+      cloud, cloud puffs=12,
+      minimum width=1.3cm, minimum height=.7cm,
+      right=of antenna,
+      draw,ball color=DarkSlateGray] {};
+    \foreach \angle in {190,210,...,350} { % raindrops
+      \draw [dotted,thick,MediumBlue] (cloud.\angle) -- ++(-100:1cm);}
+    \begin{scope}[xshift=1.6cm,yshift=.8cm] % the laptop
+      \filldraw[rounded corners=.5mm] (0,0) rectangle (.6,.35);
+      \fill[shading=axis,top color=Lime!30,bottom color=Magenta!30,shading angle=45] (.05, .05) rectangle (.55, .3);
+      \begin{scope}[xslant=-.4]
+        \filldraw[rounded corners=.5mm] (0,0) rectangle (.6, -.25);
+        \foreach \x in {.05,.1,...,.55}
+          \foreach \y in {-.05,-.1,...,-.2}
+            \fill[Silver] (\x,\y) rectangle ++(.02,.02);
+        \fill[Silver] (.25,-.2) rectangle (.35, -.24);
+      \end{scope}
+      \foreach \radius in {1mm,2mm,3mm} {
+        \draw[semithick] (.6, .25) ++(-30:\radius) arc [start angle=-30,end angle=30,radius=\radius];
+        \draw[semithick] (0, .25) ++(150:\radius) arc [start angle=150,end angle=210,radius=\radius];
+      }
+    \end{scope}
+  \end{tikzpicture}\\
+  a noisy data transmission scenario%
+}
+
+In contrast to \emph{physical} approaches to increase the reliability of communication (\eg increased transmit power, more sensitive antennas, \dots), error-correcting codes offer a completely \emph{ideal} solution to the problem. It has been shown that, by coding, an arbitrary level of reliability is achievable, despite the unavoidable inherent unreliability of any technological equipment—in fact, the unparalleled development of microelectronic devices and their ability to communicate via both wired and wireless networks would not have been possible without the accompanying progresses in coding theory.
+
+This chapter reviews the basics of error-correcting codes and their application to reliable communication. For a more complete coverage of these topics, we refer the interested reader to the broad literature on the subject: the birth of information theory was \citeauthor{Shannon48}'s seminal work \citetitle{Shannon48} \cite{Shannon48}. Recommendable textbooks on information theory and its applications are \cite{MacKay03InformationTheory,Gallager68InformationTheory}. There are several books covering \enquote{classical} coding theory (this term is elucidated later), \eg \cite{MacWilliamsSloane77ECC}, while modern aspects of coding are collected in \cite{RichardsonUrbanke08ModernCodingTheory}.
+
+\section{System Setup and the Noisy-Channel Coding Theorem}
+\label{sec:intro-coding-setup}
+The principle of error-correction coding is to preventively include \emph{redundancy} in the transferred messages, thus communicating \emph{more} than just the actual information, with the goal of enabling the receiver to recover that information, even in the presence of noise on the transmission channel. The general system setup we consider is as depicted in \cref{fig:intro-setup}:
+\begin{figure}
+  \centering
+    \begin{tikzpicture}[
+      font=\scriptsize,
+      box/.style={font=\small,draw,fill=#1},
+      box/.default=encoder,
+      node distance=10mm and 17mm,
+      part/.style={text=Green,font=\normalsize}]
+      \coordinate       (info);
+      \node[box]        (encoder) [right=of info]    {encoder};
+      \node[box=channel](channel) [right=of encoder] {channel};
+      \node[box]        (decoder) [right=of channel] {decoder};
+      \node             (target)  [right=of decoder] {};
+      \node             (noise)   [above=of channel] {introduces noise}
+        edge[->,decorate,decoration={zigzag,segment length=7pt,amplitude=3pt,post length=5pt}] (channel);
+      \draw[->]        (info)    -- node[above] {information} (encoder);
+      \draw[->,double] (encoder) -- node[above] {information}
+                                    node[below] {+ redundancy} (channel);
+      \draw[->,double,wobbly]
+                       (channel) -- node[above] {perturbed}
+                                    node[below] {message}     (decoder);
+      \draw[->]        (decoder) -- node[above] {recovered}
+                                    node[below] {information} (target);
+      \begin{scope}[every node/.style={below=1cm,part},Green,thick]
+        \draw[brace={raise=8mm}] (channel.west) -- node {sender}   (info);
+        \draw[brace={raise=8mm}] (target) -- node {receiver} (channel.east);
+      \end{scope}
+    \end{tikzpicture}
+    \caption{Model of the transmission system.}
+    \label{fig:intro-setup}
+\end{figure}
+\begin{itemize}
+  \item the function by which these \enquote{bloated} messages are computed from the original ones is called the \emph{encoder};
+  \item the \emph{channel} introduces noise to the transmitted signal, \ie, at the receiver there is \emph{uncertainty} about what was actually sent;
+  \item the \emph{decoder} tries to recover the original information from the received signal.
+\end{itemize}
+
+Throughout this text, we are concerned only with \emph{block codes}, which means that the information enters the encoder in form of chuncks of uniform size (the \emph{information words}), each of which is encoded into a unique coded message of again uniform (but larger) size (the \emph{codewords}). For now, we additionally restrict ourselves to the \emph{binary} case, \ie, the alphabet for both information and codewords is $\F_2 = \{0,1\}$. This leads to the following definitions.
+\begin{definition}[code]
+\mpar{ 
+  \begin{tikzpicture}[box/.style={fill=#1!10,draw=#1},node distance=3mm]
+    \foreach \col/\txt [count=\i] in {Green/0110,Red/1110,Gray/0010,Gold/1000}
+      \node[box=\col] (box\i) at (0,.45*\i) {$\txt$};
+    \node[fill=encoder,draw,thick] (encoder) [below=of box1] {encoder};
+    \coordinate [below=of encoder] (y0);
+    \foreach \col/\txt [count=\i from 0] in {Gold/1000,Gray/0010,Red/1110,Green/0110}
+      \node[box=\col,anchor=north] (cbox\i) at ($(y0) + (0,-.45*\i)$) {$\;\C(\txt)\;$};
+    \draw[->] (box1) -- (encoder);
+    \draw[->] (encoder) -- (cbox0);
+    \draw [brace={raise=2mm}] (box4.north east) -- node[right=3mm] {$∈ \F_2^k$} 
+                              (box1.south east);
+    \draw [brace={raise=2mm}] (cbox0.north east) -- node[right=3mm] {$∈ \F_2^n$}
+                              (cbox3.south east);
+  \end{tikzpicture}\\
+  block encoding of information words into codewords%
+}
+  An \emph{$(n, k)$ code} is a subset $\C ⊆ \F_2^n$ of cardinality $2^k$. A bijective map from $\F_2^k$ onto $\C$ is called an \emph{encoding function for $\C$}.
+  
+  Whenever the context specifies a concrete encoding function, and if there is no risk of ambiguity, the symbol $\C$ will be used interchangeably for both the code and its encoding function.
+  
+  The numbers $k$ and $n$ are referred to as \emph{information length} and \emph{block length}, respectively. Their quotient $r = k/n<1$ represents the amount of information per coded bit and is called the \emph{rate} of $\C$.
+\end{definition}
+The concept of redundancy is entailed by the fact that $\C$ is a strict (and usually very small) subset of the space $\F_2^n$, \ie, most of the vectors in $\F_2^n$ are \emph{not} codewords, which is intended to make the codewords much easier to distinguish from each other than the informations words of $\F_2^k$.
+
+Note that in this definition the encoder is secondary to the code. This reflects the fact that, for the topics covered by this text, the structure of the set of codewords is more important than the actual encoding function.
+
+We assume that the channel through which the codewords are sent is \emph{memoryless}, \ie, that the noise affects each individual bit independently; it thus can be defined as follows.
+\begin{definition}[binary-input memoryless channel]
+  \label{def:intro-channel}
+   A \emph{binary-input memoryless channel} is characterized by an output domain $\mathcal Y$ and the two conditional probability functions
+\mpar{
+  \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
+    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
+      \tikzmath {
+          real \vcol, \vbarcol;
+          \vcol = \v*100;
+          \vbarcol = min(100, max(\vbar*100, 0));
+        }
+      \node[box,fill=Black!\vcol,"$\v$"] at (\i, 0) (top\i) {};
+      \node[box,fill=Black!\vbarcol,"$\vbar$" below] at (\i, -3) (bot\i) {};
+      \draw[->,wobbly] (top\i) -- (bot\i);
+    }
+    \node[draw,fill=channel,minimum width=25mm] (channel) at (3, -1.5) {channel};
+  \end{tikzpicture}\\
+  transmission of five bits through a noisy channel with $\mathcal Y=[0,1]$%
+}
+  \begin{equation}
+    P(y_i∣x_i=0) \quad\text{and}\quad P(y_i∣x_i=1)
+    \label{eq:intro-channelmodel}
+  \end{equation}
+  that specify how the output $y_i ∈ \mathcal Y$ depends on the two possible inputs $0$ and $1$, respectively (we assume that these two functions are not identical—otherwise, the output would be independent of the input and would thus not contain any information about the latter). Even more compactly, the frequently used \emph{log-likelihood ratio (LLR)}
+  \begin{equation}
+   λ_i = \ln\left(\frac{P(y_i∣x_i=0)}{P(y_i∣x_i=1)}\right)
+   \label{eq:intro-llr}
+  \end{equation}
+represents%
+\mpar{
+  \begin{tikzpicture}[box/.style={inner sep=.1mm,minimum size=4mm,draw},scale=.6]
+    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
+      \tikzmath {
+      \vbarcol = \vbar*100;
+      \llr = ln((1-\vbar)/\vbar);
+      }
+      \node[box,fill=Black!\vbarcol] at (\i,0) (bot\i) {};
+      \node[below,rotate=90,baseline,anchor=east] at (bot\i.south) {\pgfmathprintnumber[precision=2]{\llr}};
+    }
+  \end{tikzpicture}\\
+    example LLR values for the above transmission%
+} %
+the entire information revealed by the channel about the sent symbol $x_i$. If $λ_i>0$, then $x_i=0$ is more likely than $x_i=1$, and vice versa if $λ_i<0$. The absolute value of $λ_i$ indicates the \emph{reliability} of this tendency.
+\end{definition}
+
+When the receiver observes the result $λ∈ℝ^n$ (we mostly use LLRs in favor of $y ∈ \mathcal Y^n$ from now on) of the transmission of an encoded information word $x = \C(u)$ through the channel, it has to answer the following question: \emph{which codeword $x ∈ \C$ do I believe has been sent, under consideration of $y$?} This \enquote{decision maker} is called the \emph{decoder}, which is an algorithm realizing a decoding function
+\mpar{
+  \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
+    \node[draw,fill=encoder,minimum width=25mm] (decoder) at (3, -1.5) {decoder};
+    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
+      \tikzmath {
+          real \vcol, \vbarcol;
+          \vcol = \v*100;
+          \vbarcol = min(100, max(\vbar*100, 0));
+        }
+      \node[box,fill=Black!\vbarcol] at (\i, 0) (top\i) {};
+      \node[box,fill=Black!\vcol] at (\i, -3) (bot\i) {};
+    }
+    \draw[->,shorten=1mm] (top3) -- (decoder);
+    \draw[->,shorten=1mm] (decoder) -- (bot3);
+  \end{tikzpicture}\\
+  decoding success for the above transmission%
+}
+\begin{equation}
+  \algname{decode}\colon ℝ^n → ℝ^n\ts
+  \label{eq:intro-decoder}
+\end{equation}
+the decoder is intentionally (for reasons that will become clear later) allowed to output not only elements of $\F_2^n$ but arbitrary points of the unit hypercube $[0,1]^n$ (which includes $\F_2^n$ via the canonical embedding). We speak of \emph{decoding success} if $x ∈ \C$ was sent and $\algname{decode}(λ) = x$, while a \emph{decoding error} occurs if $\algname{decode}(λ) =  x' ≠ x$, which includes the cases that $x' ∈ \C$, \ie, the decoder outputs a codeword but not the one that was sent, and $x' \notin \C$, \ie, the decoder does not output a codeword at all.
+
+
+\mpar{
+  \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
+    \node[draw,fill=encoder,minimum width=25mm] (decoder) at (3, -1.5) {decoder};
+    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,1/0.6,1/0.7,0/0.5} {
+      \tikzmath {
+          real \vcol, \vbarcol;
+          \vcol = \v*100;
+          \vbarcol = min(100, max(\vbar*100, 0));
+        }
+      \node[box,fill=Black!\vbarcol] at (\i, 0) (top\i) {};
+      \node[box,fill=Black!\vcol] at (\i, -3) (bot\i) {};
+    }
+    \draw[->,shorten=1mm] (top3) -- (decoder);
+    \draw[->,shorten=1mm] (decoder) -- (bot3);
+    \node[box,very thick,draw=Red] at (3, -3) {};
+    \node[box,very thick,draw=Red] at (5, -3) {};
+  \end{tikzpicture}\\
+  decoding failure (two faulty bits) for the above transmission%
+}
+Assuming a \emph{uniform prior} on the sender's side, \ie, that all possible information words occur with the same probability (\emph{source coding}, the task of accomplishing this assumption, is not covered here), the error-correcting performance of a communication system consisting of code, channel, and decoding algorithm can be evaluated by means of its average \emph{frame-error rate}
+\begin{equation}
+  \textsc{FER} = \frac 1 {\abs{\C}} \sum_{x ∈ \C} P\left(\algname{decode}(λ) = x ∣ x\text{ was sent}\right) \tp
+  \label{eq:intro-fer}
+\end{equation}
+
+We can now state the main task of coding theory: given a certain channel model \cref{eq:intro-channelmodel}, design an $(n, k)$ code and an accompanying decoder \cref{eq:intro-decoder} such that the demands requested by the desired application are fulfilled, which may include:
+\begin{itemize}
+  \item The frame-error rate \cref{eq:intro-fer} should be sufficiently small in order to ensure reliable communication.
+  \item The rate $r = k/n$ should be as large as possible, because a small rate corresponds to a large number of transmitted bits per information bit, \ie, large coding overhead.
+  \item The block length $n$ should be small: high block lengths generally increase the complexities of both encoder and decoder and may additionally introduce undesirable latencies in \eg telephony applications.
+  \item The complexity of the decoding algorithm needs to be appropriate.
+\end{itemize}
+
+It is intuitively clear that some of the above goals are opposed to each other. The first two, however, are not as incompatible as one might suspect—Claude Shannon proved a stunning result \cite{Shannon48} which implies that, at a \emph{fixed} positive code rate, the error probability can be made arbitrarily small.
+\begin{theorem}[noisy-channel coding theorem]
+  \label{thm:intro-noisychannel}
+  For given $ε>0$ and $r < C$, where $C > 0$ depends only on the channel, there exists a code $\C$ with rate at least $r$, and a decoding algorithm for $\C$ such that the frame-error rate \cref{eq:intro-fer} of the system is below $ε$.
+\end{theorem}
+As beautiful as both the result and its proof (which is explained thoroughly in \cite{MacKay03InformationTheory}) are, they are unfortunately completely non-constructive in several ways:
+\begin{itemize}
+  \item the decoding error probability vanishes only for the block length $n$ going to infinity;
+  \item the proof makes use of a \emph{random coding} argument, hence it does not say anything about the performance of a concrete, finite code;
+  \item the running time of the theoretical decoding algorithm used in the proof is intractable for practical purposes.
+\end{itemize}
+
+As a consequence of the first two aspects, the search for and construction of \enquote{good} codes, \ie, codes that allow for the best error correction at a given finite block length $n$ and rate $r$, has emerged as an research area on itself, which is nowadays often nicknamed \enquote{classical coding theory.} For a long time, however, the problem of decoder complexity was not a major focus of the coding theory community. The term \enquote{modern coding theory} nowadays refers to a certain paradigm shift that has taken place since the early 1990's, governed by the insight that \emph{suboptimal codes} which are develeoped \emph{jointly} with harmonizing low-complexity decoding algorithms can lead to a higher overall error-correcting performance in practical applications than the \enquote{best} codes, if no decoder is able to exploit their theoretical strength within reasonable running time (see \cite{CostelloForney07RoadToCapacity} for the historical development of coding theory).
+
+The rest of this chapter is organized as follows. In \cref{sec:intro-mapml}, we discuss both the optimal MAP and the ML decoding rule, which are equivalent in our case. Afterwards, the prevalent additive white Gaussian noise (AWGN) channel model is explained in \cref{sec:intro-awgn}. \Cref{sec:intro-binarylinear} introduces binary linear block codes, a subclass of general block codes that is most important in practice and with some exceptions assumed throughout this text. A special type of linear block codes, called turbo codes, is presented in \cref{sec:intro-turbo}. Finally, \cref{sec:intro-nonbinary} explains how codes and channels can be generalized to the non-binary case.
+
+Note that this chapter does not cover any specific \emph{decoding} algorithm. The  next chapter covers various decoding approaches using mathematical optimization, which comprises the major topic of this text. For other decoding algorithms, \eg the ones that are used in today's electronic devices, we refer to the literature.
+
+\section{MAP and ML Decoding}\label{sec:intro-mapml}
+An optimal decoder (with respect to frame-error rate) would always return the codeword  that was sent \emph{with highest probability} among all codewords $x ∈ \C$, given the observed channel output $y$:
+\begin{equation}
+  x_\MAP = \argmax_{x ∈ \C} P(x∣y)\tp
+  \label{eq:intro-map}
+\end{equation}
+This is called \emph{MAP decoding}. By Bayes' theorem, we have \[P(x∣y) = \frac{P(y∣x) P(x)}{P(y)}\tp\] Since $P(y)$ is independent of the sent codeword $x$ and by assumption $P(x)$ is constant on $\C$, we obtain the equivalent \emph{ML decoding} rule:
+\begin{equation}
+  x_\ML = \argmax_{x ∈ \C} P(y∣x) \tp
+  \label{eq:intro-ml}
+\end{equation}
+Unfortunately, ML decoding is \textsf{NP}-hard in general \cite{Berlekamp+78IntractabilityCoding}, which motivates the search for special classes of codes that are both strong and allow for an efficient decoding algorithm which at least approaches the ML error-correction performance. On the other hand, it is desirable to know the frame-error rate for a given code under \emph{exact} ML decoding, because it \begin{inlinelist} \item constitutes the ultimate theoretical performance measure of the code itself and \item serves as a \enquote{benchmark} for the quality of suboptimal decoding algorithms.\end{inlinelist}
+
+
+\section{The AWGN Channel}\label{sec:intro-awgn}
+The most immediate and simple example of a binary-input memoryless symmetric channel as defined in \cref{def:intro-channel} is called the \emph{binary symmetric channel (BSC)}: it flips a bit with probability $p < 1/2$ and correctly transmits it with probability $q=1-p$, and hence $λ_i=±\ln(p/q)$, \ie, there are only two possible channel outputs.
+
+While the conceptual simplicity of the BSC is appealing, for practical applications it turns out to be simplified too much. Imagine a device in which some incoming electromagnetic signal is translated by a circuit (consisting of \eg antenna, electronic filters etc.) into a voltage $v$ with expected values $v_0$ and $v_1$ for the transmission of a $0$ and $1$, respectively. For a BSC channel model, we could round $v$ to the closest of those values and pass that \enquote{hard} information (either $0$ or $1$) to the decoder. But clearly, knowing \emph{how far} $v$ is from the value it is rounded to contains valuable information about the \emph{reliability} of the received signal—a value of $v$ close to the mean $(v_1-v_0)/2$ is less reliable than one close to either $v_0$ or $v_1$ (cf.\ the figures along \cref{def:intro-channel}). Consequently, the decoder should take that \enquote{soft} information into account.
+
+\mpar{
+  \begin{tikzpicture}
+    \begin{axis}[
+      enlarge x limits=false,
+      width=4cm,
+      xtick={-1, 0, 1},
+      xticklabels={$-\sqrt{E_\rc}$, \empty, $\sqrt{E_\rc}$},
+      ytick={0, .5, 1}]
+      \addplot+[Blue,mark=,domain=-2:2,samples=100,opacity=.5,fill,thick]
+        {2/sqrt(2*pi)*exp(-2*(x+1)^2)} \closedcycle;
+      \addplot+[Red,mark=,domain=-2:2,samples=100,opacity=.5,fill,thick] {2/sqrt(2*pi)*exp(-2*(x-1)^2)} \closedcycle;
+    \end{axis}
+  \end{tikzpicture}\\
+  densities $\textcolor{Blue}{P(y_i∣x_i=1)}$ (left) and $\textcolor{Red}{P(y_i∣x_i=0)}$ (right) of an AWGN channel%
+}
+The most prominent \emph{soft-output} channel model is the \emph{AWGN channel}, in which independent Gaussian noise (as it appears frequently in nature) is added to each transmitted symbol. It is characterized by a Gaussian distribution with mean $(-1)^{x_i}\sqrt{E_\rc}$ and variance $\sigma^2$. Here, $E_\rc$ is the transmit energy per channel symbol and $\sigma^2$ is the noise energy of the channel \cite{RichardsonUrbanke08ModernCodingTheory}:
+\begin{equation}
+P(y_i∣x_i) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac12\cdot\left(\frac{y-(-1)^{x_i}\sqrt{E_\rc}}{\sigma}\right)^2}\tp
+\end{equation}
+Note that the AWGN channel challenges the conceptual distinction between \emph{transmission success} and \emph{transmission error} in favor of an ubiquitous presence of noise: the expected value $±\sqrt{E_\rc}$ that corresponds to a \enquote{noiseless} transmission will be received only with probability zero.
+
+For a given code rate $r$, an AWGN channel can be specified by a single quantity, called \emph{information-oriented signal-to-noise ratio (SNR)}
+\begin{equation}
+  \SNR_\rb = \frac{E_\rb}{N_0} = \frac{E_\rc}{r\cdot 2 σ^2}
+\end{equation}
+where $E_\rb = E_\rc/r$ is the energy per \emph{information} bit and $N_0 = 2σ^2$ is called the \emph{double-sided power spectral density}. It can be shown that the $i$-th LLR value $λ_i$ of an AWGN channel is itself a normally distributed random variable,
+\begin{equation}
+  λ_i ∼ \mathcal N\left(4r(-1)^{x_i}·\SNR_\rb, 8r·\SNR_\rb\right)\tk
+  \label{eq:intro-llr-awgn}
+\end{equation} hence the specific values of $E_\rb$ and $σ$ are irrelevant for the channel law.
+
+In order to evaluate the performance of a specific code/decoder pair, it is common to state the frame-error rate not only for a single SNR, but instead to plot \cref{eq:intro-fer} for a whole range of SNR values. Since in the majority of cases the FER cannot be determined analytically, these \emph{performance curves} are usually obtained by Monte Carlo simulation. To that end, \cref{eq:intro-llr-awgn} is utilized to generate a large number of channel outputs, until a sufficient number of decoding errors ($\algname{decode}(y) ≠ x$) allows for a statistically significant estimation of \cref{eq:intro-fer}.
+
+\section{Binary Linear Block Codes}\label{sec:intro-binarylinear}
+
+\begin{definition}[linear code]
+  A binary $(n,k)$ code $\C$ is called \emph{linear} if $\C$ is a linear subspace of $\F_2^n$. Consequently, a linear code admits a linear encoding function.
+\end{definition}
+Linear codes constitute the by far most important class of codes that are studied in literature. This is justified by the fact that, for binary-input symmetric memoryless channels, the results of \cref{thm:intro-noisychannel} continue to hold when restricting to linear codes only \cite[Ch.~6.2]{Gallager68InformationTheory}.
+
+Linearity implies a vast amount of structure and allows codes to be compactly defined by matrices, as introduced below. Note that all operations on binary vectors in this section are performed in $\F_2$, \ie, \enquote{modulo $2$}.
+
+\begin{definition}[dual code and parity-check matrices]
+  \label{def:intro-matrices}
+  The orthogonal complement
+  \[\C^⊥ = \set{ξ ∈ \F_2^n\colon ξ^Tx = 0\text{ for all }x ∈ \C}\]
+   of a linear $(n, k)$ code $\C$ is called the \emph{dual code of $\C$}, the elements of $\C^⊥$ are \emph{dual codewords} of $\C$.
+  
+  A matrix $H ∈ \F_2^{m×n}$ is a \emph{parity-check matrix for $\C$} if its rows generate $\C^⊥$ (\ie, the rows contain a basis of $\C^⊥$) and hence the equation
+  \begin{equation}
+    \C = \set{ x\colon Hx = 0}\
+    \label{eq:intro-matrix-rep}
+  \end{equation}
+  completely characterizes $\C$. In practice, $\C$ is often defined by stating a parity-check matrix $H$ in the first place; in that event, we also speak of $H$ as \emph{the} parity-check matrix of $\C$.
+\end{definition}
+Since $\C^⊥$ is an $(n, n{-}k)$ code, it follows that $m > n-k$ in the above definition; in practice, $m=n-k$ is usually the case. Because $\C$ is linear, a linear \emph{encoding} function can likewise be defined by means of a so-called \emph{generator matrix} $G$, the rows of which form a basis of $\C$. Within the scope of this text, however, parity-check matrices are by far more important.
+
+\subsection{Minimum Hamming Distance}
+\mpar{
+  \begin{tikzpicture}
+    \draw[fill=Green!20] (0,0) rectangle (1,1);
+    \node[anchor=north] at (.5, 0) {$\F_2^n$};
+    \foreach \i in {.1, .2, ..., .9}
+      \foreach \j in {.1, .2, ..., .9}
+        \node[dot=.2mm] at (\i, \j) {};
+    \foreach \i in {.2, .5, .8}
+      \foreach \j in {.2, .5, .8}
+        \node[dot=1mm] at (\i, \j) {};
+    \begin{scope}[xshift=1.4cm]
+      \draw[fill=Red!20] (0,0) rectangle (1,1);
+      \foreach \i in {.1, .2, ..., .9}
+        \foreach \j in {.1, .2, ..., .9}
+          \node[dot=.2mm] at (\i, \j) {};
+      \node[anchor=north] at (.5, 0) {$\F_2^n$};
+      \foreach \i/\j in {.1/.8,.2/.8,.1/.7,.2/.7,.4/.5,.8/.5,.8/.6,.2/.4,.15/.6}
+        \node[dot=1mm] at (\i,\j) {};
+    \end{scope}
+  \end{tikzpicture}\\
+  intuition of a \textcolor{Green}{good code} with evenly spread codewords and a \textcolor{Red}{bad code}%
+}
+It is intuitively clear that, for a code to be robust against channel noise, the codewords should be maximally \enquote{distinguishable} from each other, \ie, there should be enough space between any two of them. Hence, one of the most important measures for the quality of a single code is its minimum distance, as defined below.
+
+\begin{definition}[minimum distance]\label{def:intro-dmin}
+  The \emph{Hamming weight} $w_\rH(x)$ of a binary vector $x$ is defined to be the number of $1$s among $x$. The \emph{Hamming distance} $d_\rH(x, y) = w_\rH(x-y)$ of two vectors $x, y$ of equal length is the number of positions in which they differ. The \emph{minimum (Hamming) distance} of a linear code $\C$ is defined as
+  \[ \dmin(\C) = \min_{\substack{x,y ∈ \C\\x≠y}} d_\rH(x,y) = \min_{\substack{x,y ∈ \C\\x≠y}} \abs{\set{i\colon x_i ≠ y_i}}\ts\]
+  it is equivalent to the minimum Hamming weight among all non-zero codewords,
+  \begin{equation}
+    \dmin(\C) = \min_{x ∈ \C⧵\{0\}} w_\rH(x)\tk
+    \label{eq:intro-wmin}
+  \end{equation}
+  by linearity.
+\end{definition}
+
+The problem of finding the minimum distance of general linear codes is an \textsf{NP}-hard problem \cite{Vardy97Intractability}. Nevertheless, integer programming techniques allow to compute $\dmin$ for codes which are not too large; see \eg \cite{Tanatmis+10NumericalComparison,Scholl+IPAnalysisChannelCodes}. In \cref{sec:intro-lp-analysis}, with the \emph{pseudoweight} we will encounter a similar weight measure that is specific to the LP decoding algorithm.
+
+\subsection{Factor Graphs}
+Let $\C$ be a binary linear code and $H ∈ \F_2^{m×n}$ a parity-check matrix for $\C$. As noted before in \cref{eq:intro-matrix-rep}, the condition
+\begin{equation}
+  Hx=0
+  \label{eq:intro-hx0}
+\end{equation}
+is necessary and sufficient for $x$ being a codeword of $\C$. A \emph{row-wise} viewpoint of \cref{eq:intro-hx0} leads to the following definition.
+
+\begin{definition}
+  \label{def:intro-supercodes}
+  Let $\C$ be a linear $(n, k)$ code defined by the $m×n$ parity-check matrix $H$. Any code $\C'$ such that $\C ⊆ \C'$ is called a \emph{supercode} of $\C$. For $j ∈ \{1,\dotsc,m\}$, the particular supercode
+  \[ \C_j = \{ x\colon H_{j,•}x = 0 \} \]
+  is called the \emph{$j$-th parity-check of $\C$}. It is a so-called \emph{single parity check (SPC)} code,  simply placing a parity condition on the entries $\set{x_i\colon H_{j,i}=1}$. 
+\end{definition}
+An obvious yet important consequence of the above definition is that
+\begin{equation}
+  \C = \bigcap_j \C_j\tk
+  \label{eq:intro-ccapcj}
+\end{equation}
+\ie, a linear code $\C$ is the intersection of the supercodes defined by the rows of a parity-check matrix for $\C$.
+
+The fact that a linear code is characterized by several parity-check conditions placed on subsets of the variables is neatly visualized by a factor graph (or Tanner graph).
+\mpar{
+  $H\arraycolsep=1pt = \begin{pmatrix}
+       1 & 1 & 0 & 1 & 1 & 0 & 0 \\
+       0 & 1 & 1 & 1 & 0 & 1 & 0 \\
+       0 & 0 & 0 & 1 & 1 & 1 & 1
+      \end{pmatrix}$\\[5mm]
+  \begin{tikzpicture}[scale=.7,node distance=4mm]
+    \node[varNode] (var4) at (0,0) {$x_4$};
+    \foreach \i/\v in {1/2,2/6,3/5} {
+      \node[checkNode] (check\i) at (270-120*\i:1.3cm) {$\C_\i$} edge (var4);
+      \node[varNode] (var\v) at (210-120*\i:1.3cm) {$x_{\v}$} edge (check\i);
+    }
+    \node[varNode,above=of check1] (var1) {$x_1$} edge (check1);
+    \node[varNode,above=of check2] (var3) {$x_3$} edge (check2);
+    \node[varNode,below=of check3] (var7) {$x_7$} edge (check3);
+    \draw (var2) -- (check2) (var6) -- (check3) (var5) -- (check1);
+  \end{tikzpicture}\\
+  parity-check matrix and corresponding factor graph of a $(7,4)$ code\label{margin:hammingcode}%
+}
+\begin{definition}[factor graph]\label{def:intro-factorgraph}
+  The \emph{factor graph} representing a parity-check matrix $H ⊆ \F_2^{m×n}$ of a linear code $\C$ is a bipartite undirected graph $G=(V\,\dot∪\,C, E)$ that has $m$ \emph{check nodes} $C = \set{\C_1,\dotsc, \C_m}$, $n$ \emph{variable nodes} $V=\set{x_1,\dotsc, x_n}$ and an edge $(\C_j, x_i)$ whenever $H_{j,i} = 1$.
+\end{definition}
+
+The factor graph representation plays an important role in the analysis and design of codes and decoding algorithms. One of today's most prominent decoding methods, named belief propagation, works by iteratively exchanging messages (representing momentary beliefs or probabilities) between the check and variable nodes, respectively, of the factor graph \cite{Kschischang+01FactorGraphs}. Moreover, \emph{graph covers} of the factor graph, as defined below in \cref{sec:intro-graph-covers} have become an important tool to analyze LP decoding, belief propagation decoding, and their mutual relation \cite{VontobelKoetter05GraphCover}.
+
+
+\section{Convolutional and Turbo Codes} \label{sec:intro-turbo}
+\emph{Turbo codes} constitute an important class of linear codes, as they were the first to closely approach the promises of \cref{thm:intro-noisychannel} using a very efficient decoding algorithm \cite{BerrouGlavieux96Turbo}. They are constructed by combining two or more (terminated) \emph{convolutional codes}. For the matter of this work, it is important that the codewords of a convolutional code are in correspondence to certain \emph{paths in a graph}, as described below.
+
+\begin{figure}
+\centering
+  \begin{tikzpicture}[
+    semithick,
+    one/.style={->},
+    zero/.style={one,dashed},
+    hiddenv/.style={v,draw=Gray!50,fill=Gray!20},
+    hidden/.style={Gray!50}]
+    % draw nodes
+    \foreach \t in {1,...,\len}
+      \foreach \s in {0,...,\maxState}
+        \node[\directlua{
+          if trellisReachable[\t][\s] then
+            tex.print("v")
+          else tex.print("hiddenv")
+          end}
+         ] (v\t-\s) at (1.3*\t,-\s) {};
+    % draw edges
+    \foreach \t [count=\n from 2] in {1,...,\luav{trellisLength-1}}
+      \foreach \s in {0,...,\maxState}
+        \foreach \edgetype in {zero, one}
+          \draw[\edgetype,\directlua{
+            if not (trellisReachable[\t][\s] and trellisReachable[\n][trellisTable[\s].\edgetype.target]) 
+            then tex.print("hidden")end}] (v\t-\s) -- (v\n-\luav{trellisTable[\s].\edgetype.target});
+    % draw state labels
+    \foreach \s in {0,...,\maxState}
+      \node[left=3mm] at (v1-\s.west) {$s_\s$};
+    % draw segments
+    \foreach \t[count=\n from 2] in {1,...,\luav{trellisLength-1}}
+      \draw[decorate,decoration={brace,mirror}]
+        ($ (v\t-\maxState.south) + (.5mm,-2mm) $) -- node[below=1mm] {$S_{\t}$}
+        ($ (v\n-\maxState.south) + (-.5mm,-2mm) $);
+    \node[above] at (v1-0.north) {$v_{1,0}$};
+    \node[above] at (v\len-0.north) {$v_{\len,0}$};
+  \end{tikzpicture}
+  \caption{An example trellis graph with $k=9$ segments and $2^d = 4$ states. Dashed edges have input bit $\op{in}(e)=0$, for solid edges the input is $\op{in}(e)=1$. Hence, for example, the zero input sequence $u=(0,\dotsc,0)$ corresponds to the horizontal path $(v_{1,0}, v_{2,0},\dotsc, v_{10,0})$ in $T$.}
+  \label{fig:intro-trellis}
+\end{figure}
+
+A terminated convolutional $(n, k)$ code $\C$ with rate $r$ (where $1/r =n/k ∈ ℕ$) and \emph{memory} $d ∈ ℕ$ can be compactly described by a finite state machine (FSM) with $2^d$ states $S = \{s_0, \dotsc, s_{2^d-1}\}$ and a state transition function $δ\colon S×\F_2→S×\F_2^{1/r}$ that defines the encoding of an information word $u ∈ \F_2^k$ as follows. Initially, the FSM is in state $s^{(1)} = s_0$. Then the bits $u_i$ of $u$ are subsequently fed into the FSM to determine the codeword $\C(u)$, \ie, in each step $i ∈ ℕ$, the  current state $s^{(i)} ∈ S$ together with the $i$-th input bit $u_i$ determines via
+\mpar{
+  \begin{tikzpicture}[on grid, auto,shorten >=1pt,node distance=1.6cm,bend angle=10]
+    \node[state,accepting] (0)                    {$s_0$};
+    \node[state]           (1) [above left= of 0] {$s_1$};
+    \node[state]           (2) [above right=of 0] {$s_2$};
+    \node[state]           (3) [above left= of 2] {$s_3$};
+    \path [->] (0) edge [loop below] node        {$0/0$} (0)
+                   edge              node [swap] {$1/1$} (2)
+               (1) edge [bend left]  node        {$0/1$} (2)
+                   edge              node [swap] {$1/0$} (0)
+               (2) edge [bend left]  node        {$0/0$} (1)
+                   edge              node [swap] {$1/1$} (3)
+               (3) edge [loop above] node        {$0/1$} (3)
+                   edge              node [swap] {$1/0$} (1);
+  \end{tikzpicture}\\
+  FSM of a rate-1 convolutional code: the edge labels $u/x$ give the respective input ($u$) and output ($x$) bits%
+}
+\begin{equation*}
+  δ(s^{(i)}, u_i) = (s^{(i+1)}, x^{(i)})
+\end{equation*}
+the subsequent state $s^{(i+1)}$ as well as $n/k$ output bits $x^{(i)} = (x^{(i)}_1,\dotsc,x^{(i)}_{n/k})$ that constitute the part of the codeword that belongs to $u_i$. Finally, the machine has to terminate in the zero state, \ie, $s^{(k+1)} = s_0$ is required (this entails that some of the input bits are not free to choose and thus have to be considered as part of the \emph{output} instead; in favor of a clear presentation, however, we ignore this inexactness and assume that $u$ is in advance chosen such that $s^{(k+1)} = s_0$; see \eg \cite{HelmlingRuzika13CombinatorialTurbo} for a more rigorous construction). The encoded word $x = \C(u)$ now consists of a concatenation of the $x^{(i)}$, namely,
+\[ x = \left(x^{(1)}_1,\dotsc, x^{(1)}_{n/k},\dotsc, x^{(k)}_1,\dotsc,x^{(k)}_{n/k}\right)\tp \]
+The FSM of a convolutional code is always defined in such a way that this encoding is a \emph{linear} map, and hence $\C$ is a linear code.
+
+By \enquote{unfolding} the FSM along the time domain, we now associate a directed acyclic graph $T=(V,E)$ to the convolutional code $\C$, called its \emph{trellis} (see \cref{fig:intro-trellis}). Each vertex of $T$ corresponds to a state of the FSM at a specific time step, such that $V = \{1,\dotsc,k+1\}×S$, where we denote the vertex $(i,s)$ corresponding to state $s∈S$ at step $i$ shortly by $v_{i,s} ∈ V$.
+
+The edges of $T$ in turn correspond to valid state transitions. For each $i ∈ \{1,\dotsc,k\}$ and $s ∈ S$, there are two edges emerging from $v_{i,s}$, according to the two possible values of $u_i$ (which are encoded in the \emph{input labels} $\op{in}(e) ∈ \{0,1\}$ of the edges); both their \emph{output labels} $\op{out}(e) ∈ \F_2^{n/k}$ and target vertices $v_{i+1,s'}$ are determined by the state transition function via
+  \[δ(s, \op{in}(e)) = (s', \op{out}(e))\tp\]
+Hence, each edge $e=(v_{i,s}, v_{i+1,s'})$ of $T$ corresponds to the input of one bit at a specific step $i$ and a specific state $s$ of the encoder FSM that is in state $s'$ afterwards; the labels of $e$ define the value of the input bit $u_i=\op{in}(e)$ and the output sequence $x^{(i)}=\op{out}(e)$, respectively.
+The trellis $T$ is thus \enquote{$(k+1)$-partite} in the sense that $V$ partitions into $k+1$ subsets $V_i$ such that edges only exist between two subsequent sets $V_{i}$ and $V_{i+1}$. This motivates the definition of the $i$-th trellis \emph{segment} $S_i = (V_i ∪ V_{i+1}, E_i)$ according to the $i$-th encoding step as the subgraph induced by $V_i ∪  V_{i+1}$.
+
+The transition function $δ$ is always designed in such a way that if $δ(s,0) = δ(s',x')$ and $δ(s,1) = δ(s'',x'')$ then $x' ≠ x''$, \ie, at each encoding step, the two outputs corresponding to an input bit $0$ and $1$, respectively, must be different. As a consequence, the codewords of $\C$ are in one-to-one correspondence with the paths from $v_{1,0}$ to $v_{k+1,0}$ in $T$: at step $i$ in state $s$, the next $n/k$ bits of the codeword determine which edge to follow from $v_{i,s}$, while conversely the output label of such an edge fixes the next $n/k$ code bits. Due to the boundary constraints $s^{(1)} = s^{(k+1)} = s_0$, some vertices and edges in the leading as well as the endmost $d$ segments are not part of any such path and therefore are usually removed from $T$, as shown in the figure.
+
+\mpar{
+  \begin{tikzpicture}[sq/.style={draw,semithick}]
+    \node     (u)  {$u ∈ \F_2^k$};
+    \draw     (u)  -- ++(0,-1) node[dot] (x) {};
+    \draw[->] (x)  -| ++(-.7,-2) node[yshift=-2mm] {$u$};
+    \path     (x)  +(0,-1) node[sq,fill=encoder] (Ca) {$\C_\ra$}
+                   +(1.2,-1) node[sq,fill=encoder] (Cb) {$\C_\rb$}
+                   +(1.2, 0) node[sq,fill=Khaki]              (π)  {$π$}; 
+    \draw[->] (x) -- (Ca);
+    \draw[->] (x) -- (π) -- (Cb);
+    \draw[->] (Ca) -- ++(0,-1) node[yshift=-2mm] {$\C_\ra(u)$};
+    \draw[->] (Cb) -- ++(0,-1) node[yshift=-2mm] {$\C_\rb(π(u))$};
+  \end{tikzpicture}
+  encoding scheme of a turbo code%
+}
+In a turbo code $\C_\TC$, now, several convolutional codes are \emph{concatenated} in order to improve upon the rather weak error-correction performance of plain convolutional codes. In the most common form, two identical convolutional codes $\C_\ra$ and $\C_\rb$ with rate $r=1$ each are concatenated \emph{parallely}, which means that the information word $u$ is encoded by both, but the entries of $u$ are permuted by a fixed permutation (the \emph{interleaver}) $π ∈ \mathbb{S}_k$ before entering the second component code $\C_\rb$. A codeword of the turbo code $\C_\TC$ then consists of the concatenation of a copy of $u$, $\C_\ra(u)$ and $\C_\rb(π(u))$, so that the overall rate of $\C_\TC$ is $r=1/3$ (here, again, a small rate loss due to termination is ignored). In a more general setting, the term \emph{turbo-like codes} refers to schemes that include \emph{serial} concatenation, where the output of one convolutional code is used as input for another convolutional code, or any combination of parallel and serial concatenations.
+
+Taking the path representation of codewords of $\C_\ra$ and $\C_\rb$ in their respective trellis graphs $T_\ra$ and $T_\rb$ into account, from the above definition of a turbo code $\C_\TC$ we can derive a one-to-one correspondence between codewords of $\C_\TC$ and pairs $(P_\ra = (e^\ra_1,\dotsc,e^\ra_k), P_\rb = (e^\rb_1,\dotsc,e^\rb_k))$ of paths in $T_\ra$ and $T_\rb$, respectively, which additionally fulfill that
+\begin{equation}
+  \op{in}(e^\ra_i) = \op{in}(e^\rb_{π(i)}) \tk
+  \label{eq:intro-turbo-eq}
+\end{equation}
+\ie, the $i$-th edge in $P_\ra$ must have the same input label as the $π(i)$-th edge in $P_\rb$, because both equal the $i$-th input bit $u_i$. The application of this path–code relationship to decoding by mathematical optimization is introduced in \cref{sec:intro-turbo-decoding}.
+
+\section{Non-Binary Codes and Higher-Order Modulation}\label{sec:intro-nonbinary}
+
+So far, we assumed \emph{binary} data processing throughout coding and data transmission, as introduced in \cref{sec:intro-coding-setup}. While today's microelectronic systems, as is generally known, \emph{internally} rely on the binary representation of data, the above simplification is, in two different but related ways, not the whole story in case of channel coding.
+
+First, observe that the definition of (linear) codes can straightforwardly be generalized to any finite field $\F_q$ for a prime power $q$: the information and codewords still lie in vector spaces and linear maps can be defined as usual; the parity-check matrix of such a \emph{non-binary code} then has entries in $\{0,\dotsc,q-1\}$. Several constructions of strong codes rely on a non-binary field, thus a restriction to the binary case would prevent us from using those codes.
+
+Secondly, in many practical transmission systems the signal space is modeled by the \emph{complex} plane, where the real and imaginary axis, respectively, correspond to two different carrier waves (\eg, two sines that are out of phase by $π/2$) such that any complex number $z$ represents a linear combination of both waves that is then emitted onto the carrier medium. This technique is called \emph{modulation}. At the receiver's side, a complementary \emph{demodulator} measures the potentially distorted wave and reconstructs (\eg via Fourier analysis) a point $\tilde z$ in the complex plane.
+
+\mpar{
+  \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
+    \draw[axis] (-1.3,0) -- (1.3,0);
+    \draw[axis] (0,-1.3) -- (0,1.3);
+    \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
+    \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
+    \draw[Gray] (0,0) circle[radius=1cm];
+    \node[p,"$z_0$"] at (1,0) {};
+    \node[p,"$z_1$"] at (-1,0) {};
+  \end{tikzpicture}\\
+  binary modulation%
+}
+In the most simple \emph{binary} case, two complex numbers (\eg $z_0=1+0i$ and $z_1=-1+0i$) are chosen that represent the values $0$ and $1$, respectively, of a single bit. If we now assume that the channel adds independent Gaussian noise to both carrier waves, this case reduces to the binary AWGN channel as introduced in \cref{sec:intro-awgn}.
+
+\mpar{
+  \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
+    \draw[axis] (-1.3,0) -- (1.3,0);
+    \draw[axis] (0,-1.3) -- (0,1.3);
+    \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
+    \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
+    \draw[Gray] (0,0) circle[radius=1cm];
+    \foreach \i in {0,...,3}
+      \node[p,"$z_\i$" above] at (45+\i*90:1cm) {};
+  \end{tikzpicture}\\
+  modulation with $Q=4$ signals%
+}
+In \emph{higher-order modulation}, however, more than one bit of information is transmitted at once by choosing $Q>2$ (usually, $Q$ is a power of $2$) possible complex signals $\{z_0,\dotsc,z_{Q-1}\}$. Hence, the channel can be modeled by $Q$ probability functions $P(\tilde z∣0),\dotsc,P(\tilde z∣Q-1)$ where $\tilde z ∈ ℂ$.
+
+
+\mpar{
+  \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
+    \draw[axis] (-1.3,0) -- (1.3,0);
+    \draw[axis] (0,-1.3) -- (0,1.3);
+    \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
+    \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
+    \draw[Gray] (0,0) circle[radius=1cm];
+    \pgfmathsetbasenumberlength{2}
+    \foreach \i in {0,...,3}
+      \pgfmathparse{bin(\i)}
+      \node[p,"$\pgfmathresult$"] at (45+\i*90:1cm) {};
+  \end{tikzpicture}\\
+  example mapping of $k=2$ bits to $4=2^k$ complex symbols
+}
+Non-binary codes and higher-order modulation can be combined in several ways. Most obviously, if $q=Q$ then to each complex symbol $z_0,\dotsc,z_{Q-1}$ an element of $\F_q$ can be assigned, such that the channel transmits one entry of the codeword per signal. On the other hand, if \eg $q=2$ and $Q=2^k$, $k$ bits of the codeword can be sent \emph{at once} by mapping the $2^k$ possible bit configurations to the $2^k$ chosen complex symbols.
+
+In both cases, the expression for ML decoding \cref{eq:intro-ml} is more complex than in the binary case. In particular, the linearization to formulate ML decoding as an IP (\cref{sec:intro-ml-ip}) is not possible in the same way because there is no individual LLR value corresponding to each channel signal. Nevertheless, ML decoding of non-binary codes was formulated as an IP in \cite{Flanagan+09NonBinary}, and the incorporation of higher-order modulation into the IP model is covered in \cite{Scholl+12MLvsBP}.

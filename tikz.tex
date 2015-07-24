@@ -1,0 +1,112 @@
+% !TeX root = diss
+
+% contains all TikZ / style related definition
+
+\usepackage{tikz}
+\usetikzlibrary{calc,math,intersections,fit}
+\usetikzlibrary{backgrounds,quotes}
+\usetikzlibrary{angles}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations,decorations.pathreplacing,patterns}
+\usetikzlibrary{shapes,shapes.symbols, shapes.arrows}
+\usetikzlibrary{graphs,graphs.standard,graphdrawing,positioning}
+\usegdlibrary{force,trees,layered}
+\usetikzlibrary{automata}
+
+% colors
+\colorlet{darkgreen}{Green}
+
+\colorlet{path}{Purple}
+\colorlet{objective}{DarkBlue}
+\colorlet{setcolor}{LightGoldenrod}
+\colorlet{setbordercolor}{DarkGoldenrod}
+\colorlet{altsetcolor}{LightPink}
+\colorlet{altsetbordercolor}{Fuchsia}
+\colorlet{integral}{Gray}
+\colorlet{feasint}{Green}
+\colorlet{lp}{Coral!50!Red}
+\colorlet{encoder}{LightSkyBlue!30}
+\colorlet{channel}{Red!30}
+\colorlet{cut}{Orchid}
+% styles for graphs
+\tikzset{
+  v/.style={draw,circle,fill=blue!50!cyan!30,inner sep=.5mm,minimum size=4mm},
+  elabel/.style={inner sep=0.5mm,rounded corners,text=black,fill=white},
+  mypath/.style={draw=path,thick,->},
+  varNode/.style={circle,draw,minimum size=#1, inner sep=.2mm,fill=Black!10},
+  varNode/.default=4mm,
+  checkNode/.style={rectangle,draw,minimum size=#1, inner sep=.2mm,fill=Black!10},
+  checkNode/.default=4mm,
+  ffgNode/.style={inner sep=1mm,minimum size=3mm,draw},
+  every picture/.append style={>=stealth},
+}
+
+
+\tikzset{
+  margintikz/.style={
+    nodes={font=\scriptsize}
+  },
+  dot/.style={fill,circle,inner sep=0mm,minimum size=#1},
+  dot/.default=1mm,
+  sq/.style={fill,rectangle,minimum size=#1,inner sep=0mm},
+  sq/.default=1mm,
+  setfill/.style={fill=#1setcolor,fill opacity=.3},
+  setfill/.default=,
+  setdraw/.style={draw=#1setbordercolor,semithick,text=#1setbordercolor},
+  setdraw/.default=,
+  set/.style={setfill=#1,setdraw=#1},
+  set/.default=,
+  objline/.style={draw=objective,densely dotted},
+  extend/.style={shorten >=-#1,shorten <=-#1},
+  extend/.default=5mm,
+  shorten/.style={shorten >=#1,shorten <=#1},
+  shorten/.default=5mm,
+  stripefill/.style={pattern=north west lines,pattern color=#1},
+  stripefill/.default=setcolor,
+  backwhite/.style={fill=white,inner sep=.3mm},
+  wobbly/.style={decorate,decoration={snake,segment length=15pt,amplitude=0.5pt}},
+  brace/.style={decorate,decoration={brace,#1}},
+  axis/.style={->,draw=Gray},
+  pmatrix/.style={matrix of math nodes,left delimiter=(,right delimiter=)},
+}
+
+% the 3-D inner trellis
+\begin{luacode}
+  trellisTable = {
+    [0] = { zero={target=0,out=0}, one={target=2,out=1} },
+    [1] = { zero={target=2,out=1}, one={target=0,out=0} },
+    [2] = { zero={target=1,out=0}, one={target=3,out=1} },
+    [3] = { zero={target=3,out=1}, one={target=1,out=0} }
+  }
+  trellisMaxState = 3
+  trellisLength = 10
+  trellisReachable = {}
+  for time=1,trellisLength do
+    trellisReachable[time] = {}
+    for state=0,trellisMaxState do
+      trellisReachable[time][state] = false
+    end
+  end
+  trellisReachable[1][0] = true
+  trellisReachable[trellisLength][0] = true
+  for i=2,trellisLength/2 do
+    for state, edges in pairs(trellisTable) do
+      if trellisReachable[i-1][state] then
+        for _,edge in pairs(edges) do
+          trellisReachable[i][edge.target] = true
+        end
+      end
+    end
+  end
+  for i=trellisLength,trellisLength/2,-1 do
+    for state, edges in pairs(trellisTable) do
+      for _,edge in pairs(edges) do
+        if trellisReachable[i][edge.target] then
+          trellisReachable[i-1][state] = true
+        end
+      end
+    end
+  end
+\end{luacode}
+\edef\len{\luav{trellisLength}}
+\edef\maxState{\luav{trellisMaxState}}

@@ -1,0 +1,287 @@
+% !TeX program = lualatex
+% !TeX TXS-program:bibliography = txs:///biber
+\documentclass[
+  paper=a4,
+  parskip=half,
+  english,
+  fontsize=11pt,
+  BCOR=1mm,
+  DIV=10,
+  twoside=true,
+  toc=bib,
+  numbers=noendperiod
+]{scrbook}
+
+% === basic setup packages ========
+\usepackage[
+  fonts=false,
+  prettyref=false,
+  math=true,
+  unimath=true,
+]{mh_basic}
+\setsansfont{Fontin Sans}
+\setromanfont{Linux Libertine O}
+\setmathfont{TeX Gyre Termes Math}
+\setmathfont[range={"29F5}]{XITS Math}
+\setmathfont[range={}]{TeX Gyre Termes Math} % workaround bug in unicode-math
+\usepackage[svgnames]{xcolor}
+\usepackage{scrhack}
+\KOMAoptions{DIV=last}
+% =================================
+
+% === math ========================
+\usepackage{lualatex-math}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.12}
+% =================================
+
+
+% === shorthands ==================
+% roman
+\newcommand\ra{\mathrm a}
+\newcommand\rb{\mathrm b}
+\newcommand\rc{\mathrm c}
+\newcommand\rl{\mathrm l}
+\newcommand\rp{\mathrm p}
+\newcommand\rr{\mathrm r}
+\newcommand\rs{\mathrm s}
+\newcommand\rx{\mathrm x}
+\newcommand\rH{\mathrm H}
+\newcommand{\Ca}{C_\mathrm{a}}
+\newcommand{\Cb}{C_\mathrm{b}}
+\newcommand{\Cc}{C_\mathrm{c}}
+\newcommand{\Cx}{C_\mathrm{x}}
+\newcommand{\Ex}{E_{\mathrm x}}
+% bold
+\newcommand{\f}{\mathbf{f}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf y}
+\newcommand\bc{\mathbf{c}}
+\newcommand\be{\mathbf{e}}
+\newcommand\bh{\mathbf{h}}
+\newcommand\bn{\mathbf{n}}
+\newcommand\bp{\mathbf{p}}
+\newcommand\bq{\mathbf{q}}
+\newcommand\br{\mathbf{r}}
+\newcommand\bs{\mathbf{s}}
+\newcommand\bu{\mathbf{u}}
+\newcommand\bw{\mathbf{w}}
+\newcommand\bx{\mathbf{x}}
+\newcommand\bz{\mathbf{z}}
+\newcommand\bH{\mathbf{H}}
+\newcommand{\bom}{\mathbf ω}
+
+% abbreviations
+\newcommand\TC{\mathrm{TC}}
+\newcommand\ch{\mathrm{ch}}
+\newcommand\LP{\mathrm{LP}}
+\newcommand\IP{\mathrm{IP}}
+\newcommand\ML{\mathrm{ML}}
+\newcommand\MAP{\mathrm{MAP}}
+\newcommand\SNR{\mathrm{SNR}}
+\newcommand\SNRb{\SNR_\rb}
+\newcommand\PC{\mathrm{PC}}
+\newcommand\GF[1]{\mathrm{GF}(#1)}
+% special fonts
+\newcommand{\code}[1]{\ensuremath{\mathcal{#1}}} % codes
+\newcommand{\poly}[1]{\ensuremath{\mathcal{#1}}} % polyhedra
+\newcommand{\ensemble}[1]{\ensuremath{\mathbf{#1}}} % code ensembles
+\newcommand\D{\ensuremath{\mathfrak{D}}}
+\AtBeginDocument{\renewcommand\C{\code C}}
+\renewcommand\P{\poly{P}}
+\newcommand\PI{\P_{\mathrm I}} % integral polyhedron
+\newcommand\K{\poly{K}}
+\renewcommand{\algname}[1]{\textup{\textsc{#1}}}
+% misc
+\newcommand{\dmin}{d_\mathrm{min}}
+\newcommand{\hmin}{h_\mathrm{min}}
+\newcommand{\wmin}{w^\AWGN_\mathrm{min}}
+\newcommand{\dotFPi}{\conic(\dot{\mathcal Q}_{\Pi, \Pi_{\mathrm c}})}
+\newcommand{\dotF}{\dot{\mathcal F}_{\Pi, \Pi_{\mathrm c}}}
+\newcommand{\QPi}{\mathcal Q_{\Pi, \Pi_{\mathrm c}}}
+\newcommand{\QfPi}{\mathcal Q^{\mathbf{f}}_{\Pi, \Pi_{\mathrm c}}}
+\newcommand{\dotQPi}{\dot{\mathcal Q}_{\Pi, \Pi_{\mathrm c}}}
+\newcommand{\tQPi}{\tilde{\mathcal Q}_{\Pi,\Pi_{\mathrm c}}}
+\newcommand{\wbar}{\bar{w}}
+\newcommand{\Fsec}{{\mathcal F}_\r{sec}}
+\newcommand{\AWGN}{\mathrm{AWGN}}
+\newcommand{\pw}{w_\rp^\AWGN} % AWGN pseudoweight
+\DeclareMathOperator{\Aut}{Aut} % automorphism group
+\DeclareMathOperator{\conic}{conic}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\xa}{\bx_\ra}
+\newcommand{\xb}{\bx_\rb}
+\newcommand{\xc}{\bx_\rc}
+\newcommand{\xm}{\bx^{(m)}}
+\AtBeginDocument{
+  \renewcommand{\a}{\mathbf{a}}
+  \renewcommand{\c}{\mathbf{c}}
+  \renewcommand\r[1]{\mathrm{#1}}
+}
+% =================================
+
+
+% === various packages=============
+\usepackage{varioref}
+\usepackage[
+  colorlinks=true,
+  linkcolor=Blue,
+  urlcolor=Blue,
+  citecolor=Green,
+  hyperfootnotes=false,
+]{hyperref}
+\usepackage[amsmath,thmmarks]{ntheorem}
+\usepackage[chapter]{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage[capitalize,noabbrev]{cleveref}
+  \crefname{equation}{}{}
+  \crefname{page}{page}{pages}
+  \crefname{paper}{Paper}{Papers}
+  \Crefname{ALC@unique}{Line}{Lines}
+\usepackage{IEEEtrantools} % load after cleveref
+\usepackage[inline]{enumitem}
+  \setlist[enumerate,1]{label=(\arabic*), ref=(\arabic*)}
+  \newlist{inlinelist}{enumerate*}{1}
+  \setlist[inlinelist]{label=\itshape(\alph*),ref=\itshape(\arabic*)}
+\usepackage[labelformat=simple]{subcaption}
+  \renewcommand\thesubfigure{(\alph{subfigure})}
+\usepackage[binary-units=true]{siunitx}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[hang]{footmisc}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{luacode}
+\newcommand\luav[1]{\directlua{tex.print(#1)}}
+% =================================
+
+% === theorem environments ========
+\qedsymbol{\ensuremath{_\Box}}
+\theorembodyfont{\itshape}
+\theoremseparator{:}
+\theoremstyle{change}
+\theoremsymbol{\ensuremath{_\lhd}}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{observation}[theorem]{Observation}
+
+\theorembodyfont{\normalfont}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{nonumberplain}
+\theoremseparator{.}
+\theoremheaderfont{\normalfont\bfseries\itshape}
+\theoremsymbol{\ensuremath{_\Box}}
+\newtheorem{proof}{Proof}
+% ===============================
+
+
+% === TikZ / PGF ==================
+\input{tikz}
+% ==================================
+
+% === Margin graphics helpers ======
+\usepackage[strict]{changepage}
+\newcommand\raggedboth{\ifthispageodd{\RaggedRight}{\RaggedLeft}}
+\newcommand{\mpar}[1]{ %
+  \marginpar{ %
+    \raggedboth %
+    \scriptsize %
+    \tikzset{
+      every node/.append style={font=\scriptsize},
+      ampersand replacement=\&,
+      varNode/.default=1.5mm,
+      checkNode/.default=1.5mm
+    } %
+    #1 %
+  }
+}
+\usepackage{marginfix}
+\strictpagecheck
+% ==================================
+
+% === bibliography and index ======
+\usepackage[style=alphabetic,backend=biber,firstinits=true,sorting=nyt]{biblatex}
+  \addbibresource{koblenzopt_full.bib}
+  \addbibresource{koblenzopt.bib}
+  \renewbibmacro{in:}{%
+    \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+  % Sentence case for article titles
+  \DeclareFieldFormat{sentencecase}{\MakeSentenceCase*{#1}}
+  \renewbibmacro{title}{%
+    \ifthenelse{\iffieldundef{title}\AND\iffieldundef{subtitle}}{}
+        {\ifthenelse{\ifentrytype{article}\OR\ifentrytype{inbook}%
+            \OR\ifentrytype{incollection}\OR\ifentrytype{inproceedings}}
+            {\printtext[title]{%
+                \printfield[sentencecase]{title}%
+                \setunit{\subtitlepunct}%
+                \printfield[sentencecase]{subtitle}}%
+                \newunit}%
+            {\printtext[title]{%
+                \printfield[titlecase]{title}%
+                \setunit{\subtitlepunct}%
+                \printfield[titlecase]{subtitle}}%
+                \newunit}}%
+    \printfield{titleaddon}}
+
+% =================================
+
+% === document metadata ===========
+\newcommand\mytitle{Introduction to Mathematical Programming-Based Error-Correction Decoding}
+\newcommand\myauthor{Michael Helmling}
+\hypersetup{
+  pdftitle      = \mytitle,
+  pdfauthor     = \myauthor,
+  pdfsubject    = LP Decoding,
+  pdfcreator    = LuaLaTeX,
+  pdfproducer   = \myauthor,
+  pdfduplex     = DuplexFlipLongEdge,
+  pdfpagelayout = SinglePage,
+}
+\urlstyle{same} % don't use monospaced font for urls
+%\hypersetup{hidelinks} % for printing
+%===================================
+
+
+% === KOMA / layout ===============
+\setcounter{tocdepth}{2}
+% =================================
+
+\title{\mytitle}
+\subtitle{A tutorial}
+\author{\myauthor}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\addchap*{Preface}
+This tutorial-style introduction into the topic of \emph{error-correction decoding based on mathematical programming}, including the most prominent application called \emph{LP decoding}, has emerged from the introductory chapter of my PhD thesis \cite{Helmling15PhD}. However, I have a priori intended to publish this introduction after my graduation, hoping that it might be useful to students and researchers beyond those who happen to come across my thesis – especially because there is to date, as far as I am aware, no introductory textbook to \enquote{LP decoding} that covers recent research, which makes it hard to get into the topic for newcomers. The best starting point so far is probably still \citeauthor{Feldman03PhD}'s thesis, which has become a little long in the tooth now.
+
+Of course, the text at hand is as well biased to the specific topics that I have worked with. My hope is, however, that others (\ie, you!) will help to improve and extend the document by contributing bugfixes, new sections, examples, proofs or whatever you fell is missing, with the goal of creating a collaboratively managed comprehensive open-access introduction into what is relevant for the research of our small community. To that end, the \LaTeX{} sources are publicly available via GitHub\footnote{\url{https://github.com/supermihi/lpdintro}}, and I encourage everyone to contribute via bug reports or pull requests.
+\begin{FlushRight}
+  Michael Helmling\\
+  Koblenz, Germany\\
+  2015
+\end{FlushRight}
+
+\chapter*{Introduction}
+Decoding error-correctiong codes by methods of mathematical optimization, most importantly linear programming, has become an important alternative approach to both algebraic and iterative decoding methods since its introduction by \textcite{Feldman+05LPDecoding}. At first celebrated mainly for its analytical powers, real-world applications of LP decoding are now within reach thanks to most recent research (\cite{Liu+12PenalizedLPD, Gensheimer+14SimplexHard}). This document gives an elaborate introduction into both \emph{mathematical optimization} (\cref{chap:intro-opt}) and \emph{coding theory} (\cref{chap:intro-coding}) as well as a review of the contributions by which these two areas have found common ground in \cref{chap:intro-optcoding}.
+
+We have nevertheless made it our aim that a reader who is familiar with mathematics in general but has no specific proficiency in either optimization or coding theory will be able to comprehend the most important ideas and concepts of the matter. Being originated as a thesis introduction, the presentation might still be rather compact as compared to a textbook. However, you can change that by either contributing more elaborate explanations or examples directly, or by asking someone else (\eg me) to do so.
+
+The assumptions we make as to the reader's mathematical background mainly consist of undergraduate linear algebra. To a smaller extent, familiarity with graph theory and algorithmic concepts will be helpful, and occasionally we will encounter probabilities. Notation and nomenclature for these background topics are fixed in \cref{chap:intro-notation}.
+
+\include{notation}
+\include{optimization}
+\include{coding}
+\include{lpdecoding}
+\printbibliography[heading=bibintoc]
+
+\end{document}
