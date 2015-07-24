@@ -261,7 +261,7 @@
 \maketitle
 \tableofcontents
 
-\addchap*{Preface}
+\addchap{Preface}
 This tutorial-style introduction into the topic of \emph{error-correction decoding based on mathematical programming}, including the most prominent application called \emph{LP decoding}, has emerged from the introductory chapter of my PhD thesis \cite{Helmling15PhD}. However, I have a priori intended to publish this introduction after my graduation, hoping that it might be useful to students and researchers beyond those who happen to come across my thesis – especially because there is to date, as far as I am aware, no introductory textbook to \enquote{LP decoding} that covers recent research, which makes it hard to get into the topic for newcomers. The best starting point so far is probably still \citeauthor{Feldman03PhD}'s thesis, which has become a little long in the tooth now.
 
 Of course, the text at hand is as well biased to the specific topics that I have worked with. My hope is, however, that others (\ie, you!) will help to improve and extend the document by contributing bugfixes, new sections, examples, proofs or whatever you fell is missing, with the goal of creating a collaboratively managed comprehensive open-access introduction into what is relevant for the research of our small community. To that end, the \LaTeX{} sources are publicly available via GitHub\footnote{\url{https://github.com/supermihi/lpdintro}}, and I encourage everyone to contribute via bug reports or pull requests.
@@ -271,7 +271,7 @@ Of course, the text at hand is as well biased to the specific topics that I have
   2015
 \end{FlushRight}
 
-\chapter*{Introduction}
+\addchap{Introduction}
 Decoding error-correctiong codes by methods of mathematical optimization, most importantly linear programming, has become an important alternative approach to both algebraic and iterative decoding methods since its introduction by \textcite{Feldman+05LPDecoding}. At first celebrated mainly for its analytical powers, real-world applications of LP decoding are now within reach thanks to most recent research (\cite{Liu+12PenalizedLPD, Gensheimer+14SimplexHard}). This document gives an elaborate introduction into both \emph{mathematical optimization} (\cref{chap:intro-opt}) and \emph{coding theory} (\cref{chap:intro-coding}) as well as a review of the contributions by which these two areas have found common ground in \cref{chap:intro-optcoding}.
 
 We have nevertheless made it our aim that a reader who is familiar with mathematics in general but has no specific proficiency in either optimization or coding theory will be able to comprehend the most important ideas and concepts of the matter. Being originated as a thesis introduction, the presentation might still be rather compact as compared to a textbook. However, you can change that by either contributing more elaborate explanations or examples directly, or by asking someone else (\eg me) to do so.
