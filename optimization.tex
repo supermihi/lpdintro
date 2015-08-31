@@ -39,7 +39,8 @@ The mathematical objects that we talk about in this section live in the $n$-dime
                           -- (-.2, .2)  node ["$x_2$" right, dot] {};
        \draw[thick,Red,name intersections={of=polygon and line,name=p}] (p-1) -- (p-2);
      \end{tikzpicture}\\
-     a convex and a nonconvex set%
+     \captionsetup[figure]{style=margin}
+     \captionof{figure}{A convex and a nonconvex set.}
   }
   A \emph{convex combination} of $X$ is a sum of the form
   \begin{equation}
@@ -58,10 +59,12 @@ The mathematical objects that we talk about in this section live in the $n$-dime
        % a redundant point inside the convex hull
        \node [dot] at (.2, .3) {};
       \end{tikzpicture}\\
-      convex hull of six points%
+      \captionsetup[figure]{style=margin}
+      \captionof{figure}{Convex hull of six points.}
     }
   in the case of an infinite $X$ we assume that almost all $λ_x=0$ so that the above expression makes sense. The \emph{convex hull} of $X$ is the smallest convex set containing $X$ or, alternatively, the set of all convex combinations of elements of $X$.
 \end{definition}
+
 An important class of convex sets is the one of convex \emph{cones}.
 \begin{definition}[convex cones]
   $X ⊆ ℝ^n$ is called a (convex) \emph{cone} if for any $x_1, x_2 ∈ X$ and $λ_1, λ_2 ≥ 0$ also $λ_1x_1 + λ_2x_2 ∈ X$. A \emph{conic combination} is defined like \cref{eq:intro-convex} but without the condition $\sum_{x∈X} λ_i=1$. Analogously to the above, the \emph{conic hull} $\conic(X)$ is the smallest cone containing $X$, or the set of all conic combinations of elements of $X$.
@@ -83,28 +86,44 @@ An important class of convex sets is the one of convex \emph{cones}.
     \foreach \i in {1,...,4}
       \node [dot] at (x\i) {};
   \end{tikzpicture}\\
-  conic hull of four points%
+  \captionsetup[figure]{style=margin}
+  \captionof{figure}{Conic hull of four points.}
 } 
 Geometrically, the conic hull is the largest set that \enquote{looks the same} as $\conv(X)$, from the perspective of an observer that sits at the origin.
 
 \subsection{Affine Spaces}
 
-Recall the notion of \emph{linear independence}: a set of points $X = \{x_1,\dotsc,x_k\} ⊆ ℝ^n$ is \emph{linearly independent} if no element $x$ of $X$ is contained in the linear subspace that is spanned by the remainder $X ⧵ \set x$ or, equivalently, if $\spn(X') ≠ \spn(X)$ for all $X' \subsetneq X$. Here, the \emph{span} or \emph{linear hull} of a set $X ⊆ ℝ^n$ means the smallest linear subspace containing $X$:
+Recall the notion of \emph{linear independence}: a set of points $X = \{x_1,\dotsc,x_k\} ⊆ ℝ^n$ is \emph{linearly independent} if no element $x$ of $X$ is contained in the linear subspace that is spanned by the remainder $X ⧵ \set x$ or, equivalently, if $\spn(X') ≠ \spn(X)$ for all $X' \subsetneq X$ (\cref{fig:example-linind}). Here, the \emph{span} or \emph{linear hull} of a set $X ⊆ ℝ^n$ means the smallest linear subspace containing $X$:
 \[ \spn(X) = \bigcap \set{\mathcal V\colon \mathcal V\text{ is a subspace of } ℝ^n\text{ and }X ⊆ \mathcal V}\tp \]
-\mpar{
-  \begin{tikzpicture}
-   \draw [axis] (-1.1,0) -- (1.1, 0);
-   \draw [axis] (0,-1.1) -- (0, 1.1);
-   \node[dot,"$x_1$"] (x1) at (.6,.4) {} ;
-   \node[dot,"$x_2$"] (x2) at ($ -.7*(x1) $) {};
-   \scoped[on background layer]
-     \draw[setdraw,extend]
-       (x1) -- node[below,sloped,align=center,text=setbordercolor]
-              {$\spn(\{x_1\})$\\ $=\spn(\{x_2\})$} (x2);
-    \node[dot,"$x_3$"] (x3) at (-.5, .7) {};
-  \end{tikzpicture}\\
-  $x_1$ and $x_2$ are linearly dependent, but both are pairwise linearly independent with $x_3$%
-}
+\begin{figure}
+  \centering
+  \subcaptionbox{$x_1$ and $x_2$ are linearly dependent, but both are pairwise linearly independent with $x_3$.\label{fig:example-linind}}[.45\textwidth]{
+    \begin{tikzpicture}[scale=2]
+     \draw [axis] (-1.1,0) -- (1.1, 0);
+     \draw [axis] (0,-.6) -- (0, 1.1);
+     \node[dot,"$x_1$"] (x1) at (.6,.4) {} ;
+     \node[dot,"$x_2$"] (x2) at ($ -.7*(x1) $) {};
+     \scoped[on background layer]
+       \draw[setdraw,extend]
+         (x1) -- node[below,sloped,align=center,text=setbordercolor]
+                {$\spn(\{x_1\})$\\ $=\spn(\{x_2\})$} (x2);
+      \node[dot,"$x_3$"] (x3) at (-.5, .7) {};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{Affine space $\textcolor{setbordercolor}{\mathcal A} = b + \textcolor{altsetbordercolor}{\mathcal V}$ of dimension $1$; $x_1, x_2 ∈ \mathcal A$ are affinely independent. \label{fig:example-affind}}[.45\textwidth]{
+    \begin{tikzpicture}[scale=2]
+     \draw [axis] (-1.1,0) -- (1.1, 0);
+     \draw [axis] (0,-.5) -- (0, 1.1);
+     \node[dot,"$b$"] (b) at (-.2,.3) {} ;
+     \draw[setdraw] (b) + (20:1cm) -- node [very near start,"$\mathcal A$" {text=setbordercolor}] {} + (200:1cm);
+     \node[dot] at (b) {};
+     \node[dot,"$x_1$"] (x1) at ($ (b) + (20:4mm) $) {};
+     \node[dot,"$x_2$"] (x2) at ($ (b) + (20:-5mm) $) {};
+     \draw[setdraw=alt] (20:1cm) -- node[near end,"$\mathcal V$" {below,text=altsetbordercolor}] {} (200:1cm);
+    \end{tikzpicture}
+  }
+  \caption{Examples of linear and affine (in)dependence.}
+\end{figure}
 The linear hull has an alternative algebraic characterization by means of linear combinations,
 \begin{equation}
   \spn(X) = \set{\sum_{i=1}^k λ_i x_i\colon λ_i ∈ ℝ\text{ for all }i ∈ \{1,\dotsc, k\}}\tk
@@ -122,24 +141,11 @@ For the study of polyhedra, we need the concepts of \emph{affine} hulls and inde
     \mathcal A = b + \mathcal V = \set{b+v\colon v ∈ \mathcal V} \tp
     \label{eq:intro-affsub}
   \end{equation}
-  The\mpar{
-    \begin{tikzpicture}
-     \draw [axis] (-1.1,0) -- (1.1, 0);
-     \draw [axis] (0,-.5) -- (0, 1.1);
-     \node[dot,"$b$"] (b) at (-.2,.3) {} ;
-     \draw[setdraw] (b) + (20:1cm) -- node [very near start,"$\mathcal A$" {text=setbordercolor}] {} + (200:1cm);
-     \node[dot] at (b) {};
-     \node[dot,"$x_1$"] (x1) at ($ (b) + (20:4mm) $) {};
-     \node[dot,"$x_2$"] (x2) at ($ (b) + (20:-5mm) $) {};
-     \draw[setdraw=alt] (20:1cm) -- node[near end,"$\mathcal V$" {below,text=altsetbordercolor}] {} (200:1cm);
-    \end{tikzpicture}\\
-    affine space $\textcolor{setbordercolor}{\mathcal A} = b + \textcolor{altsetbordercolor}{\mathcal V}$ of dimension $1$; $x_1, x_2 ∈ \mathcal A$ are affinely independent%
-  }
-  \emph{affine hull} $\aff(X)$ of a set $X = \{x_1, \dotsc, x_k\} ⊆ ℝ^n$ is the smallest affine subspace containing $X$. The set $X$ is called \emph{affinely independent} if no $x ∈ X$ fulfills $x ∈ \affp{X \setminus \set{x}}$ or, equivalently, if $\aff(X) \neq \aff(X')$ for all $X' \subsetneq X$.
+  The \emph{affine hull} $\aff(X)$ of a set $X = \{x_1, \dotsc, x_k\} ⊆ ℝ^n$ is the smallest affine subspace containing $X$. The set $X$ is called \emph{affinely independent} if no $x ∈ X$ fulfills $x ∈ \affp{X \setminus \set{x}}$ or, equivalently, if $\aff(X) \neq \aff(X')$ for all $X' \subsetneq X$.
   
   Finally, the \emph{dimension} $\dim(\mathcal A)$ of $\mathcal A$ in \cref{eq:intro-affsub} is defined to be the dimension of $\mathcal V$.
 \end{definition}
-An affine subspace can thus be envisioned as a linear space that has been translated by a vector. This principle is reflected by the algebraic characterization of the affine hull of $X = \{x_1,\dotsc, x_k\} ⊆ ℝ^n$ by means of \emph{affine combinations}: first, move to an arbitrary vector of $X$ (without loss of generality, let this be $x_1$), then add any linear combination of the \emph{directions} from $x_1$ to the other $k-1$ elements of $X$:
+An affine subspace can thus be envisioned as a linear space that has been translated by a vector (see \cref{fig:example-affind} for an example). This principle is reflected by the algebraic characterization of the affine hull of $X = \{x_1,\dotsc, x_k\} ⊆ ℝ^n$ by means of \emph{affine combinations}: first, move to an arbitrary vector of $X$ (without loss of generality, let this be $x_1$), then add any linear combination of the \emph{directions} from $x_1$ to the other $k-1$ elements of $X$:
 \[ \aff(X) = \set{x_1 + \sum_{i=2}^k λ_i (x_i-x_1)\colon λ_i ∈ ℝ\text{ for all }i ∈ \{2,\dotsc,k\}}\ts\]
 by defining $λ_1 = 1 - \sum_{i=2}^k λ_i$ one can easily derive the equivalent definition
   \[ \aff(X) = \set{\sum_{i=1}^k λ_i x_i\colon λ_i ∈ ℝ \text{ for all }i ∈\{1,\dotsc, k\} \text{ and }\sum_{i=1}^k λ_i = 1}\tp\]
@@ -175,23 +181,37 @@ A \emph{polyhedron} is, intuitively speaking, a closed convex body whose surface
   Likewise, a (closed) \emph{halfspace} of $ℝ^n$ is a set of the form
   \[ \mathcal H = \set{x ∈ ℝ^n\colon a^Tx ≤ β}\tk\]
   where again $0 ≠a ∈ ℝ^n$ and $β ∈ ℝ$. One says in the above situation that the hyperplane or halfspace, respectively, is \emph{induced by} the pair $(a,β)$. The intersection of finitely many halfspaces is called a \emph{polyhedron}. A \emph{polytope} is a polyhedron that is bounded.
-
-\mpar{
-  \begin{tikzpicture}
-    \draw [axis] (-1.1,0) -- (1.1, 0);
-    \draw [axis] (0,-.6) -- (0, 1.1);
-    \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
-      \coordinate (x\i) at (\x, \y);
-    \path[setfill] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
-    \foreach \i [evaluate=\j using {int(mod(\i,5)+1)}] in {1,...,5} {
-      \draw[setdraw,extend=1.5mm] (x\i) -- (x\j);
-      \coordinate (mid) at ($ (x\i)!.5!(x\j) $);
-      \draw[setdraw,->] (mid) -- ($ (mid)!4mm!90:(x\j) $);
-    }
-    \node[setbordercolor] at (.4, .3) {$\P$};
-  \end{tikzpicture}
-    a $2$-dimensional polytope (the affine hull is $ℝ^2$) defined by five \textcolor{setbordercolor}{halfspaces}%
-  }
+  
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=1.2,baseline]
+      \draw [axis] (-1.1,0) -- (1.1, 0);
+      \draw [axis] (0,-.6) -- (0, 1.1);
+      \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
+        \coordinate (x\i) at (\x, \y);
+      \path[setfill] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
+      \foreach \i [evaluate=\j using {int(mod(\i,5)+1)}] in {1,...,5} {
+        \draw[setdraw,extend=1.5mm] (x\i) -- (x\j);
+        \coordinate (mid) at ($ (x\i)!.5!(x\j) $);
+        \draw[setdraw,->] (mid) -- ($ (mid)!4mm!90:(x\j) $);
+      }
+      \node[setbordercolor] at (.4, .3) {$\P$};
+    \end{tikzpicture}
+    \quad
+    \begin{tikzpicture}[scale=1.2,baseline]
+      \draw [axis] (-1.1,0) -- (1.1, 0);
+      \draw [axis] (0,-0.6) -- (0, 1.1);
+      \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 } {
+        \coordinate (x\i) at (\x, \y);
+      }
+      \path[set=alt] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
+      \foreach \i in {1,...,5} {
+        \node[dot,label=(150-62*\i):$x_\i$] at (x\i) {};
+      }
+    \end{tikzpicture}
+    \caption{Example of a $2$-dimensional polytope (its affine hull is $ℝ^2$) defined by five \textcolor{setbordercolor}{halfspaces} (left) or equivalently  as the convex hull of its five vertices $x_1,\dotsc,x_5$ (right).}
+    \label{fig:example-polytope}
+  \end{figure}
   The \emph{dimension} $\dim(\P)$ of a polyhedron $\P$ is defined to be the dimension of $\aff(\P)$, if $\P ≠∅$, and $-1$ otherwise. In both cases $\dim(\P)$ is one less than the maximum number of affinely independent vectors in $\P$.
 \end{definition}
 Polyhedra are the fundamental structure of linear and integer linear optimization. From the above definition, it follows that for a polyhedron $\P$ there is a matrix $A ∈ ℝ^{m×n}$ and a vector $b∈ ℝ^m$, for some $m ∈ ℕ$, such that
@@ -200,25 +220,13 @@ Polyhedra are the fundamental structure of linear and integer linear optimizatio
 
 Note that polyhedra, being intersections of convex sets, are convex themselves.
 Complementary to the above \emph{implicit} definition as the solution set of a system $Ax ≤ b$, every polyhedron admits, by a theorem of Minkowski, an \emph{explicit} characterization by means of convex and conic combinations. 
-\mpar{
-  \begin{tikzpicture}
-    \draw [axis] (-1.1,0) -- (1.1, 0);
-    \draw [axis] (0,-0.6) -- (0, 1.1);
-    \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 } {
-      \coordinate (x\i) at (\x, \y);
-    }
-    \path[set=alt] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
-    \foreach \i in {1,...,5} {
-      \node[dot,label=(150-62*\i):$x_\i$] at (x\i) {};
-    }
-  \end{tikzpicture}\\
-  the same polytope as the convex hull of its five vertices $x_1,\dotsc,x_5$%
-}
+
 \begin{theorem}[Minkowski]\label{thm:intro-minkowski}
   The set $\P ⊆ ℝ^n$ is a polyhedron if and only if there are finite sets $V, W ⊆ ℝ^n$ such that $\P = \conv(V) + \conic(W)$.
 \end{theorem}
 
-If $\P$ in \cref{thm:intro-minkowski} is a polytope, then, since every nonempty cone is unbounded, $W=∅$ must hold; hence, every polytope is the convex hull of its so-called \emph{vertices} or \emph{extreme points}, which are the \enquote{corners} of the polytope as shown in the picture on the margin. Vertices are a special instance of \emph{faces} of a polyhedron, which are defined next.
+
+If $\P$ in \cref{thm:intro-minkowski} is a polytope, then, since every nonempty cone is unbounded, $W=∅$ must hold; hence, every polytope is the convex hull of its so-called \emph{vertices} or \emph{extreme points}, which are the \enquote{corners} of the polytope as shown in \cref{fig:example-polytope}. Vertices are a special instance of \emph{faces} of a polyhedron, which are defined next.
 
 
 \begin{definition}\label{def:intro-face}
@@ -228,8 +236,18 @@ If $\P$ in \cref{thm:intro-minkowski} is a polytope, then, since every nonempty 
   \[ F_{a,β} = \set{x ∈ \P\colon a^Tx = β}\]
   constitutes a \emph{face} of $\P$, namely the \emph{face induced by} \cref{eq:intro-poly-vi}. A zero-dimensional face is called a \emph{vertex} of $\P$, one-dimensional faces are \emph{edges} of $\P$. A face $F$ for which $\dim(F) = \dim(\P) - 1$ is called a \emph{facet} of $\P$.
 \end{definition}
-\mpar{
-  \begin{tikzpicture}
+
+Note that a face of a polyhedron is a polyhedron itself, as it is obtained by adding the inequalities $α^Tx ≤ β$ and $α^Tx ≥ β$ to the system $Ax≤ b$.
+
+For a representation  $\P(A,b)$  of the polytope $\P$, each face has another characterization (see \cref{fig:example-faces} for an example).
+\begin{lemma}\label{lemma:face-alg}
+  Let $\P = \P(A,b)$ with $A ∈ ℝ^{m×n}$. For $E ⊆ \{1,\dotsc,m\}$, the set
+  \[ F_E = \set{ x ∈ \P\colon A_{E,•}x = b_E} \]
+  is a face of $\P$. If $F_E ≠ ∅$, its dimension is $n - \rank(A_{\op{eq}(F_E),•})$, where $\op{eq}(F_E)$ is the \emph{equality set} of $F_E$ defined by $\op{eq}(F_E) = \set{i\colon A_{i,•} x = b \text{ for all } x ∈ F_E}$.
+\end{lemma}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[scale=1.5,baseline]
     \draw [axis] (-1.1,0) -- (1.1, 0);
     \draw [axis] (0,-0.6) -- (0, 1.1);
     \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
@@ -243,12 +261,9 @@ If $\P$ in \cref{thm:intro-minkowski} is a polytope, then, since every nonempty 
     \draw[Red,extend=5mm] (x1) -- coordinate[pos=.65] (mid) (x2);
     \draw[Red,->] (mid) -- ($ (mid)!7mm!90:(x2) $);
     \draw[Red,very thick] (x1) -- node[above,Red] {$F_2$} (x2);
-  \end{tikzpicture}\\
-  two faces induced by valid inequalities with $\dim(\textcolor{Green}{F_1})=0$ and $\dim(\textcolor{Red}{F_2})=1$%
-}
-Note that a face of a polyhedron is a polyhedron itself, as it is obtained by adding the inequalities $α^Tx ≤ β$ and $α^Tx ≥ β$ to the system $Ax≤ b$.
-\mpar{
-  \begin{tikzpicture}
+  \end{tikzpicture}
+  \quad
+  \begin{tikzpicture}[scale=1.5,baseline]
     \draw [axis] (-1.1,0) -- (1.1, 0);
     \draw [axis] (0,-0.6) -- (0, 1.1);
     \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
@@ -260,15 +275,11 @@ Note that a face of a polyhedron is a polyhedron itself, as it is obtained by ad
     \draw[Green,thick,extend=1.5mm] (x5) -- (x1);
     \node[dot,color=Green,"$F_1$" {left,Green}] at (x5) {};
     \draw[Red,thick,extend=1.5mm] (x1) -- node[above,Red] {$F_2$} (x2);
-  \end{tikzpicture}\\
-  the same two faces with their defining equality sets highlighted%
-}
-For a representation  $\P(A,b)$  of the polytope $\P$, each face has another characterization.
-\begin{lemma}\label{lemma:face-alg}
-  Let $\P = \P(A,b)$ with $A ∈ ℝ^{m×n}$. For $E ⊆ \{1,\dotsc,m\}$, the set
-  \[ F_E = \set{ x ∈ \P\colon A_{E,•}x = b_E} \]
-  is a face of $\P$. If $F_E ≠ ∅$, its dimension is $n - \rank(A_{\op{eq}(F_E),•})$, where $\op{eq}(F_E)$ is the \emph{equality set} of $F_E$ defined by $\op{eq}(F_E) = \set{i\colon A_{i,•} x = b \text{ for all } x ∈ F_E}$.
-\end{lemma}
+  \end{tikzpicture}
+  \caption{Two faces of a polytope, induced either by valid inequalities with $\dim(\textcolor{Green}{F_1})=0$ and $\dim(\textcolor{Red}{F_2})=1$ (left) or by their defining equality sets (highlighted on the right).}
+  \label{fig:example-faces}
+\end{figure}
+
 Facets are of special importance because they are necessary and sufficient to describe a polyhedron:
 \begin{theorem}\label{thm:intro-facets}
   Let $\P = \P(A,b)$ be a polyhedron, and assume that no inequality in $Ax ≤ b$ is redundant, \ie, could be removed without altering $\P$. Let $I ∪ J$ denote the partition of row indices defined by $I = \set{i\colon A_{i,•}x = b_i\text{ for all }x ∈ \P}$. Then, the inequalities in $A_{J,•} x ≤ b_J$ are in one-to-one correspondence (via \cref{lemma:face-alg}) to the facets of $\P$.
@@ -303,10 +314,11 @@ In view of this equivalence of different LP forms, we will in the following assu
 
 Note that if \cref{eq:intro-lp-polyhedral} has an optimal solution $x^*$ with objective value $z^* = c^Tx^*$, we can represent the set of optimal solutions by $\set{x\colon Ax≤ b\text{ and }c^Tx=z^*}$. This shows that the optimal set is always a \emph{face} of $\P$. In addition, it is easy to show that if $\P$ has \emph{any} vertex (which is always the case if the LP is in standard form), then \emph{every} nonempty face of $\P$ contains a vertex. Hence we can conclude:
 \begin{observation}\label{obs:intro-vertex-opt}
-If an LP in standard form has a finite optimal objective value, there is always a vertex of $\P$ which is an optimal solution of the LP.
+If an LP in standard form has a finite optimal objective value, there is always a vertex of $\P$ which is an optimal solution of the LP (see \cref{fig:example-obj}).
 \end{observation}
-\mpar{
-  \begin{tikzpicture}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[scale=1.5]
     \draw [axis] (-1.1,0) -- (1.1, 0);
     \draw [axis] (0,-0.6) -- (0, 1.1);
     \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
@@ -318,9 +330,10 @@ If an LP in standard form has a finite optimal objective value, there is always 
     \draw[objline] (0,0) ++ (100:1.1cm) -- ++(100:-1.8cm);
     \draw[objline] (x5) + (100:7mm) -- +(100:-1cm);
     \node[dot,Green,"$x^*$" {left,Green}] at (x5) {};
-  \end{tikzpicture}\\
-  example objective $\textcolor{objective}{c}$ such that $c^Tx$ is minimized for $\textcolor{Green}{x^*}$; the dotted lines show the hyperplanes $\textcolor{objective}{c^Tx=0}$ and $\textcolor{objective}{c^Tx = c^T x^*}$%
-}
+  \end{tikzpicture}
+  \caption{Example objective $\textcolor{objective}{c}$ such that $c^Tx$ is minimized for $\textcolor{Green}{x^*}$. The two dotted lines show the hyperplanes $\textcolor{objective}{c^Tx=0}$ and $\textcolor{objective}{c^Tx = c^T x^*}$, respectively.}
+  \label{fig:example-obj}
+\end{figure}
 The rest of this section is about characterizing and algorithmically finding such an optimal vertex.
 
 \subsection{Duality}
@@ -367,27 +380,34 @@ By \cref{lemma:face-alg}, any vertex $\bar x$ of $\P$, which is a $0$-dimensiona
     Ax = b,\ x_N = 0\tp
 \end{equation}
 For $i ∈ N$ we can thus disregard the corresponding $i$-th column of the system $Ax=b$. Hence, we can represent $\bar x$ by $m$ linearly independent columns of $A$. Such a submatrix of $A$ is called a \emph{(simplex) basis} and the corresponding set of column indices is denoted by $B = \{1,\dotsc,n\} ⧵ N$. The variables $x_B$ are called the \emph{basic variables}, $x_N$ are the \emph{non-basic variables}. By \cref{eq:intro-simplex-basis}, every vertex $\bar x$ is a \emph{basic solution} for \cref{eq:intro-lp-standard-ax}, \ie,
-\mpar{
-  Example LP:\\
-  $\begin{aligned}
-    \begin{pmatrix}\frac12&1\end{pmatrix} \begin{pmatrix}x_1\\x_2\end{pmatrix} &= 1\\
-    x_1,\ x_2 &≥ 0
-  \end{aligned}$\\[3mm]
-  For $\textcolor{DarkCyan}{B=\set 1}$, $A_{•,B}^{-1} b = 2 · 1 = 2$, so $\bar x = (\bar x_B, \bar x_N) = (2,0)$ is the corresponding BFS.
-  \begin{tikzpicture}
-    \draw [axis] (-.3,0) -- (2.3, 0);
-    \draw [axis] (0,-.3) -- (0, 1.3);
-    \draw (2, .1) -- (2, -.1) node[below] {$2$};
-    \draw (.1,1) -- (-.1, 1) node[left] {$1$};
-    \draw[setdraw,thick] (0,1) -- (2,0);
-    \node[DarkCyan,dot,"$B=\set 1$" {DarkCyan,above}] at (2,0) {};
-    \node[dot,"$B=\set 2$" right] at (0,1) {};
-  \end{tikzpicture}  
-}%
 \begin{equation}\label{eq:intro-simplex-basicsolution}
   \bar x_B = A_{•,B}^{-1} b\quad\text{and}\quad \bar x_N = 0
 \end{equation}
-for a basis $B$ of $A$. Conversely, an arbitrary basic solution of the form \cref{eq:intro-simplex-basicsolution} is a vertex of $\P$ only if additionally $\bar x ≥ 0$, \ie, it is feasible for \cref{eq:intro-lp-standard}, then called a \emph{basic feasible solution (BFS)} of the LP. Concludingly, $\bar x$ being a BFS is necessary and sufficient for $\bar x$ being a vertex of $\P$, while it should be noted that, in general, more than one BFS may correspond to the same vertex.
+for a basis $B$ of $A$. Conversely, an arbitrary basic solution of the form \cref{eq:intro-simplex-basicsolution} is a vertex of $\P$ only if additionally $\bar x ≥ 0$, \ie, it is feasible for \cref{eq:intro-lp-standard}, then called a \emph{basic feasible solution (BFS)} of the LP. Concludingly, $\bar x$ being a BFS is necessary and sufficient for $\bar x$ being a vertex of $\P$, while it should be noted that, in general, more than one BFS may correspond to the same vertex. \Cref{fig:example-lp} shows a BFS for an example LP.
+
+\begin{figure}
+  \centering
+  \subcaptionbox{Definition of the LP.}[.45\textwidth]{
+    $\begin{aligned}
+      \begin{pmatrix}\frac12&1\end{pmatrix} \begin{pmatrix}x_1\\x_2\end{pmatrix} &= 1\\
+      x_1,\ x_2 &≥ 0
+    \end{aligned}$
+  }
+  \quad
+  \subcaptionbox{Feasible space of the LP in $ℝ^2$.}[.45\textwidth]{
+    \begin{tikzpicture}[scale=1.3]
+      \draw [axis] (-.3,0) -- (2.3, 0);
+      \draw [axis] (0,-.3) -- (0, 1.3);
+      \draw (2, .1) -- (2, -.1) node[below] {$2$};
+      \draw (.1,1) -- (-.1, 1) node[left] {$1$};
+      \draw[setdraw,thick] (0,1) -- (2,0);
+      \node[DarkCyan,dot,"$B=\set 1$" {DarkCyan,above}] at (2,0) {};
+      \node[dot,"$B=\set 2$" right] at (0,1) {};
+    \end{tikzpicture}
+  }
+  \caption{Example of a linear program. For the basis $\textcolor{DarkCyan}{B=\set 1}$, we have $A_{•,B}^{-1} b = 2 · 1 = 2$, so the corresponding BFS is $\bar x = (\bar x_B, \bar x_N) = (2,0)$.}
+  \label{fig:example-lp}
+\end{figure}
 
 Let $B$ be a basis of $A$ and denote the feasible region of the dual \cref{eq:intro-lp-dual} by $\mathcal D$. Arguing similarly as above, one can show that a vertex $\bar y$ of $\mathcal D$ must fulfill $A^T_{•,B}\bar y_B=c_B$ (read $A^T_{•,B}$ as $(A_{•,B})^T$) and, in order to be feasible, also
 \begin{equation}\label{eq:intro-lp-dual-feasible}
@@ -413,8 +433,9 @@ of $z$ and $x_B$ with respect to $B$ in dependence of the values of $x_N$, where
 
 Otherwise, we can perform a \emph{simplex step}: assume that the $(i,k)$-th entry of $\bar A_N$ is non-zero. It can be shown that by performing a Gaussian \emph{pivot} on that entry, \ie, turning the relevant column of \cref{eq:intro-lp-dictionary} into a unit vector by elementary row operations, one essentially computes a representation of the form \cref{eq:intro-lp-dictionary} with respect to the \emph{adjacent basis} $B' = B ⧵ \{i\} ∪ \{j\}$, where $j ∈ N$ is the $k$-th entry of $N$. This notion of \emph{adjacency} translates to the geometric interpretation, since vertices corresponding to adjacent basises always share an edge of the polyhedron.
 
-\mpar{
-  \begin{tikzpicture}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[scale=1.5]
     \draw [axis] (-1.1,0) -- (1.1, 0);
     \draw [axis] (0,-0.6) -- (0, 1.1);
     \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
@@ -428,15 +449,17 @@ Otherwise, we can perform a \emph{simplex step}: assume that the $(i,k)$-th entr
     \foreach \i in {1,...,5}
       \node[dot,label=(150-62*\i):$x_\i$] at (x\i) {};
     \draw [->,objective] (0,0) -- (10:6mm) node[above] {$c$};
-  \end{tikzpicture}\\
-  example run of the primal simplex, starting in $x_2$ and performing \textcolor{path}{three basis exchanges} until the optimal $x_5$ is reached; $\textcolor{objective}{c^T x_i}$ is decreasing on the path%
-}
+  \end{tikzpicture}
+  \caption{An example execution of the primal simplex algorithm, starting in $x_2$ and performing \textcolor{path}{three basis exchanges} until the optimal $x_5$ is reached. Along the path, the objective function $\textcolor{objective}{c^T x_i}$ (shown by the blue dotted lines) is decreasing.}
+  \label{fig:example-simplex}
+\end{figure}
+
 The \emph{primal simplex algorithm} starts with a primal BFS (consult the literature for a method called \emph{phase 1} to find such an initial BFS) and then iteratively performs the following steps:
 \begin{enumerate}
   \item Choose a column (variable entering the basis) for which $\bar c_N$ is negative, \ie, the corresponding entry of $\bar y$ not yet dually feasible. This ensures that $z$ is nonincreasing, and it usually decreases.
   \item Choose a row (variable leaving the basis) in such a way as to ensure that the subsequent simplex step maintains primal feasibility; this can be achieved by a simple test called \emph{min-ratio rule}.
   \item Perform the simplex step by pivoting on the column and row selected above.
-\end{enumerate}  The corresponding sequence of objective function values is nonincreasing. Under simple conditions on the method of selecting indices, one can show that this procedure results in an optimal basis, indicated by $\bar c_N ≥ 0$, after a finite number of steps.
+\end{enumerate}  The corresponding sequence of objective function values is nonincreasing. Under simple conditions on the method of selecting indices, one can show that this procedure results in an optimal basis, indicated by $\bar c_N ≥ 0$, after a finite number of steps. See \cref{fig:example-simplex} for an informal example.
 
 The \emph{dual simplex algorithm}, as the name suggests, sets off from a dual BFS ($\bar c_N ≥ 0$) and then does essentially the same as its primal counterpart (with the role of rows and columns of \cref{eq:intro-lp-dictionary} swapped during the basis exchange), maintaining dual feasibility and a nondecreasing objective function until primal feasibility ($\bar b ≥ 0$) is established.
 
@@ -446,23 +469,6 @@ It has been shown that the worst-case complexity of the simplex algorithm is exp
  
 \section{Integer Programming}\label{sec:intro-ip}
 In integer programming, we are concerned with LPs augmented by the additional requirement that the solution be \emph{integral}. Formally, we define an \emph{integer linear program (IP)} as an optimization problem of the form
-\mpar{
-  \begin{tikzpicture}
-    \draw [axis] (-1.1,0) -- (1.1, 0);
-    \draw [axis] (0,-0.6) -- (0, 1.1);
-    \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
-      \coordinate (x\i) at (\x, \y);
-    \fill[setfill] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
-    \foreach \i in {-.9,-.6,...,.9}
-      \foreach \j in {-.6,-.3,...,.9}
-        \node[dot=.5mm,integral] at (\i,\j) {};
-    \foreach \i/\j in {-.6/0, -.6/.3, -.3/-.3, -.3/0, -.3/.3, -.3/.6, 0/0, 0/.3, 0/.6, .3/0, .3/.3, .3/.6, .6/0, .6/.3}
-      \node[dot=.7mm,feasint] at (\i,\j) {};
-    \foreach \i [evaluate=\j using {int(mod(\i,5)+1)}] in {1,...,5}
-      \draw[setdraw,extend=1.5mm] (x\i) -- (x\j);
-  \end{tikzpicture}\\
-  feasible set $\textcolor{feasint}{\P ∩ ℤ^2}$ and \textcolor{setbordercolor}{LP relaxation} of an IP%
-}
 \begin{subequations} \label{eq:intro-ip}
   \begin{align}
     \min\quad &c^Tx\\
@@ -470,53 +476,17 @@ In integer programming, we are concerned with LPs augmented by the additional re
     &x ∈ ℤ^n\tk \label{eq:intro-ip-z}
   \end{align}
 \end{subequations}
-where we assume that all entries of $A$, $b$ and $c$ are rational. The LP that results when replacing \cref{eq:intro-ip-z} by $x ∈ ℝ^n$ is called its \emph{LP relaxation}. Let $\P= \P(A,b)$ as before denote the feasible set of the LP relaxation and $\PI = \conv\left(\P(A,b) ∩ ℤ^n\right)$ the convex hull of integer points in $\P$. Under the above assumption, it can be shown that $\PI$ is a polyhedron. Note that solving \cref{eq:intro-ip} is essentially equivalent to solving $\min\,\{c^Tx\colon x ∈ \PI\}$. Thus an IP can, in principle, be solved by an \emph{LP}: if $A'$ and $b'$ are such that $\PI=\P(A',b')$, then the optimal IP solution is also optimal for the LP 
+where we assume that all entries of $A$, $b$ and $c$ are rational. The LP that results when replacing \cref{eq:intro-ip-z} by $x ∈ ℝ^n$ is called its \emph{LP relaxation} (see \cref{fig:example-ip}). Let $\P= \P(A,b)$ as before denote the feasible set of the LP relaxation and $\PI = \conv\left(\P(A,b) ∩ ℤ^n\right)$ the convex hull of integer points in $\P$. Under the above assumption, it can be shown that $\PI$ is a polyhedron. Note that solving \cref{eq:intro-ip} is essentially equivalent to solving $\min\,\{c^Tx\colon x ∈ \PI\}$. Thus an IP can, in principle, be solved by an \emph{LP}: if $A'$ and $b'$ are such that $\PI=\P(A',b')$, then the optimal IP solution is also optimal for the LP 
 \begin{align*}
   \min\quad & c^Tx\\
   \st\quad  & A'x ≤ b' \\
-            & x ∈ ℝ^n\tp
+            & x ∈ ℝ^n\ts
 \end{align*}
-The\mpar{
-  \begin{tikzpicture}
-    \draw [axis] (-1.1,0) -- (1.1, 0);
-    \draw [axis] (0,-0.6) -- (0, 1.1);
-    \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
-      \coordinate (x\i) at (\x, \y);
-    \fill[setfill] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
-    \foreach \i in {-.9,-.6,...,.9}
-      \foreach \j in {-.6,-.3,...,.9}
-        \node[dot=.5mm,integral] at (\i,\j) {};
-    \foreach \i [evaluate=\j using {int(mod(\i,5)+1)}] in {1,...,5} {
-      \draw[setdraw,extend=1.5mm] (x\i) -- (x\j);
-    }
-    \coordinate (ip1) at (-.6, .3);
-    \coordinate (ip2) at (-.3, .6);
-    \coordinate (ip3) at (.3, .6);
-    \coordinate (ip4) at (.6, .3);
-    \coordinate (ip5) at (.6, .0);
-    \coordinate (ip6) at (-.3, -.3);
-    \coordinate (ip7) at (-.6, 0);
-    \fill[feasint,opacity=.2] (ip1) \foreach \i in {2,...,7} { -- (ip\i) } -- cycle;
-    \foreach \i [evaluate=\j using {int(mod(\i,7)+1)}] in {1,...,7}
-      \draw[feasint,semithick,extend=1.5mm] (ip\i) -- (ip\j);
-    \foreach \i/\j in {-.6/0, -.6/.3, -.3/-.3, -.3/0, -.3/.3, -.3/.6, 0/0, 0/.3, 0/.6, .3/0, .3/.3, .3/.6, .6/0, .6/.3}
-      \node[dot=.7mm,feasint] at (\i,\j) {};
-    \draw [->,objective] (0,0) --  node[above=1mm,backwhite] {$c$} (10:6mm);
-    \draw [objline]      (0,0) ++(100:1.1cm) -- ++(100:-1.8cm);
-    \draw [objline]      (ip1)  +(100:5mm)   -- +(100:-1cm);
-    \node ["$x_\IP^*$" {above left,text=feasint,backwhite}] at (ip1) {};
-  \end{tikzpicture}\\
-  equivalent LP polytope $\textcolor{feasint}{\PI = \conv(\P ∩ ℤ^2)}$ and optimal IP solution $\textcolor{feasint}{x^*_\IP}$%
-}
-problem is that, in general, it is hard to derive a description of $\PI$ from $\P$. In fact, IPs are \textsf{NP}-hard to solve in general, whereas we have seen above that linear programming is contained in \textsf{P}.
-
-Two complementary approaches for solving IPs are important in our context: one is to tighten the LP relaxation \cref{eq:intro-ip} by adding \emph{cuts}, \ie, inequalities that are valid for $\PI$ but not for $\P$. The other, named \emph{branch-\&-bound}, is about recursively dividing the feasible space $\P ∩ ℤ^n$ into smaller subproblems among which the optimal solution is searched, interleaved with the generation of bounds that allow to skip most of these subproblems.
-
-\subsection{Cutting Planes}\label{sec:intro-cuttingplanes}
-Assume that we try to solve the IP \cref{eq:intro-ip} by solving its LP relaxation, \ie, minimize $c^Tx$ over $\P$ instead of $\PI$. If the LP solution $x^1$ happens to be integral, it is clear that $x^1$ is also optimal for \cref{eq:intro-ip}. Otherwise, by \cref{thm:intro-facets} there must exist at least one inequality that is valid for $\PI$ but not for $x^1$. Any such inequality is called a \emph{cutting plane} or simply \emph{cut} for $x^1$. If we add a cut to the LP relaxation \cref{eq:intro-ip} and solve the LP again, we necessarily get a new solution $x^2 ≠ x^1$ (because the cut is violated by $x^1$). Since the feasible space was reduced, $c^Tx^2 ≥ c^Tx^1$ must hold. 
-
-\mpar{
-  \begin{tikzpicture}
+see \cref{fig:example-ip-2} for an example.
+\begin{figure}
+  \centering
+  \subcaptionbox{Feasible set $\textcolor{feasint}{\P ∩ ℤ^2}$ and \textcolor{setbordercolor}{LP relaxation}.\label{fig:example-ip}}[.45\textwidth]{
+    \begin{tikzpicture}[scale=1.5]
       \draw [axis] (-1.1,0) -- (1.1, 0);
       \draw [axis] (0,-0.6) -- (0, 1.1);
       \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
@@ -525,34 +495,94 @@ Assume that we try to solve the IP \cref{eq:intro-ip} by solving its LP relaxati
       \foreach \i in {-.9,-.6,...,.9}
         \foreach \j in {-.6,-.3,...,.9}
           \node[dot=.5mm,integral] at (\i,\j) {};
+      \foreach \i/\j in {-.6/0, -.6/.3, -.3/-.3, -.3/0, -.3/.3, -.3/.6, 0/0, 0/.3, 0/.6, .3/0, .3/.3, .3/.6, .6/0, .6/.3}
+        \node[dot=.7mm,feasint] at (\i,\j) {};
       \foreach \i [evaluate=\j using {int(mod(\i,5)+1)}] in {1,...,5}
-        \draw[setdraw,extend=1.5mm,name path={H\i}] (x\i) -- (x\j);
+        \draw[setdraw,extend=1.5mm] (x\i) -- (x\j);
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{Equivalent polytope $\textcolor{feasint}{\PI = \conv(\P ∩ ℤ^2)}$ and optimal IP solution $\textcolor{feasint}{x^*_\IP}$.\label{fig:example-ip-2}}[.45\textwidth]{
+    \begin{tikzpicture}[scale=1.5]
+      \draw [axis] (-1.1,0) -- (1.1, 0);
+      \draw [axis] (0,-0.6) -- (0, 1.1);
+      \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
+        \coordinate (x\i) at (\x, \y);
+      \fill[setfill] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
+      \foreach \i in {-.9,-.6,...,.9}
+        \foreach \j in {-.6,-.3,...,.9}
+          \node[dot=.5mm,integral] at (\i,\j) {};
+      \foreach \i [evaluate=\j using {int(mod(\i,5)+1)}] in {1,...,5} {
+        \draw[setdraw,extend=1.5mm] (x\i) -- (x\j);
+      }
       \coordinate (ip1) at (-.6, .3);
       \coordinate (ip2) at (-.3, .6);
       \coordinate (ip3) at (.3, .6);
       \coordinate (ip4) at (.6, .3);
       \coordinate (ip5) at (.6, .0);
       \coordinate (ip6) at (-.3, -.3);
+      \coordinate (ip7) at (-.6, 0);
+      \fill[feasint,opacity=.2] (ip1) \foreach \i in {2,...,7} { -- (ip\i) } -- cycle;
+      \foreach \i [evaluate=\j using {int(mod(\i,7)+1)}] in {1,...,7}
+        \draw[feasint,semithick,extend=1.5mm] (ip\i) -- (ip\j);
       \foreach \i/\j in {-.6/0, -.6/.3, -.3/-.3, -.3/0, -.3/.3, -.3/.6, 0/0, 0/.3, 0/.6, .3/0, .3/.3, .3/.6, .6/0, .6/.3}
         \node[dot=.7mm,feasint] at (\i,\j) {};
-      \draw[objline] (x5) + (100:8mm) -- +(100:-7mm);
-      \node[dot=.7mm,"$x^1$" left] at (x5) {};
-      \draw[cut,thick,name path=cut] (-.7, .3) + (80:7mm) -- +(80:-8mm);
-      \draw[cut,->] (-.7, .3) -- + (170:5mm);
-      \path[name intersections={of=H4 and cut,by=xx2}];
-      \path[name intersections={of=H5 and cut,by=h}];
-      \fill[cut,opacity=.3] (xx2) -- (h) -- (x5) -- cycle;
-      \node[dot=.7mm,"$x^2$" {right,backwhite,text=black}] at (xx2) {};
-      \draw[objline] (xx2) + (100:1cm) -- +(100:-5mm);
-    \end{tikzpicture}\\
-  example \textcolor{cut}{cutting plane} that cuts the non-integral initial LP solution $x^1$ but is valid for $\textcolor{feasint}{\PI}$; it implies a new LP solution $x^2$ with improved objective value%
-}
+      \draw [->,objective] (0,0) --  node[above=1mm,backwhite] {$c$} (10:6mm);
+      \draw [objline]      (0,0) ++(100:1.1cm) -- ++(100:-1.8cm);
+      \draw [objline]      (ip2)  +(100:5mm)   -- +(100:-1cm);
+      \node ["$x_\IP^*$" {left,text=feasint,backwhite}] at (ip2) {};
+    \end{tikzpicture}
+  }
+  \caption{Feasible space of an integer program (IP) and its LP relaxation.}
+\end{figure}
+
+The problem is that, in general, it is hard to derive a description of $\PI$ from $\P$. In fact, IPs are \textsf{NP}-hard to solve in general, whereas we have seen above that linear programming is contained in \textsf{P}.
+
+Two complementary approaches for solving IPs are important in our context: one is to tighten the LP relaxation \cref{eq:intro-ip} by adding \emph{cuts}, \ie, inequalities that are valid for $\PI$ but not for $\P$. The other, named \emph{branch-\&-bound}, is about recursively dividing the feasible space $\P ∩ ℤ^n$ into smaller subproblems among which the optimal solution is searched, interleaved with the generation of bounds that allow to skip most of these subproblems.
+
+\subsection{Cutting Planes}\label{sec:intro-cuttingplanes}
+Assume that we try to solve the IP \cref{eq:intro-ip} by solving its LP relaxation, \ie, minimize $c^Tx$ over $\P$ instead of $\PI$. If the LP solution $x^1$ happens to be integral, it is clear that $x^1$ is also optimal for \cref{eq:intro-ip}. Otherwise, by \cref{thm:intro-facets} there must exist at least one inequality that is valid for $\PI$ but not for $x^1$. Any such inequality is called a \emph{cutting plane} or simply \emph{cut} for $x^1$ (\cref{fig:example-cut}). If we add a cut to the LP relaxation \cref{eq:intro-ip} and solve the LP again, we necessarily get a new solution $x^2 ≠ x^1$ (because the cut is violated by $x^1$). Since the feasible space was reduced, $c^Tx^2 ≥ c^Tx^1$ must hold. 
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \draw [axis] (-1.1,0) -- (1.1, 0);
+    \draw [axis] (0,-0.6) -- (0, 1.1);
+    \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
+      \coordinate (x\i) at (\x, \y);
+    \fill[setfill] (x1) \foreach \i in {2,...,5} { -- (x\i) } -- cycle;
+    \foreach \i in {-.9,-.6,...,.9}
+      \foreach \j in {-.6,-.3,...,.9}
+        \node[dot=.5mm,integral] at (\i,\j) {};
+    \foreach \i [evaluate=\j using {int(mod(\i,5)+1)}] in {1,...,5}
+      \draw[setdraw,extend=1.5mm,name path={H\i}] (x\i) -- (x\j);
+    \coordinate (ip1) at (-.6, .3);
+    \coordinate (ip2) at (-.3, .6);
+    \coordinate (ip3) at (.3, .6);
+    \coordinate (ip4) at (.6, .3);
+    \coordinate (ip5) at (.6, .0);
+    \coordinate (ip6) at (-.3, -.3);
+    \foreach \i/\j in {-.6/0, -.6/.3, -.3/-.3, -.3/0, -.3/.3, -.3/.6, 0/0, 0/.3, 0/.6, .3/0, .3/.3, .3/.6, .6/0, .6/.3}
+      \node[dot=.7mm,feasint] at (\i,\j) {};
+    \draw[objline] (x5) + (100:8mm) -- +(100:-7mm);
+    \node[dot=.7mm,"$x^1$" left] at (x5) {};
+    \draw[cut,thick,name path=cut] (-.7, .3) + (80:7mm) -- +(80:-8mm);
+    \draw[cut,->] (-.7, .3) -- + (170:5mm);
+    \path[name intersections={of=H4 and cut,by=xx2}];
+    \path[name intersections={of=H5 and cut,by=h}];
+    \fill[cut,opacity=.3] (xx2) -- (h) -- (x5) -- cycle;
+    \node[dot=.7mm,"$x^2$" {right,backwhite,text=black}] at (xx2) {};
+    \draw[objline] (xx2) + (100:1cm) -- +(100:-5mm);
+  \end{tikzpicture}
+  \caption{Example \textcolor{cut}{cutting plane} that cuts the non-integral initial LP solution $x^1$ but is valid for $\textcolor{feasint}{\PI}$; it implies a new LP solution $x^2$ with improved objective value.}
+  \label{fig:example-cut}
+\end{figure}
 This method can be iterated as long as new cuts for the current solution $x^i$ can be generated, leading to a sequence of LP solutions $(x^i)_i$ such that $(c^Tx^i)_i$ is monotonically increasing. If the cuts are \enquote{good enough} (especially if they include the facets of $\PI$), some $x^k$ will eventually be feasible for $\PI$ and hence equal the IP solution $x^*$. While there exists a cut-generation algorithm, called \emph{Gomory-Chvátal method}, that provably terminates in $x^*$ after a finite number of steps, the number of cuts it usually introduces is prohibitive for practical applications. For many classes of IPs, however, there exist special methods to derive cuts that are based on the specific structure of the problem—we will encounter such a case in \cref{sec:intro-adaptivelp}.
 
 \subsection{Branch-\&-Bound}
 Let us again assume that we solve the LP relaxation of \cref{eq:intro-ip} and obtain a non-integral LP solution $x^∅ ∈ \P ⧵ ℤ^n$ with, say, $x^∅_i \notin ℤ$. The key idea of LP-based \emph{branch-\&-bound} is to define two disjoint subproblems $S_0$ and $S_1$ of the original problem $S_∅ =\cref{eq:intro-ip}$ with the property that the optimal IP solution $x^*$ of $S_∅$ is contained in either $S_0$ or $S_1$. To be specific, note that necessarily $x^*_i ∈ ℤ$, so either $x^*_i ≤ ⌊x^∅_i⌋$ or $x^*_i ≥ ⌈x^∅_i⌉$ needs to hold, which gives rise to the two subproblems
-\mpar{
-  \begin{tikzpicture}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[scale=1.5]
     \draw [axis] (-1.1,0) -- (1.1, 0);
     \draw [axis] (0,-0.6) -- (0, 1.1);
     \foreach \x/\y [count=\i] in {-.2/.9, .8/.5, .7/-.1, -.4/-.4, -1/.2 }
@@ -587,10 +617,11 @@ Let us again assume that we solve the LP relaxation of \cref{eq:intro-ip} and ob
     \node at (.5, -.5) [Olive] {$S_1$};
     \node[dot=.7mm,Fuchsia,"$x^{S_0}$" {text=Fuchsia}] at (up1) {};
     \node[dot=.7mm,Olive,"$x^{S_1}$" {below,text=Olive}] at (lo1) {};
+  \end{tikzpicture}
+  \caption{The branching principle: All integral points of $\P$ are contained in either $\textcolor{Fuchsia}{S_0 = \set{x∈\P\colon x_2 ≥ 1}}$ or $\textcolor{Olive}{S_1 = \set{x∈\P\colon x_2 ≤ 0}}$, and both solutions $\textcolor{Fuchsia}{x^{S_0}}$ and $\textcolor{Olive}{x^{S_1}}$ have larger objective value than $x^S$.}
+  \label{fig:example-bb}
+\end{figure}
 
-  \end{tikzpicture}\\
-  all integral points in $\P$ are contained in either $\textcolor{Fuchsia}{S_0 = \set{x∈\P\colon x_2 ≥ 1}}$ or $\textcolor{Olive}{S_1 = \set{x∈\P\colon x_2 ≤ 0}}$, the two solutions $\textcolor{Fuchsia}{x^{S_0}}$ and $\textcolor{Olive}{x^{S_1}}$ have larger objective value than $x^S$%
-}
 \begin{equation*} S_0\colon\quad
   \begin{aligned}
     \min\quad & c^T x                     \\ 
@@ -606,10 +637,11 @@ Let us again assume that we solve the LP relaxation of \cref{eq:intro-ip} and ob
               & x ∈ ℤ^n\tp
   \end{aligned}
 \end{equation*}
-For both, we can again solve the LP relaxation (with the additional constraint on $x_i$) to obtain LP solutions $x^0$ and $x^1$ with objective function values $z^0$ and $z^1$, respectively. If both solutions are integral, clearly the one with smaller objective function value is optimal for \cref{eq:intro-ip}. Otherwise, the process can be recursed to split a subproblem into two sub-subproblems (\eg, $S_{00}$ and $S_{01}$), and so forth, creating a binary tree of \enquote{problem nodes} whose leaves accord to problems that either have an integral LP solution or are infeasible—in both cases, no further subdivision is necessary.
+For both, we can again solve the LP relaxation (with the additional constraint on $x_i$) to obtain LP solutions $x^0$ and $x^1$ with objective function values $z^0$ and $z^1$, respectively (cf.\ \cref{fig:example-bb}). If both solutions are integral, clearly the one with smaller objective function value is optimal for \cref{eq:intro-ip}. Otherwise, the process can be recursed to split a subproblem into two sub-subproblems (\eg, $S_{00}$ and $S_{01}$), and so forth, creating a binary tree of \enquote{problem nodes} whose leaves accord to problems that either have an integral LP solution or are infeasible—in both cases, no further subdivision is necessary.
 
-\mpar{
-  \begin{tikzpicture}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[scale=1.2]
     \graph[
       binary tree layout,
       nodes={draw,inner sep=1mm},
@@ -622,15 +654,16 @@ For both, we can again solve the LP relaxation (with the additional constraint o
         }
       }
     };
-  \end{tikzpicture}\\
-  an example b\&b enumeration tree; the \textcolor{LawnGreen!70!Black}{leaves} are not further explored because the respective LPs are either infeasible or have integral solutions
-  
-}
+  \end{tikzpicture}
+  \caption{An example branch-and-bound enumeration tree; the \textcolor{LawnGreen!70!Black}{leaves} are not further explored because the respective LPs are either infeasible or have integral solutions.}
+  \label{fig:example-bbtree}
+\end{figure}
+
 While this technique already reduces the search space in a substantial way, using advanced \emph{bounding} allows to further reduce the size of the abovementioned tree. Note that any \emph{feasible} solution $\hat x ∈ \P ∩ ℤ^n$ gives an upper bound on the optimal objective value $z^* = c^Tx^*$, \ie, $c^T \hat x ≥ c^T x^*$. Furthermore, in any subproblem $S$, the objective value $z^S$ of the optimal solution $x^S$ to the corresponding LP relaxation is a \emph{lower bound} on the optimal integral solution value $\hat z^S$ \emph{of that subproblem}. If we now solve the LP relaxation of some subproblem $S$ obtaining $z^S$ and it holds that $z^S ≥ c^T\hat x$ for any feasible $\hat x$ that has been found earlier, there is no need to subdivide $S$ (even if $x^S$ is not integral): no feasible point of $S$ can improve upon the objective value of $\hat x$.
 
 If we otherwise split $S$ into subproblems $S'$ and $S''$ and solve the respective LP-relaxations to obtain $z^{S'}$ and $z^{S''}$, we can conclude that $\min\{z^{S'}, z^{S''}\} ≤ \hat z^S = c^T \hat x^S$, \ie, the smaller of both is a lower bound on $\hat z^S$, because the optimal integral solution $x^S$ for $S$ must be in either $S'$ or $S''$. If this minimum is larger than $z^S$, we can \emph{improve} the lower bound for $S$. This bound update can possibly be propagated to the parent of $S$ if $S$ has a sibling for which a lower bound has already been computed, and so forth.
 
-The algorithm terminates if there are either no unexplored subproblems left, or if a feasible solution $\hat x$ for \cref{eq:intro-ip} and a lower bound $z^∅$ on the optimal objective value $z^*$ has been found such that $\hat x = z^∅$: it is then clear that no better solution than $\hat x$ exists, so $\hat x$ must be optimal.
+The algorithm terminates if there are either no unexplored subproblems left, or if a feasible solution $\hat x$ for \cref{eq:intro-ip} and a lower bound $z^∅$ on the optimal objective value $z^*$ has been found such that $\hat x = z^∅$: it is then clear that no better solution than $\hat x$ exists, so $\hat x$ must be optimal. An example of the resulting search tree is shown in \cref{fig:example-bbtree}.
 
 In practice, the cutting-plane and branch-\&-bound approach are often interleaved within a \emph{branch-\&-cut} algorithm, where cutting planes might be inserted in each node of the branch-\&-bound tree. See \eg \cite{Helmling+14MLDecoding} for an application to ML decoding.
 
@@ -638,11 +671,13 @@ In practice, the cutting-plane and branch-\&-bound approach are often interleave
 \label{sec:intro-combopt}
 An optimization problem is called \emph{combinatorial} if the feasible set comprises all subsets of a finite ground set $Ξ = \{ξ_1,\dotsc,ξ_n\}$ that fulfill a certain property, and the objective value of an $S ⊆ Ξ$ has the form $f(S) = \sum_{ξ ∈ S} c_ξ$ for given cost values $c_ξ ∈ ℝ$ associated to each element $ξ ∈ Ξ$.
 
-A popular example is the \emph{shortest-path problem}: given a graph $G=(V,E)$, two vertices $s,t ∈ V$ and cost $c_e$ associated to each edge $e ∈ E$, it asks for an $s$–$t$ path $P^*$ (in fact, only paths in which each edge occurs at most once are allowed) with minimum total cost $f(P^*)$, where the objective function $f(P) = \sum_{e ∈ P} c_e$ accumulates, for each edge $e$ visited by the path $P$, the cost value $c_e$ assigned to $e$. Here, the ground set consists of the set of edges $Ξ=E$, and a subset of edges is feasible if it forms (in appropriate ordering) a path in $G$.
-\mpar{
-  \begin{tikzpicture}[margintikz]
+A popular example is the \emph{shortest-path problem}: given a graph $G=(V,E)$, two vertices $s,t ∈ V$ and cost $c_e$ associated to each edge $e ∈ E$, it asks for an $s$–$t$ path $P^*$ (in fact, only paths in which each edge occurs at most once are allowed) with minimum total cost $f(P^*)$, where the objective function $f(P) = \sum_{e ∈ P} c_e$ accumulates, for each edge $e$ visited by the path $P$, the cost value $c_e$ assigned to $e$. Here, the ground set consists of the set of edges $Ξ=E$, and a subset of edges is feasible if it forms (in appropriate ordering) a path in $G$. A small example is shown in \cref{fig:example-comb}.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
     \graph[
-      layered layout,layer distance=1.3cm,
+      layered layout,layer distance=2cm,
       nodes=v,
       edge quotes mid,empty nodes,
       edges={nodes={elabel}}]
@@ -655,9 +690,10 @@ A popular example is the \emph{shortest-path problem}: given a graph $G=(V,E)$, 
         v4 -> ["$e_7$"] t;
         { [same layer] v2, v3, v4 };
       };  
-  \end{tikzpicture}\\ 
-  $Ξ=\{e_1,\dotsc,e_7\}$; feasible are $\{e_1,e_5\}$, $\{e_1,e_4,e_7\}$, $\{e_2,e_6\}$, and $\{e_3, e_7\}$%
-}
+  \end{tikzpicture}
+  \caption{Example instance of the shortest-path problem, with the ground set $Ξ=\{e_1,\dotsc,e_7\}$ and feasible subsets ($s$-$t$-paths) $\{e_1,e_5\}$, $\{e_1,e_4,e_7\}$, $\{e_2,e_6\}$, and $\{e_3, e_7\}$.}
+  \label{fig:example-comb}
+\end{figure}
 
 In a combinatorial optimization problem, one can identify each subset $S ⊆ Ξ$ by its characteristic (or incidence) vector $x^S ∈ \{0,1\}^n$, where
 \[
@@ -689,5 +725,4 @@ In general, however, it is highly nontrivial to find an explicit representation 
             & x ∈ \{0,1\}^n
 \end{align*}
 of the problem, which can then be tackled by the methods presented in \cref{sec:intro-ip}. For several problems—in this text, most notably the \emph{decoding} problem introduced in the following chapter—this polyhedral approach to combinatorial optimization has led to the most efficient algorithms known.
-
 

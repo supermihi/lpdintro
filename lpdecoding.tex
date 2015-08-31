@@ -332,22 +332,28 @@ RPCs are called \enquote{redundant} because the rows of $H$ already contain a ba
   \[ \abs{\set{i\colon ξ_i = 1\text{ and }x_i \notin \{0,1\}}} = 1\tk \]
   \ie, exactly one index of the fractional part of $x$ is contained in the support of $ξ$, then $ξ$ induces an RPC cut for $x$.
 \end{lemma}
-An efficient method to search for RPC cuts in view of the above observation works as follows \cite{Tanatmis+10SeparationAlgorithm,ZhangSiegel11AdaptiveCut}: Given an intermediate LP solution $x$,
-\mpar{
+An efficient method to search for RPC cuts in view of the above observation works as follows \cite{Tanatmis+10SeparationAlgorithm,ZhangSiegel11AdaptiveCut} (see \cref{fig:rpc-matrix}): Given an intermediate LP solution $x$,
+\begin{enumerate}
+  \item sort the columns of $H$ according to an ascending ordering of $\abs{x_i-1/2}$,
+  \item perform Gaussian elimination on the reordered $H$ to diagonalize its leftmost part, resulting in an alternative parity-check matrix $\tilde H$, then
+  \item search for cuts among the rows of $\tilde H$ as in adaptive LP decoding.
+\end{enumerate}
+\begin{figure}
+  \centering
   \begin{tikzpicture}
     \justifying
     \matrix
       [matrix of math nodes,
       nodes in empty cells,
-      every node/.style={inner sep=.5mm},
+      every node/.style={inner sep=1mm},
        left delimiter=(,
        right delimiter=),
       ]
        (mat)
     {
-      1 \&[2mm]\&   \& * \&[12mm] *\\[2mm]
-        \&     \&   \&  \\
-        \&     \& 1 \& * \&       *\\
+      1 &[2mm]&   & * &[15mm] *\\[2mm]
+        &     &   &  \\
+        &     & 1 & * &       *\\
     };
     \begin{scope}[on background layer]
       \fill[Gray!30] (mat-1-4.north west) rectangle (mat-3-5.south east);
@@ -357,14 +363,10 @@ An efficient method to search for RPC cuts in view of the above observation work
     \draw[thick] (mat-1-4) -- (mat-1-5) -- (mat-3-5) -- (mat-3-4) -- (mat-1-4);
     \coordinate (start) at ($ (mat-1-1) + (0, .5) $);
     \draw[Blue,->,very thick] (start) -- node[above] {$\abs{x_i-\frac12}↗$} (start -| mat-1-5);
-  \end{tikzpicture}\\
-  structure of $\bar H$: \textcolor{Lime!20!Black}{diagonalized part} at the left after \textcolor{Blue}{reordering of columns by $\abs{x_i-\frac 12}$}
-}
-\begin{enumerate}
-  \item sort the columns of $H$ according to an ascending ordering of $\abs{x_i-1/2}$,
-  \item perform Gaussian elimination on the reordered $H$ to diagonalize its leftmost part, resulting in an alternative parity-check matrix $\tilde H$, then
-  \item search for cuts among the rows of $\tilde H$ as in adaptive LP decoding.
-\end{enumerate}
+  \end{tikzpicture}
+  \caption{Structure of the alternative parity-check matrix $\bar H$ obtained from RPC cut search: \textcolor{Lime!20!Black}{diagonalized part} at the left after \textcolor{Blue}{reordering of columns by $\abs{x_i-\frac 12}$}.}
+  \label{fig:rpc-matrix}
+\end{figure}
 The motivation behind this approach is that, if the submatrix of $H$ corresponding to the fractional part of $x$ has full column rank, the leftmost part of $\tilde H$ will be a diagonal matrix, and hence by \cref{lemma:intro-rpccut} \emph{every row} of $\tilde H$ would induce a cut for $x$. The results reported in \cite{Tanatmis+10SeparationAlgorithm} and \cite{ZhangSiegel11AdaptiveCut} furthermore suggest that, even if this is not the case and thus the requirements of \cref{lemma:intro-rpccut} are not necessarily met, this \enquote{sort-\&-diagonalize} strategy very often leads to cuts and substantially improves the error-correcting capability of the plain LP decoder that does not involve RPCs.
 
 \section{Analysis of LP Decoding}
@@ -425,7 +427,7 @@ The minimum pseudoweight alone is however still a rather rough estimate of the d
 \begin{equation}
   Λ = \set{λ\colon λ^Tx ≥ 0 \text{ for all }x ∈ \P(H)}\label{eq:intro-lambda}
 \end{equation}
-of channel outputs $λ$ for which $0$ is the optimal solution of \cref{eq:intro-lpdecoder}, and then compute the probability $1-P(λ ∈ Λ)$ by integrating the density function given by \cref{eq:intro-lperrorprob} over $Λ$. In optimization language, $Λ$ is called the \emph{dual cone} of $\P(H)$.
+of channel outputs $λ$ for which $0$ is the optimal solution of \cref{eq:intro-lpdecoder}, and then compute the probability $1-P(λ ∈ Λ)$ by integrating the density function given by \cref{eq:intro-lperrorprob} over $Λ$. In optimization language, $Λ$ is called the \emph{dual cone} of $\P(H)$. See \cref{fig:cone} for an example.
 
 While the three tasks stated above appear to be ascendingly difficult—no efficient algorithm is known to compute the minimum pseudoweight in general—it turns out that $Λ$ as defined in \cref{eq:intro-lambda} can be determined by LP duality: assume that the LP decoder \cref{eq:intro-lpdecoder} is given in the form
 \begin{subequations}\label{eq:intro-lpdecoder-axb}
@@ -442,51 +444,53 @@ where $A$ and $b$ represent \cref{eq:intro-lpdecoder-explicit}. The dual of \cre
               &y ≥ 0\tp \label{eq:intro-lpdecoder-dual-y}
   \end{align}
 \end{subequations}
-By\mpar{
-  \begin{tikzpicture}
-    \draw[axis] (-1,0) -- (1,0);
-    \draw[axis] (0,-1) -- (0,1);
-    \path[set] (0,0) -- (75:1cm) coordinate(A) -- (60:1.5cm) -- (45:1.8cm) -- (30:1.5cm) -- (15:1cm) coordinate (A') -- cycle;
-    \path[pattern=north west lines,pattern color=altsetcolor] (0,0) -- (165:1cm) |- (-75:1cm) -- cycle;
-    \draw[setdraw=alt] (0,0) -- (165:1.1cm) (0,0) -- (-75:1.1cm);
-    \draw[objline] (120:1cm) -- (-60:1cm);
-    \draw[setdraw,->,fill=setbordercolor] (0,0) coordinate (B) -- (165:6mm) coordinate (C) node[above] {$A_{1,•}$};
-    \pic["$.$",setbordercolor,draw,angle radius=2mm] {angle};
-    \draw[setdraw,->,fill=setbordercolor] (0,0) -- (-75:6mm) coordinate (C') node[right] {$A_{2,•}$};
-    \pic["$.$",setbordercolor,draw,angle radius=2mm] {angle=C'--B--A'};
-    \node[setbordercolor] at (45:9mm) {$\P(H)$};
-    \node[altsetbordercolor] at (225:8mm) {$Λ$};
-    \draw[objective,->] (0,0) -- (30:7mm) node[right] {$λ$};
-    \draw[objective,->,dashed] (0,0) -- (210:7mm) node[left] {$-λ$};
-  \end{tikzpicture}\\
-  dual cone $\textcolor{altsetbordercolor}{Λ}$ of $\textcolor{setbordercolor}{\P(H)}$ spanned by two rows $\textcolor{setbordercolor}{A_{1,•}, A_{2,•}}$, and an example $\textcolor{objective}{λ}$ with $-λ ∈ Λ$%
-}
-\cref{thm:intro-duality}, $0$ is optimal for \cref{eq:intro-lpdecoder-axb} if and only if there is an $y$ that is feasible for \cref{eq:intro-lpdecoder-dual} with $b^Ty=0$. Now $0$ is feasible for \cref{eq:intro-lpdecoder-axb}, hence $b ≥ 0$, which together with \cref{eq:intro-lpdecoder-dual-y} implies that $y_j=0$ whenever $b_j ≠ 0$ in a solution $y$ with $b^Ty=0$. Taking a closer look at \cref{eq:intro-lpdecoder-dual}, we conclude
+\begin{figure}
+  \subcaptionbox{Dual cone $\textcolor{altsetbordercolor}{Λ}$ of $\textcolor{setbordercolor}{\P(H)}$ spanned by two rows $\textcolor{setbordercolor}{A_{1,•}, A_{2,•}}$, and an example $\textcolor{objective}{λ}$ with $-λ ∈ Λ$.\label{fig:cone}}[.55\textwidth]{
+    \begin{tikzpicture}[scale=2]
+      \draw[axis] (-1,0) -- (1,0);
+      \draw[axis] (0,-1) -- (0,1);
+      \path[set] (0,0) -- (75:1cm) coordinate(A) -- (60:1.5cm) -- (45:1.8cm) -- (30:1.5cm) -- (15:1cm) coordinate (A') -- cycle;
+      \path[pattern=north west lines,pattern color=altsetcolor] (0,0) -- (165:1cm) |- (-75:1cm) -- cycle;
+      \draw[setdraw=alt] (0,0) -- (165:1.1cm) (0,0) -- (-75:1.1cm);
+      \draw[objline] (120:1cm) -- (-60:1cm);
+      \draw[setdraw,->,fill=setbordercolor] (0,0) coordinate (B) -- (165:6mm) coordinate (C) node[above] {$A_{1,•}$};
+      \pic["$.$",setbordercolor,draw,angle radius=2mm] {angle};
+      \draw[setdraw,->,fill=setbordercolor] (0,0) -- (-75:6mm) coordinate (C') node[right] {$A_{2,•}$};
+      \pic["$.$",setbordercolor,draw,angle radius=2mm] {angle=C'--B--A'};
+      \node[setbordercolor] at (45:9mm) {$\P(H)$};
+      \node[altsetbordercolor] at (225:8mm) {$Λ$};
+      \draw[objective,->] (0,0) -- (30:7mm) node[right] {$λ$};
+      \draw[objective,->,dashed] (0,0) -- (210:7mm) node[left] {$-λ$};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{\textcolor{altsetbordercolor}{Fundamental cone $\mathcal H(H)$} and section \textcolor{setbordercolor}{$\mathcal H_1(H)$} with the unit simplex.\label{fig:fcone}}[.43\textwidth]{
+    \begin{tikzpicture}[scale=2]
+      \draw[axis] (-.5,0) -- (1.3,0);
+      \draw[axis] (0,-.5) -- (0,1.3);
+      \draw (.1,1) -- (-.1, 1) node[left] {$1$};
+      \draw (1, .1) -- (1,-.1) node[below] {$1$};
+      \path[draw=Black,fill=Gray,opacity=.3] (0,0) -- (75:1cm) -- (60:1.5cm) -- (45:1.8cm) -- (30:1.5cm) -- (15:1cm) -- cycle;
+      \path[pattern=north west lines,pattern color=altsetcolor] (0,0) -- (75:1.6cm)  -| (15:1.6cm) -- cycle;
+      \draw[setdraw=alt,name path=cone] (75:1.6cm) -- (0,0) -- (15:1.6cm);
+      \draw[name path=simplex,Blue] (-.5,1.5) -- (1.5,-.5) node[below,xshift=-2mm] {$\norm{x}_1 = 1$};
+      \draw[setdraw,very thick,name intersections={of=cone and simplex,name=x}] (x-1) -- (x-2);
+      \node[setbordercolor] at (-.6, .35) {$\mathcal H_1(H)$} edge[setbordercolor] (.5, .5);
+      \node[altsetbordercolor] at (.6, 1.7) {$\mathcal H(H)$};
+      \node[Gray] at (45:11mm) {$\P(H)$};
+    \end{tikzpicture}
+  }
+  \caption{Dual cone of an LP (left) and the fundamental cone (right).}
+\end{figure}
+By \cref{thm:intro-duality}, $0$ is optimal for \cref{eq:intro-lpdecoder-axb} if and only if there is an $y$ that is feasible for \cref{eq:intro-lpdecoder-dual} with $b^Ty=0$. Now $0$ is feasible for \cref{eq:intro-lpdecoder-axb}, hence $b ≥ 0$, which together with \cref{eq:intro-lpdecoder-dual-y} implies that $y_j=0$ whenever $b_j ≠ 0$ in a solution $y$ with $b^Ty=0$. Taking a closer look at \cref{eq:intro-lpdecoder-dual}, we conclude
 \[λ ∈ Λ ⇔ (-λ) ∈ \conic\left(\set{A_{j,•}\colon b_j = 0}\right)\tp\]
 Note that $Λ$ is also a polyhedron by \cref{thm:intro-minkowski}.
 
-As a by-product of the above calculations, it appears that the rows of $Ax≤b$ for which $b_j≠0$ are irrelevant for $Λ$ and hence for the question whether the decoder fails or not. It is easy to show that deleting those rows leads to $\conic(\P(H))$, which motivates the following definition.
+As a by-product of the above calculations, it appears that the rows of $Ax≤b$ for which $b_j≠0$ are irrelevant for $Λ$ and hence for the question whether the decoder fails or not. It is easy to show that deleting those rows leads to $\conic(\P(H))$, which motivates the following definition (see also \cref{fig:fcone}).
 
 \begin{definition}
   The conic hull of the fundamental polytope,
   \[\K(H) = \conic(\P(H))\tk\]
-is\mpar{
-  \begin{tikzpicture}
-    \draw[axis] (-.5,0) -- (1.3,0);
-    \draw[axis] (0,-.5) -- (0,1.3);
-    \draw (.1,1) -- (-.1, 1) node[left] {$1$};
-    \draw (1, .1) -- (1,-.1) node[below] {$1$};
-    \path[draw=Black,fill=Gray,opacity=.3] (0,0) -- (75:1cm) -- (60:1.5cm) -- (45:1.8cm) -- (30:1.5cm) -- (15:1cm) -- cycle;
-    \path[pattern=north west lines,pattern color=altsetcolor] (0,0) -- (75:1.6cm)  -| (15:1.6cm) -- cycle;
-    \draw[setdraw=alt,name path=cone] (75:1.6cm) -- (0,0) -- (15:1.6cm);
-    \draw[name path=simplex,Blue] (-.5,1.5) -- (1.5,-.5) node[below,xshift=-2mm] {$\norm{x}_1 = 1$};
-    \draw[setdraw,very thick,name intersections={of=cone and simplex,name=x}] (x-1) -- (x-2);
-    \node[setbordercolor] at (-.6, .35) {$\mathcal H_1(H)$} edge[setbordercolor] (.5, .5);
-    \node[altsetbordercolor] at (.6, 1.7) {$\mathcal H(H)$};
-    \node[Gray] at (45:11mm) {$\P(H)$};
-  \end{tikzpicture}
-}
-  called the \emph{fundamental cone} of $H$. By
+  is called the \emph{fundamental cone} of $H$. By
   \[ \K_1(H) = \set{x∈\K(H)\colon \norm{x}_1 = 1} \]
   we denote the intersection of $\K(H)$ with the unit simplex.
 \end{definition}
@@ -507,9 +511,9 @@ While the maximization of $\norm{·}_2^2$ over a polytope is \textsf{NP}-hard in
 \subsection{Graph Covers}
 \label{sec:intro-graph-covers}
 There is a fascinating \emph{combinatorial} characterization of the fundamental polytope $\P(H)$ derived from the factor graph $G$ of a parity-check matrix $H$ (cf.\ \cref{def:intro-factorgraph}). Central to it is the following definition.
-\begin{definition}[graph cover]
-\mpar{
-  \begin{tikzpicture}[scale=.75,node distance=5mm]
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[node distance=7mm]
     \foreach \col [count=\cp from 0] in {Blue,Red,Green} {
       \begin{scope}[xshift=2*\cp mm,yshift=-2.5*\cp mm,draw=\col,text=\col,checkNode/.append style={fill=\col!20},varNode/.append style={fill=\col!20}]
         \node[varNode] (var4-\cp) at (0,0) {};
@@ -533,14 +537,16 @@ There is a fascinating \emph{combinatorial} characterization of the fundamental 
       \foreach \i in {0,1,2}
         \draw (\n-\i) -- (\m-\luav{three[\i+1]});
     }
-  \end{tikzpicture}\\
-  a $3$-cover of the $(7,4)$ code shown on \cpageref{margin:hammingcode}
-}
+  \end{tikzpicture}
+  \caption{A $3$-cover of the $(7,4)$ code shown in \cref{fig:hammingcode}.}
+  \label{fig:example-cover}
+\end{figure}
+\begin{definition}[graph cover]
   Let $G = (V∪C, E)$ be the factor graph associated to a parity-check matrix $H$ with variable nodes $V$, check nodes $C$, and edge set $E$. For $m ∈ ℕ$, an \emph{$m$-cover} of $G$ is a factor graph $\bar G$ with variable nodes $\bar V = V × \{1,\dotsc,m\}$, check nodes $\bar C = C × \{1,\dotsc,m\}$ and a set of $\abs E$ permutations $\set{e ∈ \mathbb{S}_M\colon e ∈ E}$ such that the edge set of $\bar G$ is
   \[ \bar E = \set{ (\C_j^{(k)}, x_i^{(l)})\colon (\C_j, x_i) = e ∈ E\text{ and }π_e(k) = l}\tk \]
   where by $\C_j^{(k)} = (\C_j, k) ∈ \bar C$ we denote the $k$-th copy of $\C_j ∈ C$ (and $V_i^{(l)}$ analogously).
 \end{definition}
-Despite the somewhat heavy notation in the above definition, the idea of a graph cover is rather simple: make $m$ identical copies of $G$ and then, for every edge $e = (\C_j, x_i) ∈ E$, arbitrarily \enquote{rewire} the $m$ copies of $e$ in a one-to-one fashion between the copies of $\C_j$ and $x_i$.
+Despite the somewhat heavy notation in the above definition, the idea of a graph cover is rather simple: make $m$ identical copies of $G$ and then, for every edge $e = (\C_j, x_i) ∈ E$, arbitrarily \enquote{rewire} the $m$ copies of $e$ in a one-to-one fashion between the copies of $\C_j$ and $x_i$. An example is shown in \cref{fig:example-cover}.
 
 Since every graph cover of a factor graph $G$ defining a code $\C$ is a factor graph itself, it defines a code $\bar{\C} = \bar{\C}(\bar G)$ that has $m$ times the block length of $\C$. Let
 \[ \tilde x = ( x_1^{(1)},  \dotsc, x_1^{(m)}, \dotsc, x_n^{(1)}, \dotsc, x_n^{(m)}) ∈ \bar{\C} \]

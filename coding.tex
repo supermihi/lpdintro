@@ -264,26 +264,29 @@ The most immediate and simple example of a binary-input memoryless symmetric cha
 
 While the conceptual simplicity of the BSC is appealing, for practical applications it turns out to be simplified too much. Imagine a device in which some incoming electromagnetic signal is translated by a circuit (consisting of \eg antenna, electronic filters etc.) into a voltage $v$ with expected values $v_0$ and $v_1$ for the transmission of a $0$ and $1$, respectively. For a BSC channel model, we could round $v$ to the closest of those values and pass that \enquote{hard} information (either $0$ or $1$) to the decoder. But clearly, knowing \emph{how far} $v$ is from the value it is rounded to contains valuable information about the \emph{reliability} of the received signal—a value of $v$ close to the mean $(v_1-v_0)/2$ is less reliable than one close to either $v_0$ or $v_1$ (cf.\ the figures along \cref{def:intro-channel}). Consequently, the decoder should take that \enquote{soft} information into account.
 
-\mpar{
+The most prominent \emph{soft-output} channel model is the \emph{AWGN channel}, in which independent Gaussian noise (as it appears frequently in nature) is added to each transmitted symbol. It is characterized by a Gaussian distribution with mean $(-1)^{x_i}\sqrt{E_\rc}$ and variance $\sigma^2$, as shown in \cref{fig:awgn}. Here, $E_\rc$ is the transmit energy per channel symbol and $\sigma^2$ is the noise energy of the channel \cite{RichardsonUrbanke08ModernCodingTheory}:
+\begin{equation}
+P(y_i∣x_i) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac12\cdot\left(\frac{y-(-1)^{x_i}\sqrt{E_\rc}}{\sigma}\right)^2}\tp
+\end{equation}
+Note that the AWGN channel challenges the conceptual distinction between \emph{transmission success} and \emph{transmission error} in favor of an ubiquitous presence of noise: the expected value $±\sqrt{E_\rc}$ that corresponds to a \enquote{noiseless} transmission will be received only with probability zero.
+
+\begin{figure}
+  \centering
   \begin{tikzpicture}
     \begin{axis}[
       enlarge x limits=false,
       width=4cm,
       xtick={-1, 0, 1},
-      xticklabels={$-\sqrt{E_\rc}$, \empty, $\sqrt{E_\rc}$},
+      xticklabels={$-\sqrt{E_\rc}$,0  , $\sqrt{E_\rc}$},
       ytick={0, .5, 1}]
       \addplot+[Blue,mark=,domain=-2:2,samples=100,opacity=.5,fill,thick]
         {2/sqrt(2*pi)*exp(-2*(x+1)^2)} \closedcycle;
       \addplot+[Red,mark=,domain=-2:2,samples=100,opacity=.5,fill,thick] {2/sqrt(2*pi)*exp(-2*(x-1)^2)} \closedcycle;
     \end{axis}
-  \end{tikzpicture}\\
-  densities $\textcolor{Blue}{P(y_i∣x_i=1)}$ (left) and $\textcolor{Red}{P(y_i∣x_i=0)}$ (right) of an AWGN channel%
-}
-The most prominent \emph{soft-output} channel model is the \emph{AWGN channel}, in which independent Gaussian noise (as it appears frequently in nature) is added to each transmitted symbol. It is characterized by a Gaussian distribution with mean $(-1)^{x_i}\sqrt{E_\rc}$ and variance $\sigma^2$. Here, $E_\rc$ is the transmit energy per channel symbol and $\sigma^2$ is the noise energy of the channel \cite{RichardsonUrbanke08ModernCodingTheory}:
-\begin{equation}
-P(y_i∣x_i) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac12\cdot\left(\frac{y-(-1)^{x_i}\sqrt{E_\rc}}{\sigma}\right)^2}\tp
-\end{equation}
-Note that the AWGN channel challenges the conceptual distinction between \emph{transmission success} and \emph{transmission error} in favor of an ubiquitous presence of noise: the expected value $±\sqrt{E_\rc}$ that corresponds to a \enquote{noiseless} transmission will be received only with probability zero.
+  \end{tikzpicture}
+  \caption{Probability density functions $\textcolor{Blue}{P(y_i∣x_i=1)}$ (left) and $\textcolor{Red}{P(y_i∣x_i=0)}$ (right) of an AWGN channel with energy $E_\rc$.}
+  \label{fig:awgn}
+\end{figure}
 
 For a given code rate $r$, an AWGN channel can be specified by a single quantity, called \emph{information-oriented signal-to-noise ratio (SNR)}
 \begin{equation}
@@ -381,25 +384,33 @@ An obvious yet important consequence of the above definition is that
 \ie, a linear code $\C$ is the intersection of the supercodes defined by the rows of a parity-check matrix for $\C$.
 
 The fact that a linear code is characterized by several parity-check conditions placed on subsets of the variables is neatly visualized by a factor graph (or Tanner graph).
-\mpar{
-  $H\arraycolsep=1pt = \begin{pmatrix}
-       1 & 1 & 0 & 1 & 1 & 0 & 0 \\
-       0 & 1 & 1 & 1 & 0 & 1 & 0 \\
-       0 & 0 & 0 & 1 & 1 & 1 & 1
-      \end{pmatrix}$\\[5mm]
-  \begin{tikzpicture}[scale=.7,node distance=4mm]
-    \node[varNode] (var4) at (0,0) {$x_4$};
-    \foreach \i/\v in {1/2,2/6,3/5} {
-      \node[checkNode] (check\i) at (270-120*\i:1.3cm) {$\C_\i$} edge (var4);
-      \node[varNode] (var\v) at (210-120*\i:1.3cm) {$x_{\v}$} edge (check\i);
-    }
-    \node[varNode,above=of check1] (var1) {$x_1$} edge (check1);
-    \node[varNode,above=of check2] (var3) {$x_3$} edge (check2);
-    \node[varNode,below=of check3] (var7) {$x_7$} edge (check3);
-    \draw (var2) -- (check2) (var6) -- (check3) (var5) -- (check1);
-  \end{tikzpicture}\\
-  parity-check matrix and corresponding factor graph of a $(7,4)$ code\label{margin:hammingcode}%
-}
+
+\begin{figure}
+  \centering
+  \subcaptionbox{Parity-check matrix of the code.}[.45\textwidth]{
+    $\displaystyle H = \begin{pmatrix}
+         1 & 1 & 0 & 1 & 1 & 0 & 0 \\
+         0 & 1 & 1 & 1 & 0 & 1 & 0 \\
+         0 & 0 & 0 & 1 & 1 & 1 & 1
+        \end{pmatrix}$
+  }\quad
+  \subcaptionbox{Factor graph of the code.}[.45\textwidth]{
+    \begin{tikzpicture}[node distance=5mm]
+      \node[varNode] (var4) at (0,0) {$x_4$};
+      \foreach \i/\v in {1/2,2/6,3/5} {
+        \node[checkNode] (check\i) at (270-120*\i:1.3cm) {$\C_\i$} edge (var4);
+        \node[varNode] (var\v) at (210-120*\i:1.3cm) {$x_{\v}$} edge (check\i);
+      }
+      \node[varNode,above=of check1] (var1) {$x_1$} edge (check1);
+      \node[varNode,above=of check2] (var3) {$x_3$} edge (check2);
+      \node[varNode,below=of check3] (var7) {$x_7$} edge (check3);
+      \draw (var2) -- (check2) (var6) -- (check3) (var5) -- (check1);
+    \end{tikzpicture}
+  }
+  \caption{Parity-check matrix and factor graph of a $(7,4)$ code.}
+  \label{fig:hammingcode}
+\end{figure}
+
 \begin{definition}[factor graph]\label{def:intro-factorgraph}
   The \emph{factor graph} representing a parity-check matrix $H ⊆ \F_2^{m×n}$ of a linear code $\C$ is a bipartite undirected graph $G=(V\,\dot∪\,C, E)$ that has $m$ \emph{check nodes} $C = \set{\C_1,\dotsc, \C_m}$, $n$ \emph{variable nodes} $V=\set{x_1,\dotsc, x_n}$ and an edge $(\C_j, x_i)$ whenever $H_{j,i} = 1$.
 \end{definition}
@@ -449,9 +460,12 @@ The factor graph representation plays an important role in the analysis and desi
   \label{fig:intro-trellis}
 \end{figure}
 
-A terminated convolutional $(n, k)$ code $\C$ with rate $r$ (where $1/r =n/k ∈ ℕ$) and \emph{memory} $d ∈ ℕ$ can be compactly described by a finite state machine (FSM) with $2^d$ states $S = \{s_0, \dotsc, s_{2^d-1}\}$ and a state transition function $δ\colon S×\F_2→S×\F_2^{1/r}$ that defines the encoding of an information word $u ∈ \F_2^k$ as follows. Initially, the FSM is in state $s^{(1)} = s_0$. Then the bits $u_i$ of $u$ are subsequently fed into the FSM to determine the codeword $\C(u)$, \ie, in each step $i ∈ ℕ$, the  current state $s^{(i)} ∈ S$ together with the $i$-th input bit $u_i$ determines via
-\mpar{
-  \begin{tikzpicture}[on grid, auto,shorten >=1pt,node distance=1.6cm,bend angle=10]
+A terminated convolutional $(n, k)$ code $\C$ with rate $r$ (where $1/r =n/k ∈ ℕ$) and \emph{memory} $d ∈ ℕ$ can be compactly described by a finite state machine (FSM) with $2^d$ states $S = \{s_0, \dotsc, s_{2^d-1}\}$ and a state transition function $δ\colon S×\F_2→S×\F_2^{1/r}$ that defines the encoding of an information word $u ∈ \F_2^k$ as follows. An example FSM is shown in \cref{fig:example-fsm}.
+
+Initially, the FSM is in state $s^{(1)} = s_0$. Then the bits $u_i$ of $u$ are subsequently fed into the FSM to determine the codeword $\C(u)$, \ie, in each step $i ∈ ℕ$, the  current state $s^{(i)} ∈ S$ together with the $i$-th input bit $u_i$ determines via
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[on grid, auto,shorten >=1pt,node distance=2cm,bend angle=10]
     \node[state,accepting] (0)                    {$s_0$};
     \node[state]           (1) [above left= of 0] {$s_1$};
     \node[state]           (2) [above right=of 0] {$s_2$};
@@ -464,9 +478,10 @@ A terminated convolutional $(n, k)$ code $\C$ with rate $r$ (where $1/r =n/k ∈
                    edge              node [swap] {$1/1$} (3)
                (3) edge [loop above] node        {$0/1$} (3)
                    edge              node [swap] {$1/0$} (1);
-  \end{tikzpicture}\\
-  FSM of a rate-1 convolutional code: the edge labels $u/x$ give the respective input ($u$) and output ($x$) bits%
-}
+  \end{tikzpicture}
+  \caption{Finite state machine of a rate-1 convolutional code. The edge labels $u/x$ specify the respective input ($u$) and output ($x$) bits.}
+  \label{fig:example-fsm}
+\end{figure}
 \begin{equation*}
   δ(s^{(i)}, u_i) = (s^{(i+1)}, x^{(i)})
 \end{equation*}
@@ -495,7 +510,7 @@ The transition function $δ$ is always designed in such a way that if $δ(s,0) =
     \draw[->] (x) -- (π) -- (Cb);
     \draw[->] (Ca) -- ++(0,-1) node[yshift=-2mm] {$\C_\ra(u)$};
     \draw[->] (Cb) -- ++(0,-1) node[yshift=-2mm] {$\C_\rb(π(u))$};
-  \end{tikzpicture}
+  \end{tikzpicture}\\
   encoding scheme of a turbo code%
 }
 In a turbo code $\C_\TC$, now, several convolutional codes are \emph{concatenated} in order to improve upon the rather weak error-correction performance of plain convolutional codes. In the most common form, two identical convolutional codes $\C_\ra$ and $\C_\rb$ with rate $r=1$ each are concatenated \emph{parallely}, which means that the information word $u$ is encoded by both, but the entries of $u$ are permuted by a fixed permutation (the \emph{interleaver}) $π ∈ \mathbb{S}_k$ before entering the second component code $\C_\rb$. A codeword of the turbo code $\C_\TC$ then consists of the concatenation of a copy of $u$, $\C_\ra(u)$ and $\C_\rb(π(u))$, so that the overall rate of $\C_\TC$ is $r=1/3$ (here, again, a small rate loss due to termination is ignored). In a more general setting, the term \emph{turbo-like codes} refers to schemes that include \emph{serial} concatenation, where the output of one convolutional code is used as input for another convolutional code, or any combination of parallel and serial concatenations.
@@ -515,49 +530,49 @@ First, observe that the definition of (linear) codes can straightforwardly be ge
 
 Secondly, in many practical transmission systems the signal space is modeled by the \emph{complex} plane, where the real and imaginary axis, respectively, correspond to two different carrier waves (\eg, two sines that are out of phase by $π/2$) such that any complex number $z$ represents a linear combination of both waves that is then emitted onto the carrier medium. This technique is called \emph{modulation}. At the receiver's side, a complementary \emph{demodulator} measures the potentially distorted wave and reconstructs (\eg via Fourier analysis) a point $\tilde z$ in the complex plane.
 
-\mpar{
-  \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
-    \draw[axis] (-1.3,0) -- (1.3,0);
-    \draw[axis] (0,-1.3) -- (0,1.3);
-    \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
-    \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
-    \draw[Gray] (0,0) circle[radius=1cm];
-    \node[p,"$z_0$"] at (1,0) {};
-    \node[p,"$z_1$"] at (-1,0) {};
-  \end{tikzpicture}\\
-  binary modulation%
-}
+\begin{figure}
+  \subcaptionbox{Binary modulation.}[.3\textwidth]{
+    \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
+      \draw[axis] (-1.3,0) -- (1.3,0);
+      \draw[axis] (0,-1.3) -- (0,1.3);
+      \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
+      \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
+      \draw[Gray] (0,0) circle[radius=1cm];
+      \node[p,"$z_0$"] at (1,0) {};
+      \node[p,"$z_1$"] at (-1,0) {};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{Modulation scheme using $Q=4$ different complex signals.}[.3\textwidth]{
+    \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
+      \draw[axis] (-1.3,0) -- (1.3,0);
+      \draw[axis] (0,-1.3) -- (0,1.3);
+      \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
+      \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
+      \draw[Gray] (0,0) circle[radius=1cm];
+      \foreach \i in {0,...,3}
+        \node[p,"$z_\i$" above] at (45+\i*90:1cm) {};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{Example mapping of $k=2$ bits to $4=2^k$ complex symbols.}[.3\textwidth]{
+    \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
+      \draw[axis] (-1.3,0) -- (1.3,0);
+      \draw[axis] (0,-1.3) -- (0,1.3);
+      \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
+      \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
+      \draw[Gray] (0,0) circle[radius=1cm];
+      \pgfmathsetbasenumberlength{2}
+      \foreach \i in {0,...,3}
+        \pgfmathparse{bin(\i)}
+        \node[p,"$\pgfmathresult$"] at (45+\i*90:1cm) {};
+    \end{tikzpicture}
+  }
+  \caption{Binary and non-binary modulation schemes.}
+  \label{fig:modulation}
+\end{figure}
 In the most simple \emph{binary} case, two complex numbers (\eg $z_0=1+0i$ and $z_1=-1+0i$) are chosen that represent the values $0$ and $1$, respectively, of a single bit. If we now assume that the channel adds independent Gaussian noise to both carrier waves, this case reduces to the binary AWGN channel as introduced in \cref{sec:intro-awgn}.
 
-\mpar{
-  \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
-    \draw[axis] (-1.3,0) -- (1.3,0);
-    \draw[axis] (0,-1.3) -- (0,1.3);
-    \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
-    \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
-    \draw[Gray] (0,0) circle[radius=1cm];
-    \foreach \i in {0,...,3}
-      \node[p,"$z_\i$" above] at (45+\i*90:1cm) {};
-  \end{tikzpicture}\\
-  modulation with $Q=4$ signals%
-}
-In \emph{higher-order modulation}, however, more than one bit of information is transmitted at once by choosing $Q>2$ (usually, $Q$ is a power of $2$) possible complex signals $\{z_0,\dotsc,z_{Q-1}\}$. Hence, the channel can be modeled by $Q$ probability functions $P(\tilde z∣0),\dotsc,P(\tilde z∣Q-1)$ where $\tilde z ∈ ℂ$.
+In \emph{higher-order modulation}, however, more than one bit of information is transmitted at once by choosing $Q>2$ (usually, $Q$ is a power of $2$) possible complex signals $\{z_0,\dotsc,z_{Q-1}\}$. Hence, the channel can be modeled by $Q$ probability functions $P(\tilde z∣0),\dotsc,P(\tilde z∣Q-1)$ where $\tilde z ∈ ℂ$. \Cref{fig:modulation} shows binary and one example non-binary modulation scheme in the complex plane.
 
-
-\mpar{
-  \begin{tikzpicture}[p/.style={draw,circle,fill=LightGray,minimum size=2mm,inner sep=0mm}]
-    \draw[axis] (-1.3,0) -- (1.3,0);
-    \draw[axis] (0,-1.3) -- (0,1.3);
-    \draw[Gray] (.7, -.1) -- ++(0,.2) node[above] {$1$};
-    \draw[Gray] (.1,.7) -- ++(-.2,0) node[left] {$i$};
-    \draw[Gray] (0,0) circle[radius=1cm];
-    \pgfmathsetbasenumberlength{2}
-    \foreach \i in {0,...,3}
-      \pgfmathparse{bin(\i)}
-      \node[p,"$\pgfmathresult$"] at (45+\i*90:1cm) {};
-  \end{tikzpicture}\\
-  example mapping of $k=2$ bits to $4=2^k$ complex symbols
-}
 Non-binary codes and higher-order modulation can be combined in several ways. Most obviously, if $q=Q$ then to each complex symbol $z_0,\dotsc,z_{Q-1}$ an element of $\F_q$ can be assigned, such that the channel transmits one entry of the codeword per signal. On the other hand, if \eg $q=2$ and $Q=2^k$, $k$ bits of the codeword can be sent \emph{at once} by mapping the $2^k$ possible bit configurations to the $2^k$ chosen complex symbols.
 
 In both cases, the expression for ML decoding \cref{eq:intro-ml} is more complex than in the binary case. In particular, the linearization to formulate ML decoding as an IP (\cref{sec:intro-ml-ip}) is not possible in the same way because there is no individual LLR value corresponding to each channel signal. Nevertheless, ML decoding of non-binary codes was formulated as an IP in \cite{Flanagan+09NonBinary}, and the incorporation of higher-order modulation into the IP model is covered in \cite{Scholl+12MLvsBP}.

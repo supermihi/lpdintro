@@ -5,8 +5,8 @@
   parskip=half,
   english,
   fontsize=11pt,
-  BCOR=1mm,
-  DIV=10,
+ % BCOR=1mm,
+  DIV=9,
   twoside=true,
   toc=bib,
   numbers=noendperiod
@@ -149,6 +149,8 @@
 \usepackage[binary-units=true]{siunitx}
 \usepackage{multirow}
 \usepackage{caption}
+\DeclareCaptionJustification{raggedboth}{\raggedboth}
+\DeclareCaptionStyle{margin}{format=plain,font=scriptsize,justification=raggedboth}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage[hang]{footmisc}
@@ -240,7 +242,7 @@
   pdftitle      = \mytitle,
   pdfauthor     = \myauthor,
   pdfsubject    = LP Decoding,
-  pdfcreator    = LuaLaTeX,
+  pdfcreator    = nobody,
   pdfproducer   = \myauthor,
   pdfduplex     = DuplexFlipLongEdge,
   pdfpagelayout = SinglePage,
