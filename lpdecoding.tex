@@ -38,7 +38,9 @@ Since the fraction in the last term exactly matches the LLR value $λ_i$ \cref{e
       \draw[feasint,dotted,thick] (\i,2*\i) node[dot=1.5mm,feasint] {} -- (0,2*\i) node[dot=1.5mm,draw=feasint,solid,fill=feasint!15] {};
     }
   \end{tikzpicture}\\
-  feasible \textcolor{feasint}{integer points} of the linearization $\textcolor{setbordercolor}{H_{j,•}x-2z_j=0}$%
+  \captionsetup[figure]{style=margin}
+  \captionof{figure}{Feasible \textcolor{feasint}{integer points} of the linearization $\textcolor{setbordercolor}{H_{j,•}x-2z_j=0}$.}
+  \label{fig:lineariz}
 }
 How can we grasp this condition \enquote{$x ∈ \C$} by an IP? The answer lies in the code-defining equation $Hx=0$ \cref{eq:intro-hx0} for a given parity-check matrix $H ∈ \F_2^{m×n}$, which can be $ℝ$-linearized in virtue of \emph{auxiliary} integer variables $z ∈ ℤ^m$ as follows: The condition $x ∈ \C$ is eqivalent to $Hx = 0 \pmod 2$, which in turn is fulfilled if and only if the result of $Hx$, as an operation in the reals, is a vector whose entries are even numbers. It is thus clear that the formulation
 \begin{subequations}\label{eq:intro-2z}
@@ -47,9 +49,9 @@ How can we grasp this condition \enquote{$x ∈ \C$} by an IP? The answer lies i
  &x ∈ \F_2^n,\ z ∈ \Z^m \label{eq:intro-2z-var}
 \end{align}
 \end{subequations}
-models ML decoding because \cref{eq:intro-2z-code} can be achieved by an \emph{integral} vector $z$ if and only if $Hx$ is even.
+models ML decoding because \cref{eq:intro-2z-code} can be achieved by an \emph{integral} vector $z$ if and only if $Hx$ is even (see \cref{fig:lineariz}).
 
-Note that any IP formulation of the ML decoding problem can be easily modified to output the minimum distance $\dmin$ of a code: in view of \cref{eq:intro-wmin}, this is equivalent to determine a codeword of minimum Hamming weight. By setting $λ=(1,\dotsc,1)$, the objective function value \cref{eq:intro-2z-obj} equals the Hamming weigth of $x$, and an additional linear constraint $\sum x_i ≥ 1$ excludes the all-zero codeword, such that the IP solution must be a codeword of minimum Hamming weight (\cite{Punekar+10MinDistance,KehaDuman10MinDistBranchCut}.
+Note that any IP formulation of the ML decoding problem can be easily modified to output the minimum distance $\dmin$ of a code: in view of \cref{eq:intro-wmin}, this is equivalent to determine a codeword of minimum Hamming weight. By setting $λ=(1,\dotsc,1)$, the objective function value \cref{eq:intro-2z-obj} equals the Hamming weigth of $x$, and an additional linear constraint $\sum x_i ≥ 1$ excludes the all-zero codeword, such that the IP solution must be a codeword of minimum Hamming weight (\cite{Punekar+10MinDistance,KehaDuman10MinDistBranchCut}).
 
 Interestingly, the above linearization of the code was apparently \enquote{forgotten} and several years later reinvented in \citeyear{Tanatmis+09ValidInequalities} \cite{Tanatmis+09ValidInequalities} and \citeyear{KehaDuman10MinDistBranchCut} \cite{KehaDuman10MinDistBranchCut}. One possible explanation might be that while \cref{eq:intro-2z} is very compact in terms of size, its LP relaxation is essentially useless: if \cref{eq:intro-2z-var} is replaced by its continuous counterpart, then the feasible region of the $x$ variables is the entire unit hypercube—for any configuration of $x$, a corresponding real $z$ can be found such that \cref{eq:intro-2z-code} is fulfilled. It should be noted, however, that the formulation \cref{eq:intro-2z} has found recent justification by the fact that it appears to perform very well with commercial IP solvers \cite{Tanatmis+10NumericalComparison,Punekar+10MinDistance}.
 
@@ -57,69 +59,73 @@ Interestingly, the above linearization of the code was apparently \enquote{forgo
 \section{LP Decoding}\label{sec:intro-lp-decoding}
 It was the \emph{LP decoder} introduced by \citeauthor{Feldman03PhD} \cite{Feldman03PhD,Feldman+05LPDecoding} that established linear programming in the field of decoding by providing several equivalent IP formulations for which even the LP relaxations exhibit a decoding performance that is of interest for practical considerations.
 
-\mpar{
-  \begin{tikzpicture}[semithick]
-    \foreach \i [count=\j] in {0,20,...,359}
-      \coordinate (int-\j) at (\i:1cm);
-    \path[fill=setcolor,fill opacity=.3]
-      (int-1)
-      \foreach \k [count=\i] in {1,3,7,9,13,15}
-        { -- (int-\k) coordinate (C1-\i) }
-      -- cycle;
-    \path[fill=altsetcolor,fill opacity=.3]
-      (int-1)
-      \foreach \k [count=\i] in {1,5,7,11,13,17}
-        { -- (int-\k) coordinate (C2-\i) }
-     -- cycle;
-    \draw[setdraw]     (C1-1) \foreach \i in {2,...,6} { -- (C1-\i) } -- cycle;
-    \draw[setdraw=alt] (C2-1) \foreach \i in {2,...,6} { -- (C2-\i) } -- cycle;
-    \node[setbordercolor,above=5mm] at (C1-2) {$\conv(\C_1)$} edge[setbordercolor] (35:8.5mm);
-    \node[altsetbordercolor,below=5mm] at (C2-6) {$\conv(\C_2)$} edge[altsetbordercolor] (-35:8.5mm);
-    \foreach \j in {1,...,18}
-      \node[dot=1mm,integral] at (int-\j) {};
-  \end{tikzpicture}\\
-  two constitutent polytopes $\textcolor{setbordercolor}{\conv(\C_1)}$ and $\textcolor{altsetbordercolor}{\conv(\C_2)}$ (the circular dots represent $\F_2^n$)%
-}
 The essence of Feldman's LP decoder lies in the representation \cref{eq:intro-ccapcj} of a code, together with the fact that for the SPC codes $\C_j$ (\cref{def:intro-supercodes}), a polynomially sized description of $\conv(\C_j)$ by means of (in)equalities and potential auxiliary variables is possible. Instead of providing an LP description of $\conv(\C)$ (which in view of the \textsf{NP}-hardness of ML decoding is unlikely to be tractable), the LP decoder thus operates on the relaxation polytope
-\mpar{
-  \begin{tikzpicture}[semithick]
-    \foreach \i [count=\j] in {0,20,...,359}
-      \coordinate (int-\j) at (\i:1cm);
-    \path[fill=setcolor,fill opacity=.3]
-      (int-1)
-      \foreach \k [count=\i] in {1,3,7,9,13,15}
-        { -- (int-\k) coordinate (C1-\i) }
-      -- cycle;
-    \path[fill=altsetcolor,fill opacity=.3]
-      (int-1)
-      \foreach \k [count=\i] in {1,5,7,11,13,17}
-        { -- (int-\k) coordinate (C2-\i) }
-     -- cycle;
-    \draw[setdraw]     (C1-1) \foreach \i in {2,...,6} { -- (C1-\i) } -- cycle;
-    \draw[setdraw=alt] (C2-1) \foreach \i in {2,...,6} { -- (C2-\i) } -- cycle;
-    \foreach \i in {1,2}
-      \foreach \j in {1,...,6}
-        \pgfmathparse{mod(\j,6)+1}
-        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
-    \foreach \facetA/\facetB [count=\i] in {C2-1/C1-2,C1-2/C2-3,C2-3/C1-4,C1-4/C2-5,C2-5/C1-6,C1-6/C2-1} {
-      \coordinate[name intersections={of={\facetA} and \facetB,by=x\i}];
-    }
-    \foreach \j in {1,...,18}
-      \node[dot=1mm,integral] at (int-\j) {};
-    \draw[fill=lp!30,draw=lp] (x1) \foreach \i in {2,...,6} { -- (x\i) } -- cycle;
-    \foreach \i in {1,...,6}
-      \node[dot=.75mm,fill=lp] at (x\i) {};
-    \draw[pattern=north west lines,pattern color=feasint,draw=feasint,every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
-    \node[feasint,fill=feasint!10,inner sep=0mm] at (.15, 0) {$\conv(\C)$};
-    \path[lp] (80:1.3cm) node {$\P(H)$} edge (60:7mm);
-  \end{tikzpicture}\\
-  $\textcolor{lp}{\P(H)}=\textcolor{setbordercolor}{\conv(\C_1)} ∩ \textcolor{altsetbordercolor}{\conv(\C_2)}$ is a superset of $\textcolor{feasint}{\conv(\C)}$ with additional \textcolor{lp}{fractional pseudocodewords} $\notin \F_2^n$%
-}
 \begin{equation}
   \P(H) = \bigcap_j \conv(\C_j) ⊇ \conv(\C)\tk
   \label{eq:intro-fundamentalpolytope}
 \end{equation}
-called the \emph{fundamental polytope} \cite{VontobelKoetter05GraphCover} of the parity-check matrix $H$. The vertices of $\P(H)$ are also called \emph{pseudocodewords}.
+called the \emph{fundamental polytope} \cite{VontobelKoetter05GraphCover} of the parity-check matrix $H$. The vertices of $\P(H)$ are also called \emph{pseudocodewords}. Note that the \enquote{$⊇$} in the above expression is usually strict; the sketch in \cref{fig:convcj} might help to realize why this is the case.
+
+\begin{figure}
+  \centering
+  \subcaptionbox{Two constitutent polytopes $\textcolor{setbordercolor}{\conv(\C_1)}$ and $\textcolor{altsetbordercolor}{\conv(\C_2)}$.}[.45\textwidth]{
+    \begin{tikzpicture}[semithick,scale=2]
+      \foreach \i [count=\j] in {0,20,...,359}
+        \coordinate (int-\j) at (\i:1cm);
+      \path[fill=setcolor,fill opacity=.3]
+        (int-1)
+        \foreach \k [count=\i] in {1,3,7,9,13,15}
+          { -- (int-\k) coordinate (C1-\i) }
+        -- cycle;
+      \path[fill=altsetcolor,fill opacity=.3]
+        (int-1)
+        \foreach \k [count=\i] in {1,5,7,11,13,17}
+          { -- (int-\k) coordinate (C2-\i) }
+       -- cycle;
+      \draw[setdraw]     (C1-1) \foreach \i in {2,...,6} { -- (C1-\i) } -- cycle;
+      \draw[setdraw=alt] (C2-1) \foreach \i in {2,...,6} { -- (C2-\i) } -- cycle;
+      \node[setbordercolor,above=5mm] at (C1-2) {$\conv(\C_1)$} edge[setbordercolor] (35:8.5mm);
+      \node[altsetbordercolor,below=5mm] at (C2-6) {$\conv(\C_2)$} edge[altsetbordercolor] (-35:8.5mm);
+      \foreach \j in {1,...,18}
+        \node[dot=1mm,integral] at (int-\j) {};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{$\textcolor{lp}{\P(H)}=\textcolor{setbordercolor}{\conv(\C_1)} ∩ \textcolor{altsetbordercolor}{\conv(\C_2)}$ is a superset of $\textcolor{feasint}{\conv(\C)}$ with additional \textcolor{lp}{fractional pseudocodewords} $\notin \F_2^n$.}[.45\textwidth]{
+   \begin{tikzpicture}[semithick,scale=2]
+     \foreach \i [count=\j] in {0,20,...,359}
+       \coordinate (int-\j) at (\i:1cm);
+     \path[fill=setcolor,fill opacity=.3]
+       (int-1)
+       \foreach \k [count=\i] in {1,3,7,9,13,15}
+         { -- (int-\k) coordinate (C1-\i) }
+       -- cycle;
+     \path[fill=altsetcolor,fill opacity=.3]
+       (int-1)
+       \foreach \k [count=\i] in {1,5,7,11,13,17}
+         { -- (int-\k) coordinate (C2-\i) }
+      -- cycle;
+     \draw[setdraw]     (C1-1) \foreach \i in {2,...,6} { -- (C1-\i) } -- cycle;
+     \draw[setdraw=alt] (C2-1) \foreach \i in {2,...,6} { -- (C2-\i) } -- cycle;
+     \foreach \i in {1,2}
+       \foreach \j in {1,...,6}
+         \pgfmathparse{mod(\j,6)+1}
+         \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+     \foreach \facetA/\facetB [count=\i] in {C2-1/C1-2,C1-2/C2-3,C2-3/C1-4,C1-4/C2-5,C2-5/C1-6,C1-6/C2-1} {
+       \coordinate[name intersections={of={\facetA} and \facetB,by=x\i}];
+     }
+     \foreach \j in {1,...,18}
+       \node[dot=1mm,integral] at (int-\j) {};
+     \draw[fill=lp!30,draw=lp] ($ .5*(x1) $) \foreach \i in {2,...,6} { -- ($ .5*(x\i) $) } -- cycle;
+     \foreach \i in {1,...,6}
+       \node[dot=.75mm,fill=lp] at ($ .5*(x\i) $) {};
+     \draw[pattern=north west lines,pattern color=feasint,draw=feasint,every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+     \node[feasint,fill=feasint!10,inner sep=0mm] at (.15, 0) {$\conv(\C)$};
+     \path[lp] (80:1.3cm) node {$\P(H)$} edge (60:7mm);
+   \end{tikzpicture}
+  }
+  \caption{Sketch of $\P(H) = \bigcap_j \conv(\C_j)$ as a true subset of $\conv(\C) = \conv\left(\bigcap_j \C_j\right)$. In this geometrically incorrect sketch, the circular dots represent $\F_2^n$.}
+  \label{fig:convcj}  
+\end{figure}
 \begin{definition}[LP decoder]\label{def:intro-lpdecoder}
   Let $H$ be a parity-check matrix for the linear code $\C$ and $λ$ the vector of channel LLR values. The \emph{LP decoder} $\algname{LP-decode}(λ)$ outputs, for given $λ ∈ ℝ^n$, the optimal solution $\hat x$ of the LP
   \begin{subequations} \label{eq:intro-lpdecoder}
@@ -171,8 +177,9 @@ The above definition is a meaningful relaxation of $\conv(\C)$ because one can e
     \draw[objline] (22:1.2cm) -- (202:1.2cm);
     \draw[objline] (x5) ++(22:1cm) -- ++(202:2.4cm);
     \node[dot=1mm,fill=lp,pin={[lp]below:$x_\LP$}] at (x5) {};
-  \end{tikzpicture}\\
-  LLR vector $\textcolor{objective}{λ}$ for which $\textcolor{lp}{x_\LP} \notin \F_2^n$ is optimal%
+  \end{tikzpicture}
+  \captionsetup[figure]{style=margin}
+  \captionof{figure}{LLR vector $\textcolor{objective}{λ}$ for which $\textcolor{lp}{x_\LP} \notin \F_2^n$ is optimal}.\label{fig:example-fract}
 }
 Note that if we had $\P(H) = \conv(\C)$, the LP decoder would actually be an ML decoder. Because this is not the case in general (moreover, it apparently does not hold for any interesting code; see \cite{Kashyap08DecompositionTheory}), the inclusion $\conv(\C) ⊆ \P(H)$ is usually strict, and the difference $\P(H) ⧵ \conv(\C)$ must be due to additional \emph{fractional} vertices of $\P(H)$, \ie, vectors for which at least one entry is neither $0$ nor $1$.
 
@@ -199,130 +206,131 @@ The prohibitive size of the LP decoding formulation \cref{eq:intro-lpdecoder}, e
   \min\quad & λ^Tx\\
   \st\quad  & x ∈ [0,1]^n
 \end{align*}
-and then iteratively \emph{refines} the domain of optimization by inserting those forbidden-set inequalities \cref{eq:intro-forbiddenset} that are \emph{violated} by the current solution, and hence constitute valid \emph{cuts}. The procedure to find a cut in the $j$-th row of $H$ (it is shown in \cite{TaghaviSiegelALP} that, at any time, one row of $H$ can provide at most one cut) is based on the following reformulation of \cref{eq:intro-forbiddenset}:
+and then iteratively \emph{refines} the domain of optimization by inserting those forbidden-set inequalities \cref{eq:intro-forbiddenset} that are \emph{violated} by the current solution, and hence constitute valid \emph{cuts}; see \cref{fig:example-alp-1,fig:example-alp-2,fig:example-alp-3} for a sketch. The procedure to find a cut in the $j$-th row of $H$ (it is shown in \cite{TaghaviSiegelALP} that, at any time, one row of $H$ can provide at most one cut) is based on the following reformulation of \cref{eq:intro-forbiddenset}:
 \begin{equation}
   \sum_{i ∈ S} (1-x_i) + \sum_{i ∈ N_j ⧵ S} x_i ≥ 1\tp
   \label{eq:intro-forbiddenset-alt}
 \end{equation}
-\mpar{
-adaptive LP decoding of the previous example:\\
-\begin{tikzpicture}[semithick]
-  \foreach \i [count=\j] in {0,20,...,359}
-    \coordinate (int-\j) at (\i:1cm);
-  \path
-    \foreach \k [count=\i] in {1,3,7,9,13,15}
-      {(int-\k) coordinate (C1-\i)};
-  \path
-    \foreach \k [count=\i] in {1,5,7,11,13,17}
-      {(int-\k) coordinate (C2-\i)};
-  \foreach \i in {1,2}
-    \foreach \j in {1,...,6}
-      \pgfmathparse{mod(\j,6)+1}
-      \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
-  \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,18} { -- (int-\i) } -- cycle;
-  \foreach \j in {1,...,18}
-    \node[dot=1mm,integral] at (int-\j) {};
-  \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
-  \draw[->,objective] (0,0) -- (112:6mm) node[right] {$λ$};
-  \draw[objline] (25:1.2cm) -- (205:1.2cm);
-  \draw[objline] (int-16) ++(25:1cm) -- ++(205:2.2cm);
-  \node[dot=1mm,lp,"$x^{(1)}$" {lp,below}] at (int-16) {};
-\end{tikzpicture}\\
-initial optimization over $\textcolor{lp}{[0,1]^n}$%
-}
-\mpar{
-  \begin{tikzpicture}[semithick,>=stealth]
-    \foreach \i [count=\j] in {0,20,...,359}
-      \coordinate (int-\j) at (\i:1cm);
-    \path
-      \foreach \k [count=\i] in {1,3,7,9,13,15}
-        {(int-\k) coordinate (C1-\i)};
-    \path
-      \foreach \k [count=\i] in {1,5,7,11,13,17}
-        {(int-\k) coordinate (C2-\i)};
-    \foreach \i in {1,2}
-      \foreach \j in {1,...,6}
-        \pgfmathparse{mod(\j,6)+1}
-        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
-    \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,15} { -- (int-\i) } --  cycle;
-    \draw[cut,very thick,extend=2mm] (int-15) -- (int-1);
-    \foreach \j in {1,...,18}
-      \node[dot=1mm,integral] at (int-\j) {};
-    \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
-    \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
-    \draw[objline] (25:1.2cm) -- (205:1.2cm);
-    \draw[objline] (int-15) ++(25:1.2cm) -- ++(205:2.2cm);
-    \node[dot=1mm,lp!50!Black] at (int-16) {};
-    \node[dot=1mm,lp,"$x^{(2)}$" {lp,below}] at (int-15) {};
-  \end{tikzpicture}\\
-  \textcolor{Orchid}{cut} for $\textcolor{lp!50!black}{x^{(1)}}$ leads to next solution $\textcolor{lp}{x^{(2)}}$%
-}
-\mpar{
-  \begin{tikzpicture}[semithick,>=stealth]
-    \foreach \i [count=\j] in {0,20,...,359}
-      \coordinate (int-\j) at (\i:1cm);
-    \path
-      \foreach \k [count=\i] in {1,3,7,9,13,15}
-        {(int-\k) coordinate (C1-\i)};
-    \path
-      \foreach \k [count=\i] in {1,5,7,11,13,17}
-        {(int-\k) coordinate (C2-\i)};
-    \foreach \i in {1,2}
-      \foreach \j in {1,...,6}
-        \pgfmathparse{mod(\j,6)+1}
-        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
-    \path[name intersections={of=C1-6 and C2-5,by=X}];
-    \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,13} { -- (int-\i) } --  (X) -- cycle;
-    \draw[cut,very thick,extend=2mm] (int-13) -- (int-17);
-    \foreach \j in {1,...,18}
-      \node[dot=1mm,integral] at (int-\j) {};
-    \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
-    \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
-    \draw[objline] (25:1.2cm) -- (205:1.2cm);
-    \draw[objline] (X) ++(25:1.2cm) -- ++(205:2.2cm);
-    \node[dot=1mm,lp!50!Black] at (int-16) {};
-    \node[dot=1mm,lp!50!Black] at (int-15) {};
-    \node[dot=1mm,lp,"$x_\LP$" {lp,above}] at (X) {};
-  \end{tikzpicture}\\
-  another \textcolor{cut}{cut} yields the same solution $\textcolor{lp}{x_\LP}$ as before%
-}
 
+\begin{figure}
+  \centering
+  \subcaptionbox{Initial optimization over $\textcolor{lp}{[0,1]^n}$.\label{fig:example-alp-1}}[.45\textwidth]{
+    \begin{tikzpicture}[semithick,scale=1.5]
+      \foreach \i [count=\j] in {0,20,...,359}
+        \coordinate (int-\j) at (\i:1cm);
+      \path
+        \foreach \k [count=\i] in {1,3,7,9,13,15}
+          {(int-\k) coordinate (C1-\i)};
+      \path
+        \foreach \k [count=\i] in {1,5,7,11,13,17}
+          {(int-\k) coordinate (C2-\i)};
+      \foreach \i in {1,2}
+        \foreach \j in {1,...,6}
+          \pgfmathparse{mod(\j,6)+1}
+          \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+      \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,18} { -- (int-\i) } -- cycle;
+      \foreach \j in {1,...,18}
+        \node[dot=1mm,integral] at (int-\j) {};
+      \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+      \draw[->,objective] (0,0) -- (112:6mm) node[right] {$λ$};
+      \draw[objline] (25:1.2cm) -- (205:1.2cm);
+      \draw[objline] (int-16) ++(25:1cm) -- ++(205:2.2cm);
+      \node[dot=1mm,lp,"$x^{(1)}$" {lp,below}] at (int-16) {};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{\textcolor{Orchid}{cut} for $\textcolor{lp!50!black}{x^{(1)}}$ leads to next solution $\textcolor{lp}{x^{(2)}}$.\label{fig:example-alp-2}}[.45\textwidth]{
+    \begin{tikzpicture}[semithick,>=stealth,scale=1.5]
+      \foreach \i [count=\j] in {0,20,...,359}
+        \coordinate (int-\j) at (\i:1cm);
+      \path
+        \foreach \k [count=\i] in {1,3,7,9,13,15}
+          {(int-\k) coordinate (C1-\i)};
+      \path
+        \foreach \k [count=\i] in {1,5,7,11,13,17}
+          {(int-\k) coordinate (C2-\i)};
+      \foreach \i in {1,2}
+        \foreach \j in {1,...,6}
+          \pgfmathparse{mod(\j,6)+1}
+          \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+      \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,15} { -- (int-\i) } --  cycle;
+      \draw[cut,very thick,extend=2mm] (int-15) -- (int-1);
+      \foreach \j in {1,...,18}
+        \node[dot=1mm,integral] at (int-\j) {};
+      \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+      \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
+      \draw[objline] (25:1.2cm) -- (205:1.2cm);
+      \draw[objline] (int-15) ++(25:1.2cm) -- ++(205:2.2cm);
+      \node[dot=1mm,lp!50!Black] at (int-16) {};
+      \node[dot=1mm,lp,"$x^{(2)}$" {lp,below}] at (int-15) {};
+    \end{tikzpicture}
+  }\\
+  \subcaptionbox{Another \textcolor{cut}{cut} yields the same solution $\textcolor{lp}{x_\LP}$ as before.\label{fig:example-alp-3}}[.45\textwidth]{
+    \begin{tikzpicture}[semithick,>=stealth,scale=1.5]
+      \foreach \i [count=\j] in {0,20,...,359}
+        \coordinate (int-\j) at (\i:1cm);
+      \path
+        \foreach \k [count=\i] in {1,3,7,9,13,15}
+          {(int-\k) coordinate (C1-\i)};
+      \path
+        \foreach \k [count=\i] in {1,5,7,11,13,17}
+          {(int-\k) coordinate (C2-\i)};
+      \foreach \i in {1,2}
+        \foreach \j in {1,...,6}
+          \pgfmathparse{mod(\j,6)+1}
+          \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+      \path[name intersections={of=C1-6 and C2-5,by=X}];
+      \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,13} { -- (int-\i) } --  (X) -- cycle;
+      \draw[cut,very thick,extend=2mm] (int-13) -- (int-17);
+      \foreach \j in {1,...,18}
+        \node[dot=1mm,integral] at (int-\j) {};
+      \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+      \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
+      \draw[objline] (25:1.2cm) -- (205:1.2cm);
+      \draw[objline] (X) ++(25:1.2cm) -- ++(205:2.2cm);
+      \node[dot=1mm,lp!50!Black] at (int-16) {};
+      \node[dot=1mm,lp!50!Black] at (int-15) {};
+      \node[dot=1mm,lp,"$x_\LP$" {lp,above}] at (X) {};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{An example \textcolor{cut}{RPC cut} (in the picture, the cut is a facet of $\conv(\C)$) that would lead from the above LP solution to the ML codeword $\textcolor{feasint}{x_\ML}$.\label{fig:example-alp-4}}[.45\textwidth]{
+    \begin{tikzpicture}[semithick,>=stealth,scale=1.5]
+      \foreach \i [count=\j] in {0,20,...,359}
+        \coordinate (int-\j) at (\i:1cm);
+      \path
+        \foreach \k [count=\i] in {1,3,7,9,13,15}
+          {(int-\k) coordinate (C1-\i)};
+      \path
+        \foreach \k [count=\i] in {1,5,7,11,13,17}
+          {(int-\k) coordinate (C2-\i)};
+      \foreach \i in {1,2}
+        \foreach \j in {1,...,6}
+          \pgfmathparse{mod(\j,6)+1}
+          \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
+      \path[name intersections={of=C1-6 and C2-5,by=X}];
+      \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,13} { -- (int-\i) } --  cycle;
+      \draw[lp] (int-13) -- (int-17) (int-15) -- (int-1);
+      \draw[cut, very thick,extend=2mm] (int-13) -- (int-1);  
+      \foreach \j in {1,...,18}
+        \node[dot=1mm,integral] at (int-\j) {};
+      \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
+      \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
+      \draw[objline] (25:1.2cm) -- (205:1.2cm);
+      \draw[objline] (int-13) ++(25:2cm) -- ++(205:2.5cm);
+      \node[dot=1mm,lp!50!Black] at (int-16) {};
+      \node[dot=1mm,lp!50!Black] at (int-15) {};
+      \node[dot=1mm,lp!50!Black] at (X) {};
+      \node[feasint,"$x_\ML$" {feasint,below},dot=1.2mm] at (int-13) {};
+    \end{tikzpicture}
+  }
+  \caption{Sketch of the execution of adaptive LP decoding, based on the instance shown in \cref{fig:example-fract}.}
+  \label{fig:example-alp}
+\end{figure}
 To find a violating inequality (if it exists) of the form \cref{eq:intro-forbiddenset-alt}, an odd-sized set $S$ needs to be found that minimizes the left-hand side of \cref{eq:intro-forbiddenset-alt}. It is easy to show \cite{Taghavi+11EfficientLPD} that this can be accomplished by taking all $i$ with $x_i > 1/2$ and, if that set is even-sized, remove or add the index $i^*$ for which $x_{i^*}$ is closest to $1/2$.
 
 When no more violating inequalities are found, the solution equals that of \cref{eq:intro-lpdecoder} and the algorithm terminates. The total number of inequalities in the final model is however bounded by $n^2$, which shows that the adaptive approach indeed overcomes, with respect to size, the problems of the model \cref{eq:intro-lpdecoder-explicit}.
 
 An important advantage of the separation approach is that one can immediately incorporate \emph{additional} types of cutting planes—if it is known how to solve the corresponding separation problem, \ie, find violated cuts from the current LP solution—in order to tighten the LP relaxation \cref{eq:intro-lpdecoder}. A successful method of doing so is by using redundant parity-checks.
-\mpar{
-  \begin{tikzpicture}[semithick,>=stealth]
-    \foreach \i [count=\j] in {0,20,...,359}
-      \coordinate (int-\j) at (\i:1cm);
-    \path
-      \foreach \k [count=\i] in {1,3,7,9,13,15}
-        {(int-\k) coordinate (C1-\i)};
-    \path
-      \foreach \k [count=\i] in {1,5,7,11,13,17}
-        {(int-\k) coordinate (C2-\i)};
-    \foreach \i in {1,2}
-      \foreach \j in {1,...,6}
-        \pgfmathparse{mod(\j,6)+1}
-        \path[name path global=C\i-\j] (C\i-\j) -- (C\i-\pgfmathresult);
-    \path[name intersections={of=C1-6 and C2-5,by=X}];
-    \path[draw=lp,fill=lp!30] (int-1) \foreach \i in {2,...,13} { -- (int-\i) } --  cycle;
-    \draw[lp] (int-13) -- (int-17) (int-15) -- (int-1);
-    \draw[cut, very thick,extend=2mm] (int-13) -- (int-1);  
-    \foreach \j in {1,...,18}
-      \node[dot=1mm,integral] at (int-\j) {};
-    \path[every node/.style={dot=1mm,fill=feasint}] (int-1) node {} \foreach \i in {7,13} {-- (int-\i) node {} } --cycle;
-    \draw[->,objective] (0,0) -- (115:6mm) node[right] {$λ$};
-    \draw[objline] (25:1.2cm) -- (205:1.2cm);
-    \draw[objline] (int-13) ++(25:2cm) -- ++(205:2.5cm);
-    \node[dot=1mm,lp!50!Black] at (int-16) {};
-    \node[dot=1mm,lp!50!Black] at (int-15) {};
-    \node[dot=1mm,lp!50!Black] at (X) {};
-    \node[feasint,"$x_\ML$" {feasint,below},dot=1.2mm] at (int-13) {};
-  \end{tikzpicture}\\
-  an example \textcolor{cut}{RPC cut} (in the picture, the cut is a facet of $\conv(\C)$) that would lead from the above LP solution to the ML codeword $\textcolor{feasint}{x_\ML}$%
-}
+
 \begin{definition}\label{def:intro-rpcs}
   Let $\C$ be a linear code defined by a parity-check matrix $H$. A dual codeword $ξ ∈ \C^⊥$ that does not appear as a row of $H$ is called a \emph{redundant parity-check (RPC)}. An RPC $ξ$ is said to \emph{induce a cut} at the current LP solution $x$ if one of the inequalities \cref{eq:intro-forbiddenset} derived from $ξ$ is violated by $x$.
 \end{definition}
@@ -367,7 +375,7 @@ An efficient method to search for RPC cuts in view of the above observation work
   \caption{Structure of the alternative parity-check matrix $\bar H$ obtained from RPC cut search: \textcolor{Lime!20!Black}{diagonalized part} at the left after \textcolor{Blue}{reordering of columns by $\abs{x_i-\frac 12}$}.}
   \label{fig:rpc-matrix}
 \end{figure}
-The motivation behind this approach is that, if the submatrix of $H$ corresponding to the fractional part of $x$ has full column rank, the leftmost part of $\tilde H$ will be a diagonal matrix, and hence by \cref{lemma:intro-rpccut} \emph{every row} of $\tilde H$ would induce a cut for $x$. The results reported in \cite{Tanatmis+10SeparationAlgorithm} and \cite{ZhangSiegel11AdaptiveCut} furthermore suggest that, even if this is not the case and thus the requirements of \cref{lemma:intro-rpccut} are not necessarily met, this \enquote{sort-\&-diagonalize} strategy very often leads to cuts and substantially improves the error-correcting capability of the plain LP decoder that does not involve RPCs.
+The motivation behind this approach is that, if the submatrix of $H$ corresponding to the fractional part of $x$ has full column rank, the leftmost part of $\tilde H$ will be a diagonal matrix, and hence by \cref{lemma:intro-rpccut} \emph{every row} of $\tilde H$ would induce a cut for $x$. The results reported in \cite{Tanatmis+10SeparationAlgorithm} and \cite{ZhangSiegel11AdaptiveCut} furthermore suggest that, even if this is not the case and thus the requirements of \cref{lemma:intro-rpccut} are not necessarily met, this \enquote{sort-\&-diagonalize} strategy very often leads to cuts and substantially improves the error-correcting capability of the plain LP decoder that does not involve RPCs (see \cref{fig:example-alp-4}).
 
 \section{Analysis of LP Decoding}
 \label{sec:intro-lp-analysis}
@@ -445,6 +453,7 @@ where $A$ and $b$ represent \cref{eq:intro-lpdecoder-explicit}. The dual of \cre
   \end{align}
 \end{subequations}
 \begin{figure}
+  \centering
   \subcaptionbox{Dual cone $\textcolor{altsetbordercolor}{Λ}$ of $\textcolor{setbordercolor}{\P(H)}$ spanned by two rows $\textcolor{setbordercolor}{A_{1,•}, A_{2,•}}$, and an example $\textcolor{objective}{λ}$ with $-λ ∈ Λ$.\label{fig:cone}}[.55\textwidth]{
     \begin{tikzpicture}[scale=2]
       \draw[axis] (-1,0) -- (1,0);

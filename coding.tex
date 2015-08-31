@@ -96,29 +96,32 @@ The principle of error-correction coding is to preventively include \emph{redund
 
 Throughout this text, we are concerned only with \emph{block codes}, which means that the information enters the encoder in form of chuncks of uniform size (the \emph{information words}), each of which is encoded into a unique coded message of again uniform (but larger) size (the \emph{codewords}). For now, we additionally restrict ourselves to the \emph{binary} case, \ie, the alphabet for both information and codewords is $\F_2 = \{0,1\}$. This leads to the following definitions.
 \begin{definition}[code]
-\mpar{ 
-  \begin{tikzpicture}[box/.style={fill=#1!10,draw=#1},node distance=3mm]
-    \foreach \col/\txt [count=\i] in {Green/0110,Red/1110,Gray/0010,Gold/1000}
-      \node[box=\col] (box\i) at (0,.45*\i) {$\txt$};
-    \node[fill=encoder,draw,thick] (encoder) [below=of box1] {encoder};
-    \coordinate [below=of encoder] (y0);
-    \foreach \col/\txt [count=\i from 0] in {Gold/1000,Gray/0010,Red/1110,Green/0110}
-      \node[box=\col,anchor=north] (cbox\i) at ($(y0) + (0,-.45*\i)$) {$\;\C(\txt)\;$};
-    \draw[->] (box1) -- (encoder);
-    \draw[->] (encoder) -- (cbox0);
-    \draw [brace={raise=2mm}] (box4.north east) -- node[right=3mm] {$∈ \F_2^k$} 
-                              (box1.south east);
-    \draw [brace={raise=2mm}] (cbox0.north east) -- node[right=3mm] {$∈ \F_2^n$}
-                              (cbox3.south east);
-  \end{tikzpicture}\\
-  block encoding of information words into codewords%
-}
   An \emph{$(n, k)$ code} is a subset $\C ⊆ \F_2^n$ of cardinality $2^k$. A bijective map from $\F_2^k$ onto $\C$ is called an \emph{encoding function for $\C$}.
   
   Whenever the context specifies a concrete encoding function, and if there is no risk of ambiguity, the symbol $\C$ will be used interchangeably for both the code and its encoding function.
   
   The numbers $k$ and $n$ are referred to as \emph{information length} and \emph{block length}, respectively. Their quotient $r = k/n<1$ represents the amount of information per coded bit and is called the \emph{rate} of $\C$.
 \end{definition}
+The resulting coding scheme is sketched in \cref{fig:blockencoding}.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[box/.style={fill=#1!10,draw=#1,minimum height=.55cm}]
+    \foreach \col/\txt [count=\i] in {Green/0110,Red/1110,Gray/0010,Gold/1000}
+      \node[box=\col,anchor=east] (box\i) at (-2,.-.6*\i) {$\txt$};
+    \node[fill=encoder,draw,thick] (encoder) at (0, -1.5) {encoder};
+    \foreach \col/\txt [count=\i] in {Green/0110,Red/1110,Gray/0010,Gold/1000}
+      \node[box=\col,anchor=west] (cbox\i) at (2, -.6*\i) {$\;\C(\txt)\;$};
+    \draw[->] (box2.south east) -- (encoder);
+    \draw[->] (encoder) -- (cbox2.south west);
+    \draw [brace={raise=2mm}] (box4.south east) -- node[below=3mm] {$∈ \F_2^k$} 
+                              (box4.south west);
+    \draw [brace={raise=2mm}] (cbox4.south east) -- node[below=3mm] {$∈ \F_2^n$}
+                              (cbox4.south west);
+  \end{tikzpicture}
+  \caption{Block encoding of information words into codewords.}
+  \label{fig:blockencoding}
+\end{figure}
+
 The concept of redundancy is entailed by the fact that $\C$ is a strict (and usually very small) subset of the space $\F_2^n$, \ie, most of the vectors in $\F_2^n$ are \emph{not} codewords, which is intended to make the codewords much easier to distinguish from each other than the informations words of $\F_2^k$.
 
 Note that in this definition the encoder is secondary to the code. This reflects the fact that, for the topics covered by this text, the structure of the set of codewords is more important than the actual encoding function.
@@ -127,22 +130,6 @@ We assume that the channel through which the codewords are sent is \emph{memoryl
 \begin{definition}[binary-input memoryless channel]
   \label{def:intro-channel}
    A \emph{binary-input memoryless channel} is characterized by an output domain $\mathcal Y$ and the two conditional probability functions
-\mpar{
-  \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
-    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
-      \tikzmath {
-          real \vcol, \vbarcol;
-          \vcol = \v*100;
-          \vbarcol = min(100, max(\vbar*100, 0));
-        }
-      \node[box,fill=Black!\vcol,"$\v$"] at (\i, 0) (top\i) {};
-      \node[box,fill=Black!\vbarcol,"$\vbar$" below] at (\i, -3) (bot\i) {};
-      \draw[->,wobbly] (top\i) -- (bot\i);
-    }
-    \node[draw,fill=channel,minimum width=25mm] (channel) at (3, -1.5) {channel};
-  \end{tikzpicture}\\
-  transmission of five bits through a noisy channel with $\mathcal Y=[0,1]$%
-}
   \begin{equation}
     P(y_i∣x_i=0) \quad\text{and}\quad P(y_i∣x_i=1)
     \label{eq:intro-channelmodel}
@@ -152,67 +139,83 @@ We assume that the channel through which the codewords are sent is \emph{memoryl
    λ_i = \ln\left(\frac{P(y_i∣x_i=0)}{P(y_i∣x_i=1)}\right)
    \label{eq:intro-llr}
   \end{equation}
-represents%
-\mpar{
-  \begin{tikzpicture}[box/.style={inner sep=.1mm,minimum size=4mm,draw},scale=.6]
-    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
-      \tikzmath {
-      \vbarcol = \vbar*100;
-      \llr = ln((1-\vbar)/\vbar);
-      }
-      \node[box,fill=Black!\vbarcol] at (\i,0) (bot\i) {};
-      \node[below,rotate=90,baseline,anchor=east] at (bot\i.south) {\pgfmathprintnumber[precision=2]{\llr}};
-    }
-  \end{tikzpicture}\\
-    example LLR values for the above transmission%
-} %
-the entire information revealed by the channel about the sent symbol $x_i$. If $λ_i>0$, then $x_i=0$ is more likely than $x_i=1$, and vice versa if $λ_i<0$. The absolute value of $λ_i$ indicates the \emph{reliability} of this tendency.
+represents the entire information revealed by the channel about the sent symbol $x_i$. If $λ_i>0$, then $x_i=0$ is more likely than $x_i=1$, and vice versa if $λ_i<0$. The absolute value of $λ_i$ indicates the \emph{reliability} of this tendency.
 \end{definition}
-
-When the receiver observes the result $λ∈ℝ^n$ (we mostly use LLRs in favor of $y ∈ \mathcal Y^n$ from now on) of the transmission of an encoded information word $x = \C(u)$ through the channel, it has to answer the following question: \emph{which codeword $x ∈ \C$ do I believe has been sent, under consideration of $y$?} This \enquote{decision maker} is called the \emph{decoder}, which is an algorithm realizing a decoding function
-\mpar{
-  \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
-    \node[draw,fill=encoder,minimum width=25mm] (decoder) at (3, -1.5) {decoder};
-    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
-      \tikzmath {
-          real \vcol, \vbarcol;
-          \vcol = \v*100;
-          \vbarcol = min(100, max(\vbar*100, 0));
+An example of a channel transmission and resulting LLR values is sketched in \cref{fig:trans}.
+\begin{figure}
+  \centering
+  \subcaptionbox{Transmission of five bits through a noisy channel with $\mathcal Y=[0,1]$\label{fig:trans-1}}[.45\textwidth]{
+    \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
+      \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
+        \tikzmath {
+            real \vcol, \vbarcol;
+            \vcol = \v*100;
+            \vbarcol = min(100, max(\vbar*100, 0));
+          }
+        \node[box,fill=Black!\vcol,"$\v$"] at (\i, 0) (top\i) {};
+        \node[box,fill=Black!\vbarcol,"$\vbar$" below] at (\i, -3) (bot\i) {};
+        \draw[->,wobbly] (top\i) -- (bot\i);
+      }
+      \node[draw,fill=channel,minimum width=25mm] (channel) at (3, -1.5) {channel};
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{Example LLR values for the transmission depicted on the left.\label{fig:trans-2}}[.45\textwidth]{
+    \begin{tikzpicture}[box/.style={inner sep=.1mm,minimum size=4mm,draw},scale=.6]
+      \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
+        \tikzmath {
+        \vbarcol = \vbar*100;
+        \llr = ln((1-\vbar)/\vbar);
         }
-      \node[box,fill=Black!\vbarcol] at (\i, 0) (top\i) {};
-      \node[box,fill=Black!\vcol] at (\i, -3) (bot\i) {};
-    }
-    \draw[->,shorten=1mm] (top3) -- (decoder);
-    \draw[->,shorten=1mm] (decoder) -- (bot3);
-  \end{tikzpicture}\\
-  decoding success for the above transmission%
-}
+        \node[box,fill=Black!\vbarcol] at (\i,0) (bot\i) {};
+        \node[below,rotate=90,baseline,anchor=east] at (bot\i.south) {\pgfmathprintnumber[precision=2]{\llr}};
+      }
+    \end{tikzpicture}
+  }\\
+  \subcaptionbox{Decoding success for the above transmission.\label{fig:trans-3}}[.45\textwidth]{
+    \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
+      \node[draw,fill=encoder,minimum width=25mm] (decoder) at (3, -1.5) {decoder};
+      \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,0/0.6,1/0.7,1/0.5} {
+        \tikzmath {
+            real \vcol, \vbarcol;
+            \vcol = \v*100;
+            \vbarcol = min(100, max(\vbar*100, 0));
+          }
+        \node[box,fill=Black!\vbarcol] at (\i, 0) (top\i) {};
+        \node[box,fill=Black!\vcol] at (\i, -3) (bot\i) {};
+      }
+      \draw[->,shorten=1mm] (top3) -- (decoder);
+      \draw[->,shorten=1mm] (decoder) -- (bot3);
+    \end{tikzpicture}
+  }\quad
+  \subcaptionbox{Example of a decoding failure (two faulty bits) for the above transmission.\label{fig:trans-4}}[.45\textwidth]{
+    \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
+      \node[draw,fill=encoder,minimum width=25mm] (decoder) at (3, -1.5) {decoder};
+      \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,1/0.6,1/0.7,0/0.5} {
+        \tikzmath {
+            real \vcol, \vbarcol;
+            \vcol = \v*100;
+            \vbarcol = min(100, max(\vbar*100, 0));
+          }
+        \node[box,fill=Black!\vbarcol] at (\i, 0) (top\i) {};
+        \node[box,fill=Black!\vcol] at (\i, -3) (bot\i) {};
+      }
+      \draw[->,shorten=1mm] (top3) -- (decoder);
+      \draw[->,shorten=1mm] (decoder) -- (bot3);
+      \node[box,very thick,draw=Red] at (3, -3) {};
+      \node[box,very thick,draw=Red] at (5, -3) {};
+    \end{tikzpicture}
+  }
+  \caption{Sketch of transmission of five bits through a noisy channel with both successful (\cref{fig:trans-3}) and failed (\cref{fig:trans-4}) decoding.}
+  \label{fig:trans}
+\end{figure}
+When the receiver observes the result $λ∈ℝ^n$ (we mostly use LLRs in favor of $y ∈ \mathcal Y^n$ from now on) of the transmission of an encoded information word $x = \C(u)$ through the channel, it has to answer the following question: \emph{which codeword $x ∈ \C$ do I believe has been sent, under consideration of $y$?} This \enquote{decision maker} is called the \emph{decoder}, which is an algorithm realizing a decoding function
+
 \begin{equation}
   \algname{decode}\colon ℝ^n → ℝ^n\ts
   \label{eq:intro-decoder}
 \end{equation}
 the decoder is intentionally (for reasons that will become clear later) allowed to output not only elements of $\F_2^n$ but arbitrary points of the unit hypercube $[0,1]^n$ (which includes $\F_2^n$ via the canonical embedding). We speak of \emph{decoding success} if $x ∈ \C$ was sent and $\algname{decode}(λ) = x$, while a \emph{decoding error} occurs if $\algname{decode}(λ) =  x' ≠ x$, which includes the cases that $x' ∈ \C$, \ie, the decoder outputs a codeword but not the one that was sent, and $x' \notin \C$, \ie, the decoder does not output a codeword at all.
 
-
-\mpar{
-  \begin{tikzpicture}[box/.style={inner sep=0, minimum size=4mm,draw},scale=.6]
-    \node[draw,fill=encoder,minimum width=25mm] (decoder) at (3, -1.5) {decoder};
-    \foreach \v/\vbar [count=\i] in {1/0.8,0/0.15,1/0.6,1/0.7,0/0.5} {
-      \tikzmath {
-          real \vcol, \vbarcol;
-          \vcol = \v*100;
-          \vbarcol = min(100, max(\vbar*100, 0));
-        }
-      \node[box,fill=Black!\vbarcol] at (\i, 0) (top\i) {};
-      \node[box,fill=Black!\vcol] at (\i, -3) (bot\i) {};
-    }
-    \draw[->,shorten=1mm] (top3) -- (decoder);
-    \draw[->,shorten=1mm] (decoder) -- (bot3);
-    \node[box,very thick,draw=Red] at (3, -3) {};
-    \node[box,very thick,draw=Red] at (5, -3) {};
-  \end{tikzpicture}\\
-  decoding failure (two faulty bits) for the above transmission%
-}
 Assuming a \emph{uniform prior} on the sender's side, \ie, that all possible information words occur with the same probability (\emph{source coding}, the task of accomplishing this assumption, is not covered here), the error-correcting performance of a communication system consisting of code, channel, and decoding algorithm can be evaluated by means of its average \emph{frame-error rate}
 \begin{equation}
   \textsc{FER} = \frac 1 {\abs{\C}} \sum_{x ∈ \C} P\left(\algname{decode}(λ) = x ∣ x\text{ was sent}\right) \tp
@@ -275,13 +278,14 @@ Note that the AWGN channel challenges the conceptual distinction between \emph{t
   \begin{tikzpicture}
     \begin{axis}[
       enlarge x limits=false,
-      width=4cm,
+      ymin=0, ymax=1,
+      width=.5\textwidth,
       xtick={-1, 0, 1},
       xticklabels={$-\sqrt{E_\rc}$,0  , $\sqrt{E_\rc}$},
       ytick={0, .5, 1}]
-      \addplot+[Blue,mark=,domain=-2:2,samples=100,opacity=.5,fill,thick]
+      \addplot+[Blue,mark=,domain=-3:3,samples=100,opacity=.5,fill,thick]
         {2/sqrt(2*pi)*exp(-2*(x+1)^2)} \closedcycle;
-      \addplot+[Red,mark=,domain=-2:2,samples=100,opacity=.5,fill,thick] {2/sqrt(2*pi)*exp(-2*(x-1)^2)} \closedcycle;
+      \addplot+[Red,mark=,domain=-3:3,samples=100,opacity=.5,fill,thick] {2/sqrt(2*pi)*exp(-2*(x-1)^2)} \closedcycle;
     \end{axis}
   \end{tikzpicture}
   \caption{Probability density functions $\textcolor{Blue}{P(y_i∣x_i=1)}$ (left) and $\textcolor{Red}{P(y_i∣x_i=0)}$ (right) of an AWGN channel with energy $E_\rc$.}
@@ -498,22 +502,25 @@ The trellis $T$ is thus \enquote{$(k+1)$-partite} in the sense that $V$ partitio
 
 The transition function $δ$ is always designed in such a way that if $δ(s,0) = δ(s',x')$ and $δ(s,1) = δ(s'',x'')$ then $x' ≠ x''$, \ie, at each encoding step, the two outputs corresponding to an input bit $0$ and $1$, respectively, must be different. As a consequence, the codewords of $\C$ are in one-to-one correspondence with the paths from $v_{1,0}$ to $v_{k+1,0}$ in $T$: at step $i$ in state $s$, the next $n/k$ bits of the codeword determine which edge to follow from $v_{i,s}$, while conversely the output label of such an edge fixes the next $n/k$ code bits. Due to the boundary constraints $s^{(1)} = s^{(k+1)} = s_0$, some vertices and edges in the leading as well as the endmost $d$ segments are not part of any such path and therefore are usually removed from $T$, as shown in the figure.
 
-\mpar{
-  \begin{tikzpicture}[sq/.style={draw,semithick}]
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[sq/.style={draw,semithick},yscale=1.5,xscale=2]
     \node     (u)  {$u ∈ \F_2^k$};
-    \draw     (u)  -- ++(0,-1) node[dot] (x) {};
-    \draw[->] (x)  -| ++(-.7,-2) node[yshift=-2mm] {$u$};
-    \path     (x)  +(0,-1) node[sq,fill=encoder] (Ca) {$\C_\ra$}
-                   +(1.2,-1) node[sq,fill=encoder] (Cb) {$\C_\rb$}
-                   +(1.2, 0) node[sq,fill=Khaki]              (π)  {$π$}; 
+    \draw     (u)  -- ++(1, 0) node[dot] (x) {};
+    \draw[->] (x)  |- ++(2, -.7) node[anchor=west,xshift=2mm] {$u$};
+    \path     (x)  +(1, 0) node[sq,fill=encoder] (Ca) {$\C_\ra$}
+                   +(1, 1.2) node[sq,fill=encoder] (Cb) {$\C_\rb$}
+                   +(0, 1.2) node[sq,fill=Khaki]   (π)  {$π$}; 
     \draw[->] (x) -- (Ca);
     \draw[->] (x) -- (π) -- (Cb);
-    \draw[->] (Ca) -- ++(0,-1) node[yshift=-2mm] {$\C_\ra(u)$};
-    \draw[->] (Cb) -- ++(0,-1) node[yshift=-2mm] {$\C_\rb(π(u))$};
-  \end{tikzpicture}\\
-  encoding scheme of a turbo code%
-}
-In a turbo code $\C_\TC$, now, several convolutional codes are \emph{concatenated} in order to improve upon the rather weak error-correction performance of plain convolutional codes. In the most common form, two identical convolutional codes $\C_\ra$ and $\C_\rb$ with rate $r=1$ each are concatenated \emph{parallely}, which means that the information word $u$ is encoded by both, but the entries of $u$ are permuted by a fixed permutation (the \emph{interleaver}) $π ∈ \mathbb{S}_k$ before entering the second component code $\C_\rb$. A codeword of the turbo code $\C_\TC$ then consists of the concatenation of a copy of $u$, $\C_\ra(u)$ and $\C_\rb(π(u))$, so that the overall rate of $\C_\TC$ is $r=1/3$ (here, again, a small rate loss due to termination is ignored). In a more general setting, the term \emph{turbo-like codes} refers to schemes that include \emph{serial} concatenation, where the output of one convolutional code is used as input for another convolutional code, or any combination of parallel and serial concatenations.
+    \draw[->] (Ca) -- ++(1, 0) node[anchor=west,xshift=2mm] {$\C_\ra(u)$};
+    \draw[->] (Cb) -- ++(1, 0) node[anchor=west,xshift=2mm] {$\C_\rb(π(u))$};
+  \end{tikzpicture}
+  \caption{Encoding scheme of a turbo code, consisting of two parallely concatenated convolutional codes $\C_\ra$ and $\C_\rb$, respectively.}
+  \label{fig:turbo-scheme}
+\end{figure}
+
+In a turbo code $\C_\TC$, now, several convolutional codes are \emph{concatenated} in order to improve upon the rather weak error-correction performance of plain convolutional codes. In the most common form, two identical convolutional codes $\C_\ra$ and $\C_\rb$ with rate $r=1$ each are concatenated \emph{parallely}, which means that the information word $u$ is encoded by both, but the entries of $u$ are permuted by a fixed permutation (the \emph{interleaver}) $π ∈ \mathbb{S}_k$ before entering the second component code $\C_\rb$ (see \cref{fig:turbo-scheme}). A codeword of the turbo code $\C_\TC$ then consists of the concatenation of a copy of $u$, $\C_\ra(u)$ and $\C_\rb(π(u))$, so that the overall rate of $\C_\TC$ is $r=1/3$ (here, again, a small rate loss due to termination is ignored). In a more general setting, the term \emph{turbo-like codes} refers to schemes that include \emph{serial} concatenation, where the output of one convolutional code is used as input for another convolutional code, or any combination of parallel and serial concatenations.
 
 Taking the path representation of codewords of $\C_\ra$ and $\C_\rb$ in their respective trellis graphs $T_\ra$ and $T_\rb$ into account, from the above definition of a turbo code $\C_\TC$ we can derive a one-to-one correspondence between codewords of $\C_\TC$ and pairs $(P_\ra = (e^\ra_1,\dotsc,e^\ra_k), P_\rb = (e^\rb_1,\dotsc,e^\rb_k))$ of paths in $T_\ra$ and $T_\rb$, respectively, which additionally fulfill that
 \begin{equation}
