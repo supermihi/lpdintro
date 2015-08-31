@@ -1,0 +1,1336 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.5 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist{nyt}{nyt}
+    \entry{Ali+98EqualFlowProblem}{article}{}
+      \name{author}{3}{}{%
+        {{hash=155eac69e74af088899997a527b09f4d}{Ali}{A\bibinitperiod}{Agha\bibnamedelima Iqbal}{A\bibinitperiod\bibinitdelim I\bibinitperiod}{}{}{}{}}%
+        {{hash=d654d33382860501fe08c6b40ac881df}{Kennington}{K\bibinitperiod}{Jeff}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=9175bea632ee88957d7122ed3f73ea5e}{Shetty}{S\bibinitperiod}{Bala}{B\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{a49721ed75d5e2a86c335a37240ed4af}
+      \strng{fullhash}{a49721ed75d5e2a86c335a37240ed4af}
+      \field{labelalpha}{AKS88}
+      \field{sortinit}{A}
+      \field{sortinithash}{b685c7856330eaee22789815b49de9bb}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0377-2217}
+      \field{journaltitle}{European Journal of Operational Research}
+      \field{number}{1}
+      \field{title}{The equal flow problem}
+      \field{volume}{36}
+      \field{year}{1988}
+      \field{pages}{107\bibrangedash 115}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1016/0377-2217(88)90012-4
+      \endverb
+      \verb{file}
+      \verb :Ali et al - The Equal Flow Problem.pdf:PDF
+      \endverb
+      \keyw{Networks}
+    \endentry
+    \entry{Berlekamp+78IntractabilityCoding}{article}{}
+      \name{author}{3}{}{%
+        {{hash=462016332d6619aa81379d362278db93}{Berlekamp}{B\bibinitperiod}{Elwyn}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=230a0f03d1e9a644779784b277cbaea7}{McEliece}{M\bibinitperiod}{Robert\bibnamedelima J.}{R\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{hash=07efc7f2324d79bf1115dc7714dc9677}{Tilborg}{T\bibinitperiod}{Henk\bibnamedelimb C.\bibnamedelimi A.}{H\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim A\bibinitperiod}{van}{v\bibinitperiod}{}{}}%
+      }
+      \strng{namehash}{5571eb58e25f41a1c395a9d6140679b3}
+      \strng{fullhash}{5571eb58e25f41a1c395a9d6140679b3}
+      \field{labelalpha}{BMT78}
+      \field{sortinit}{B}
+      \field{sortinithash}{4ecbea03efd0532989d3836d1a048c32}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The fact that the general decoding problem for linear codes and the general problem of finding the weights of a linear code are both NP-complete is shown. This strongly suggests, but does not rigorously imply, that no algorithm for either of these problems which runs in polynomial time exists.}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{05}
+      \field{number}{3}
+      \field{title}{On the inherent intractability of certain coding problems}
+      \field{volume}{24}
+      \field{year}{1978}
+      \field{pages}{954\bibrangedash 972}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.1109/TIT.1978.1055873
+      \endverb
+      \verb{file}
+      \verb :Berlekamp et al - On the Inherent Intractability of Certain Coding Problems.pdf:PDF
+      \endverb
+    \endentry
+    \entry{BerrouGlavieux96Turbo}{article}{}
+      \name{author}{2}{}{%
+        {{hash=1fb4d680d2933aa1868c8f44bf696d28}{Berrou}{B\bibinitperiod}{Claude}{C\bibinitperiod}{}{}{}{}}%
+        {{hash=59f2447f3e9c8709569e4c99da7a5b71}{Glavieux}{G\bibinitperiod}{Alain}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{56d899d42426afc99421f80b06408f5c}
+      \strng{fullhash}{56d899d42426afc99421f80b06408f5c}
+      \field{labelalpha}{BG96}
+      \field{sortinit}{B}
+      \field{sortinithash}{4ecbea03efd0532989d3836d1a048c32}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0090-6778}
+      \field{journaltitle}{{IEEE} Transactions on Communications}
+      \field{month}{10}
+      \field{number}{10}
+      \field{title}{Near optimum error correcting coding and decoding: turbo-codes}
+      \field{volume}{44}
+      \field{year}{1996}
+      \field{pages}{1261\bibrangedash 1271}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1109/26.539767
+      \endverb
+      \verb{file}
+      \verb :Berrou, Glavieux - Turbo Codes (Transactions).pdf:PDF
+      \endverb
+      \keyw{concatenation;convolutional codes;correcting performance;extrinsic information;iterative processing;near optimum error correcting coding;near optimum error correcting decoding;nonuniform interleaving;recursive systematic codes;turbo-codes;codecs;convolutional codes;decoding;error correction codes;interleaved codes;iterative methods;}
+    \endentry
+    \entry{Breitbach+98SoftDecodingOpt}{article}{}
+      \name{author}{4}{}{%
+        {{hash=5582b5fdcaddec12b4f348167536c377}{Breitbach}{B\bibinitperiod}{Markus}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=d7cf8d88656f5113ebef413c443dc070}{Bossert}{B\bibinitperiod}{Martin}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=1278b9145dce0ebbc19e2531133d92fb}{Lucas}{L\bibinitperiod}{Rainer}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=6467f2b424955e4e0bfc30197ee503c4}{Kempter}{K\bibinitperiod}{Christian}{C\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{e1d9e38b7bbffa6c04a8ea2d08df711c}
+      \strng{fullhash}{6f269918cbab0696d4a5c02773141daa}
+      \field{labelalpha}{Bre+98}
+      \field{sortinit}{B}
+      \field{sortinithash}{4ecbea03efd0532989d3836d1a048c32}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{European Transactions on Telecommunications}
+      \field{title}{Soft-decision decoding of linear block codes as optimization problem}
+      \field{volume}{9}
+      \field{year}{1998}
+      \field{pages}{289\bibrangedash 293}
+      \range{pages}{5}
+      \verb{file}
+      \verb :Breitbach et al - Soft-Decision Decoding of Linear Block Codes as Optimization Problem.pdf:PDF
+      \endverb
+    \endentry
+    \entry{ChertkovStepanov11Polytope}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=46998e4a225376d42b55b09ea1f2fe5a}{Chertkov}{C\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=179bfa7ca4fc5c3d267bc5da5f7fb0d4}{Stepanov}{S\bibinitperiod}{Mikhail\bibnamedelima G.}{M\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {St. Petersburg, Russia}%
+      }
+      \strng{namehash}{b2881970a8d17b450957ff68fd44d0cd}
+      \strng{fullhash}{b2881970a8d17b450957ff68fd44d0cd}
+      \field{labelalpha}{CS11}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of {IEEE} International Symposium on Information Theory}
+      \field{issn}{2157-8095}
+      \field{month}{07 / 08}
+      \field{title}{Polytope of correct (linear programming) decoding and low-weight pseudo-codewords}
+      \field{year}{2011}
+      \field{pages}{1648\bibrangedash 1652}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ISIT.2011.6033824
+      \endverb
+      \verb{file}
+      \verb :Chertkov, Stepanov - Polytope of Correct (LP) Decoding an Low-Weight Pseudo-Codewords.pdf:PDF
+      \endverb
+      \keyw{AWGN channel;LP decoding;additive white gaussian noise channel;convergent heuristic;correct decoding;cost function;erroneous decoding;error-surface separating domain;graphical binary code;linear programming decoding;log-concave channel;lowest-weight pseudo-codeword;nonconvex optimization;polytope;soft-output channel;symmetric channel;AWGN channels;binary codes;channel coding;concave programming;decoding;error correction codes;linear programming;}
+    \endentry
+    \entry{CostelloForney07RoadToCapacity}{article}{}
+      \name{author}{2}{}{%
+        {{hash=03ff1ac538ed39c39a182915b159ca06}{Costello}{C\bibinitperiod}{Daniel}{D\bibinitperiod}{}{}{Jr.}{J\bibinitperiod}}%
+        {{hash=1395a069e32c49547a5db51f3b546ee0}{Forney}{F\bibinitperiod}{G.\bibnamedelimi David}{G\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{Jr.}{J\bibinitperiod}}%
+      }
+      \strng{namehash}{9d4e8870a3e6bd82b0ace0d9c2c9d312}
+      \strng{fullhash}{9d4e8870a3e6bd82b0ace0d9c2c9d312}
+      \field{labelalpha}{CF07}
+      \field{sortinit}{C}
+      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the {IEEE}}
+      \field{month}{06}
+      \field{number}{6}
+      \field{title}{Channel coding: the road to channel capacity}
+      \field{volume}{95}
+      \field{year}{2007}
+      \field{pages}{1150\bibrangedash 1177}
+      \range{pages}{28}
+      \verb{doi}
+      \verb 10.1109/JPROC.2007.895188
+      \endverb
+      \verb{file}
+      \verb :Costello, Forney - Channel Coding.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Dantzig63LPandExtensions}{book}{}
+      \name{author}{1}{}{%
+        {{hash=a87ff7325f73c63ec7b21ec6a6c7f3b6}{Dantzig}{D\bibinitperiod}{George\bibnamedelima B}{G\bibinitperiod\bibinitdelim B\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Princeton University Press}%
+      }
+      \strng{namehash}{a87ff7325f73c63ec7b21ec6a6c7f3b6}
+      \strng{fullhash}{a87ff7325f73c63ec7b21ec6a6c7f3b6}
+      \field{labelalpha}{Dan63}
+      \field{sortinit}{D}
+      \field{sortinithash}{78f7c4753a2004675f316a80bdb31742}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{08}
+      \field{title}{Linear Programming and Extensions}
+      \field{year}{1963}
+      \verb{file}
+      \verb :Dantzig - Linear Programming and Extensions.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Faigle+10AlgorithmicMathProg}{book}{}
+      \name{author}{3}{}{%
+        {{hash=070b2162309a661127da74cf43113586}{Faigle}{F\bibinitperiod}{Ulrich}{U\bibinitperiod}{}{}{}{}}%
+        {{hash=8a9de762073abe2feea1a952eee6656a}{Kern}{K\bibinitperiod}{Walter}{W\bibinitperiod}{}{}{}{}}%
+        {{hash=e105fa4bcd03ccdd3c98fdbf4f3ed267}{Still}{S\bibinitperiod}{Georg}{G\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Kluwer Academic Publishers}%
+      }
+      \strng{namehash}{e0cb61bc4890042caa047fc91225f113}
+      \strng{fullhash}{e0cb61bc4890042caa047fc91225f113}
+      \field{labelalpha}{FKS10}
+      \field{sortinit}{F}
+      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Algorithmic Principles of Mathematical Programming}
+      \field{volume}{24}
+      \field{year}{2010}
+    \endentry
+    \entry{Feldman03PhD}{thesis}{}
+      \name{author}{1}{}{%
+        {{hash=19213010b1fbb33ccf87a9a0e99936cb}{Feldman}{F\bibinitperiod}{Jon}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \list{institution}{1}{%
+        {Massachusetts Institute of Technology}%
+      }
+      \list{location}{1}{%
+        {Cambridge, MA}%
+      }
+      \strng{namehash}{19213010b1fbb33ccf87a9a0e99936cb}
+      \strng{fullhash}{19213010b1fbb33ccf87a9a0e99936cb}
+      \field{labelalpha}{Fel03}
+      \field{sortinit}{F}
+      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Decoding error-correcting codes via linear programming}
+      \field{type}{phdthesis}
+      \field{year}{2003}
+      \verb{file}
+      \verb :Feldman - Decoding Error-Correcting Codes via Linear Programming.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Feldman+05LPDecoding}{article}{}
+      \name{author}{3}{}{%
+        {{hash=19213010b1fbb33ccf87a9a0e99936cb}{Feldman}{F\bibinitperiod}{Jon}{J\bibinitperiod}{}{}{}{}}%
+        {{hash=1d2a0377716f2184ea82600dce921433}{Wainwright}{W\bibinitperiod}{Martin\bibnamedelima J.}{M\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{hash=b0f0e7f2b0854b0c950b2d61ca54d6e7}{Karger}{K\bibinitperiod}{David\bibnamedelima R.}{D\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{1b75cd68a932dcde8c204ab234224898}
+      \strng{fullhash}{1b75cd68a932dcde8c204ab234224898}
+      \field{labelalpha}{FWK05}
+      \field{sortinit}{F}
+      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{03}
+      \field{number}{3}
+      \field{title}{Using linear programming to decode binary linear codes}
+      \field{volume}{51}
+      \field{year}{2005}
+      \field{pages}{954\bibrangedash 972}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.1109/TIT.2004.842696
+      \endverb
+      \verb{file}
+      \verb :Feldman et al - Using Linear Programming to Decode Binary Linear Codes.pdf:PDF
+      \endverb
+      \verb{url}
+      \verb www.eecs.berkeley.edu/~wainwrig/Papers/FelWaiKar05.pdf
+      \endverb
+    \endentry
+    \entry{Flanagan+09NonBinary}{article}{}
+      \name{author}{4}{}{%
+        {{hash=b0f50812e28a669ee5a92abdd17425bb}{Flanagan}{F\bibinitperiod}{M.F.}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=712aa6b660e0fd716cbb89ce7c8dfecc}{Skachek}{S\bibinitperiod}{V.}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=88a6486e992a3ffd352a2faa0f93acc4}{Byrne}{B\bibinitperiod}{E.}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=9b9d1a991999f7ef8e9947580b4c064a}{Greferath}{G\bibinitperiod}{M.}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{18e394ca266fb01c73fa3064f141d11a}
+      \strng{fullhash}{36cabf263ac3c0828edcd8b326058931}
+      \field{labelalpha}{Fla+09}
+      \field{sortinit}{F}
+      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arxiv}
+      \field{issn}{0018-9448}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{09}
+      \field{number}{9}
+      \field{title}{Linear-programming decoding of nonbinary linear codes}
+      \field{volume}{55}
+      \field{year}{2009}
+      \field{pages}{4134\bibrangedash 4154}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1109/TIT.2009.2025571
+      \endverb
+      \verb{eprint}
+      \verb 0804.4384
+      \endverb
+      \verb{file}
+      \verb :Flanagan et al - LP Decoding of Nonbinary Linearl Codes.pdf:PDF
+      \endverb
+      \keyw{additive white Gaussian noise;coded modulation;direct modulation mapping;linear programming decoding;low-density parity-check codes;maximum-likelihood certificate;modulator-channel combination;nonbinary linear codes;polynomial-time decoders;polytope representations;pseudocodewords;ternary Golay code;ternary phase-shift keying modulation;AWGN;Golay codes;linear codes;linear programming;maximum likelihood decoding;parity check codes;phase shift keying;}
+    \endentry
+    \entry{Forney+01EffectiveWeights}{incollection}{}
+      \name{author}{4}{}{%
+        {{hash=1395a069e32c49547a5db51f3b546ee0}{Forney}{F\bibinitperiod}{G.\bibnamedelimi David}{G\bibinitperiod\bibinitdelim D\bibinitperiod}{}{}{Jr.}{J\bibinitperiod}}%
+        {{hash=6302e376ce0da8c71ccdf7cd7bcf693f}{Koetter}{K\bibinitperiod}{Ralf}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=cc1dec8a9a8caacb87e543b1a5f68850}{Kschischang}{K\bibinitperiod}{Frank\bibnamedelima R.}{F\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+        {{hash=0487bd6d5dc3eae6621d0911d7bb372d}{Reznik}{R\bibinitperiod}{Alex}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=2828c87ea7bf9452feec73b061a6ce3f}{Marcus}{M\bibinitperiod}{B.}{B\bibinitperiod}{}{}{}{}}%
+        {{hash=d9166d9b0c988c29d35ef7bbfb6e60bb}{Rosenthal}{R\bibinitperiod}{J.}{J\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Springer Verlag, New York, Inc.}%
+      }
+      \strng{namehash}{c5ecd9b1446b5ca2b66f9c321127192f}
+      \strng{fullhash}{c9a779ca833229c9d5427509900a5f18}
+      \field{labelalpha}{For+01}
+      \field{sortinit}{F}
+      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Codes, systems, and graphical models}
+      \field{series}{The {IMA} Volumes in Mathematics and its Applications}
+      \field{title}{On the effective weights of pseudocodewords for codes defined on graphs with cycles}
+      \field{volume}{123}
+      \field{year}{2001}
+      \field{pages}{101\bibrangedash 112}
+      \range{pages}{12}
+      \verb{file}
+      \verb :Forney et al - On the Effective Weights of Pseudocodewords.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Gallager60Thesis}{thesis}{}
+      \name{author}{1}{}{%
+        {{hash=5d670ef2a393c8d49084c48ec01cf79f}{Gallager}{G\bibinitperiod}{Robert\bibnamedelima G.}{R\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \list{institution}{1}{%
+        {Massachusetts Institute of Technology}%
+      }
+      \list{location}{1}{%
+        {Cambridge, MA}%
+      }
+      \strng{namehash}{5d670ef2a393c8d49084c48ec01cf79f}
+      \strng{fullhash}{5d670ef2a393c8d49084c48ec01cf79f}
+      \field{labelalpha}{Gal60}
+      \field{sortinit}{G}
+      \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{09}
+      \field{title}{Low-density parity-check codes}
+      \field{type}{phdthesis}
+      \field{year}{1960}
+      \verb{file}
+      \verb :Gallager - Low Density Parity Check Codes (PhD thesis).pdf:PDF
+      \endverb
+    \endentry
+    \entry{Gallager68InformationTheory}{book}{}
+      \name{author}{1}{}{%
+        {{hash=5d670ef2a393c8d49084c48ec01cf79f}{Gallager}{G\bibinitperiod}{Robert\bibnamedelima G.}{R\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {John Wiley \& Sons}%
+      }
+      \strng{namehash}{5d670ef2a393c8d49084c48ec01cf79f}
+      \strng{fullhash}{5d670ef2a393c8d49084c48ec01cf79f}
+      \field{labelalpha}{Gal68}
+      \field{sortinit}{G}
+      \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Information Theory and Reliable Communication}
+      \field{year}{1968}
+      \verb{file}
+      \verb :Gallager - Information Theory and Reliable Communication.djvu:Djvu
+      \endverb
+    \endentry
+    \entry{Gensheimer+14SimplexHard}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=c95337b05159742981ede4fe56fc8b49}{Gensheimer}{G\bibinitperiod}{Florian}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=99e02238b5cee1d49e54884863f609a4}{Scholl}{S\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=741ab3f183e3ab0819411f5006429a37}{Wehn}{W\bibinitperiod}{Norbert}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Washington D.C., USA}%
+      }
+      \strng{namehash}{e05055c3015d6b573620f25a0890b2d8}
+      \strng{fullhash}{8906333800622e2c879336986a062332}
+      \field{labelalpha}{Gen+14}
+      \field{sortinit}{G}
+      \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of \mbox{IEEE} International Symposium on Personal, Indoor, and Mobile Radio Communications ({PIMRC})}
+      \field{month}{09}
+      \field{title}{A Simplex Algorithm for {LP} Decoding Hardware}
+      \field{volume}{25}
+      \field{year}{2014}
+      \field{pages}{769\bibrangedash 773}
+      \range{pages}{5}
+      \verb{file}
+      \verb :Gensheimer et al - A Simplex Algorithm for LP Decoding Hardware.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Helmling15PhD}{thesis}{}
+      \name{author}{1}{}{%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \list{institution}{1}{%
+        {University of Koblenz-Landau}%
+      }
+      \list{location}{1}{%
+        {Koblenz, Germany}%
+      }
+      \strng{namehash}{3b7280191006095182c928bc7ef4744d}
+      \strng{fullhash}{3b7280191006095182c928bc7ef4744d}
+      \field{labelalpha}{Hel15}
+      \field{sortinit}{H}
+      \field{sortinithash}{82012198d5dfa657b8c4a168793268a6}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{07}
+      \field{title}{Advances in Mathematical Programming-Based Error-Correction Decoding}
+      \field{type}{phdthesis}
+      \field{year}{2015}
+    \endentry
+    \entry{HelmlingRuzika13LPTurbo}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{8161c5ae483c92fb8b69bd36f1ec2f28}
+      \strng{fullhash}{8161c5ae483c92fb8b69bd36f1ec2f28}
+      \field{labelalpha}{HR13}
+      \field{sortinit}{H}
+      \field{sortinithash}{82012198d5dfa657b8c4a168793268a6}
+      \field{extraalpha}{1}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{arXiv:1301.6363 [cs.IT]}
+      \field{month}{01}
+      \field{title}{Towards an Exact Combinatorial Algorithm for {LP} Decoding of Turbo Codes}
+      \field{year}{2013}
+      \verb{file}
+      \verb :Helmling, Ruzika - Towards an Exact Combinatorial Algorithm for LP Decoding of Turbo Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{HelmlingRuzika13CombinatorialTurbo}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Istanbul, Turkey}%
+      }
+      \strng{namehash}{8161c5ae483c92fb8b69bd36f1ec2f28}
+      \strng{fullhash}{8161c5ae483c92fb8b69bd36f1ec2f28}
+      \field{labelalpha}{HR13}
+      \field{sortinit}{H}
+      \field{sortinithash}{82012198d5dfa657b8c4a168793268a6}
+      \field{extraalpha}{2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We present a novel algorithm that solves the turbo code LP decoding problem in a finite number of steps by Euclidean distance minimizations, which in turn rely on repeated shortest path computations in the trellis graph representing the turbo code. Previous attempts to exploit the combinatorial graph structure only led to algorithms which are either of heuristic nature or do not guarantee finite convergence. A numerical study shows that our algorithm clearly beats the running time, up to a factor of 100, of generic commercial LP solvers for medium-sized codes, especially for high SNR values.}
+      \field{booktitle}{Proceedings of {IEEE} International Symposium on Information Theory}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arxiv}
+      \field{issn}{2157-8095}
+      \field{month}{07}
+      \field{title}{Towards combinatorial {LP} turbo decoding}
+      \field{year}{2013}
+      \field{pages}{1491\bibrangedash 1495}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ISIT.2013.6620475
+      \endverb
+      \verb{eprint}
+      \verb 1301.6363
+      \endverb
+      \verb{file}
+      \verb :Helmling, Ruzika - Towards Combinatorial Turbo LP Decoding.pdf:PDF
+      \endverb
+      \keyw{graph theory;linear programming;turbo codes;Euclidean distance minimizations;SNR values;channel decoding;combinatorial LP turbo decoding;combinatorial graph structure;generic commercial LP solvers;graph representation;linear programming;medium sized codes;turbo code LP decoding problem;Decoding;Face;Iterative decoding;Linear programming;Optimization;Signal to noise ratio;Turbo codes;LP decoding;combinatorial optimization;turbo codes}
+      \warn{\item Overwriting field 'year' with year value from field 'date' for entry 'HelmlingRuzika13CombinatorialTurbo'}
+      \warn{\item Overwriting field 'month' with month value from field 'date' for entry 'HelmlingRuzika13CombinatorialTurbo'}
+    \endentry
+    \entry{Helmling+11MathProgDecoding}{article}{}
+      \name{author}{3}{}{%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=a36b3095f63695135adb71aea7962d41}{Tanatmis}{T\bibinitperiod}{Akın}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{a8fe349a441f54c6e148bad00353b6a7}
+      \strng{fullhash}{a8fe349a441f54c6e148bad00353b6a7}
+      \field{labelalpha}{HRT12}
+      \field{sortinit}{H}
+      \field{sortinithash}{82012198d5dfa657b8c4a168793268a6}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{07}
+      \field{number}{7}
+      \field{title}{Mathematical Programming Decoding of Binary Linear Codes: Theory and Algorithms}
+      \field{volume}{58}
+      \field{year}{2012}
+      \field{pages}{4753\bibrangedash 4769}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1109/TIT.2012.2191697
+      \endverb
+      \verb{eprint}
+      \verb 1107.3715
+      \endverb
+      \verb{file}
+      \verb :Helmling et al - Mathematical Programming Decoding of Binary Linear Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Helmling+14MLDecoding}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=842c64a6d9e76c4d48eb77b59d56bce2}{Rosnes}{R\bibinitperiod}{Eirik}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=99e02238b5cee1d49e54884863f609a4}{Scholl}{S\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Honolulu, HI, USA}%
+      }
+      \strng{namehash}{5b463255d11d8a624a37ce5cc9e6d45a}
+      \strng{fullhash}{deebe3ef63eefe85fb34acf310883202}
+      \field{labelalpha}{Hel+14}
+      \field{sortinit}{H}
+      \field{sortinithash}{82012198d5dfa657b8c4a168793268a6}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of {IEEE} International Symposium on Information Theory}
+      \field{endmonth}{07}
+      \field{endyear}{2014}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arxiv}
+      \field{month}{06}
+      \field{title}{Efficient Maximum-Likelihood Decoding of Linear Block Codes on Binary Memoryless Channels}
+      \field{year}{2014}
+      \field{pages}{2589\bibrangedash 2593}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ISIT.2014.6875302
+      \endverb
+      \verb{eprint}
+      \verb 1403.4118
+      \endverb
+      \verb{file}
+      \verb :Helmling et al - Efficient ML Decoding of Linear Block Codes.pdf:PDF
+      \endverb
+      \warn{\item Overwriting field 'year' with year value from field 'date' for entry 'Helmling+14MLDecoding'}
+      \warn{\item Overwriting field 'month' with month value from field 'date' for entry 'Helmling+14MLDecoding'}
+    \endentry
+    \entry{Jeroslow75HypercubeInequalities}{article}{}
+      \name{author}{1}{}{%
+        {{hash=93059545bc4e9fe189c78be24426fae4}{Jeroslow}{J\bibinitperiod}{R.\bibnamedelimi G.}{R\bibinitperiod\bibinitdelim G\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{93059545bc4e9fe189c78be24426fae4}
+      \strng{fullhash}{93059545bc4e9fe189c78be24426fae4}
+      \field{labelalpha}{Jer75}
+      \field{sortinit}{J}
+      \field{sortinithash}{ec3950a647c092421b9fcca6d819504a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0012-365X}
+      \field{journaltitle}{Discrete Mathematics}
+      \field{number}{2}
+      \field{title}{On defining sets of vertices of the hypercube by linear inequalities}
+      \field{volume}{11}
+      \field{year}{1975}
+      \field{pages}{119\bibrangedash 124}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1016/0012-365X(75)90003-5
+      \endverb
+      \verb{file}
+      \verb :Jeroslow - On Defining Sets of Vertices of the Hypercube.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Kashyap08DecompositionTheory}{article}{}
+      \name{author}{1}{}{%
+        {{hash=b7f8805b27ca4d54a399faeb4ad66fb7}{Kashyap}{K\bibinitperiod}{Navin}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{b7f8805b27ca4d54a399faeb4ad66fb7}
+      \strng{fullhash}{b7f8805b27ca4d54a399faeb4ad66fb7}
+      \field{labelalpha}{Kas08}
+      \field{sortinit}{K}
+      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{07}
+      \field{number}{7}
+      \field{title}{A decomposition theory for binary linear codes}
+      \field{volume}{54}
+      \field{year}{2008}
+      \field{pages}{3035\bibrangedash 3058}
+      \range{pages}{24}
+      \verb{doi}
+      \verb 10.1109/TIT.2008.924700
+      \endverb
+      \verb{file}
+      \verb :Kashyap - A Decomposition Theory for Binary Linear Codes.pdf:PDF
+      \endverb
+      \verb{url}
+      \verb http://www.ece.iisc.ernet.in/~nkashyap/Papers/code_decomp_final.pdf
+      \endverb
+    \endentry
+    \entry{KehaDuman10MinDistBranchCut}{article}{}
+      \name{author}{2}{}{%
+        {{hash=588a5990577dabce570c7badda725fae}{Keha}{K\bibinitperiod}{Ahmed\bibnamedelima B.}{A\bibinitperiod\bibinitdelim B\bibinitperiod}{}{}{}{}}%
+        {{hash=2fb3929158fd556545d2fade5a382e32}{Duman}{D\bibinitperiod}{Tolga\bibnamedelima M.}{T\bibinitperiod\bibinitdelim M\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{c0c15b75027c7343ffc73636afe8900d}
+      \strng{fullhash}{c0c15b75027c7343ffc73636afe8900d}
+      \field{labelalpha}{KD10}
+      \field{sortinit}{K}
+      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We give a branch-and-cut algorithm for finding the minimum distance of a binary linear block code. We give two integer programming (IP) models and study the convex hull of the single constraint relaxation of these IP models. We use the new inequalities as cuts in a branch-and-cut scheme. Finally, we report computational results based on turbo and low density parity check (LDPC) codes that demonstrate the effectiveness of our cuts. We demonstrate that our IP formulation and specific cuts are efficient tools for determining the minimum distance of moderate size linear block codes, specifically, they are very efficient for LDPC codes, and provide us with an additional tool for solving this important problem.}
+      \field{journaltitle}{{IEEE} Transactions on Communications}
+      \field{month}{04}
+      \field{number}{4}
+      \field{title}{Minimum distance computation of {LDPC} codes using a branch and cut algorithm}
+      \field{volume}{58}
+      \field{year}{2010}
+      \field{pages}{1072\bibrangedash 1079}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1109/TCOMM.2010.04.090164
+      \endverb
+      \verb{file}
+      \verb :Keha, Duman - Minimum Distance Computation of LDPC Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{KleeMinty72Simplex}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=3fc4fb7684111cb9dcd6eb11d4024766}{Klee}{K\bibinitperiod}{Victor}{V\bibinitperiod}{}{}{}{}}%
+        {{hash=bf1b1c0a09333478f63bfd9378faecc3}{Minty}{M\bibinitperiod}{George\bibnamedelima J.}{G\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Los Angeles, CA}%
+      }
+      \list{publisher}{1}{%
+        {Academic Press}%
+      }
+      \strng{namehash}{e5b2ef306f128d0b1967a1702a86fbda}
+      \strng{fullhash}{e5b2ef306f128d0b1967a1702a86fbda}
+      \field{labelalpha}{KM72}
+      \field{sortinit}{K}
+      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proc. Inequalities III}
+      \field{month}{09}
+      \field{title}{How good is the simplex algorithm?}
+      \field{year}{1972}
+      \field{pages}{159\bibrangedash 175}
+      \range{pages}{17}
+    \endentry
+    \entry{KoetterVontobel03GraphCovers}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=6302e376ce0da8c71ccdf7cd7bcf693f}{Koetter}{K\bibinitperiod}{Ralf}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=48d3dbd22afc9c36ab53b46bedfa9f66}{Vontobel}{V\bibinitperiod}{Pascal\bibnamedelima O.}{P\bibinitperiod\bibinitdelim O\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Brest, France}%
+      }
+      \strng{namehash}{c798ddc085e20d48ac4580ba93fe81e2}
+      \strng{fullhash}{c798ddc085e20d48ac4580ba93fe81e2}
+      \field{labelalpha}{KV03}
+      \field{sortinit}{K}
+      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 3rd International Symposium on Turbo Codes \& Related Topics}
+      \field{month}{09}
+      \field{title}{Graph covers and iterative decoding of finite-length codes}
+      \field{year}{2003}
+      \field{pages}{75\bibrangedash 82}
+      \range{pages}{8}
+      \verb{file}
+      \verb :Koetter, Vontobel - Graph Covers and iterative decoding of finite length codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Kschischang+01FactorGraphs}{article}{}
+      \name{author}{3}{}{%
+        {{hash=cc1dec8a9a8caacb87e543b1a5f68850}{Kschischang}{K\bibinitperiod}{Frank\bibnamedelima R.}{F\bibinitperiod\bibinitdelim R\bibinitperiod}{}{}{}{}}%
+        {{hash=3734a1806b8fe49795b6078eb97d4d57}{Frey}{F\bibinitperiod}{Brendan\bibnamedelima J.}{B\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{hash=bb0471027d3704ad88faec92a728ab52}{Loeliger}{L\bibinitperiod}{Hans-Andrea}{H\bibinithyphendelim A\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{bc8a401b4faf7cebb869c501902b2672}
+      \strng{fullhash}{bc8a401b4faf7cebb869c501902b2672}
+      \field{labelalpha}{KFL01}
+      \field{sortinit}{K}
+      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{02}
+      \field{number}{2}
+      \field{title}{Factor graphs and the sum-product algorithm}
+      \field{volume}{47}
+      \field{year}{2001}
+      \field{pages}{498\bibrangedash 519}
+      \range{pages}{22}
+      \verb{doi}
+      \verb 10.1109/18.910572
+      \endverb
+      \verb{file}
+      \verb :Kschischang et al - Factor Graphs and the Sum-Product Algorithm.pdf:PDF
+      \endverb
+      \verb{url}
+      \verb www.comm.utoronto.ca/frank/papers/KFL01.pdf
+      \endverb
+    \endentry
+    \entry{Liu+12PenalizedLPD}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=25967ab337ffc853e8638e2871241f79}{Liu}{L\bibinitperiod}{Xishuo}{X\bibinitperiod}{}{}{}{}}%
+        {{hash=72fa3e9e0a2257ff376706093dc1ca29}{Draper}{D\bibinitperiod}{Stark\bibnamedelima C.}{S\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+        {{hash=3503059e1c0c778913607c87d8c5173a}{Recht}{R\bibinitperiod}{Benjamin}{B\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{35b0957fbfcaadeb4e2fc1319d9c976b}
+      \strng{fullhash}{35b0957fbfcaadeb4e2fc1319d9c976b}
+      \field{labelalpha}{LDR12}
+      \field{sortinit}{L}
+      \field{sortinithash}{872351f18d0f736066eda0bf18bfa4f7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In this paper, we present a new class of decoders for low density parity check (LDPC) codes. We are motivated by the observation that the linear programming (LP) decoder has worse error performance than belief propagation (BP) decoders at low SNRs. We base our new decoders on the alternating direction method of multipliers (ADMM) decomposition technique for LP decoding. The ADMM not only efficiently solves the LP decoding problem, but also makes it possible to explore other decoding algorithms. In particular, we add various penalty terms to the linear objective of LP decoding with the goal of suppressing pseudocodewords. Simulation results show that the new decoders achieve much better error performance compared to LP decoder at low SNRs. What is more, similar to the LP decoder, no error floor is observed at high SNRs.}
+      \field{booktitle}{Proceedings of the {IEEE} Information Theory Workshop}
+      \field{month}{09}
+      \field{title}{Suppressing pseudocodewords by penalizing the objective of {LP} decoding}
+      \field{year}{2012}
+      \field{pages}{367\bibrangedash 371}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ITW.2012.6404695
+      \endverb
+      \verb{file}
+      \verb :Liu et al - Suppressing Pseudocodewords by Penalizing the Objective of LP Decoding.pdf:PDF
+      \endverb
+      \keyw{decoding;linear programming;parity check codes;ADMM decomposition technique;BP decoder;LDPC codes;LP decoding;SNR;belief propagation decoder;linear programming decoder;low density parity check;multiplier alternating direction method;pseudocodeword;Iterative decoding;Linear programming;Maximum likelihood decoding;Vectors}
+      \warn{\item Overwriting field 'year' with year value from field 'date' for entry 'Liu+12PenalizedLPD'}
+      \warn{\item Overwriting field 'month' with month value from field 'date' for entry 'Liu+12PenalizedLPD'}
+    \endentry
+    \entry{MacKay99GoodCodes}{article}{}
+      \name{author}{1}{}{%
+        {{hash=b6c8b97d961afd655f954101e50afebf}{MacKay}{M\bibinitperiod}{David\bibnamedelimb J.\bibnamedelimi C.}{D\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{b6c8b97d961afd655f954101e50afebf}
+      \strng{fullhash}{b6c8b97d961afd655f954101e50afebf}
+      \field{labelalpha}{Mac99}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We study two families of <span class='snippet'>error</span>-<span class='snippet'>correcting</span> codes defined in terms of very sparse matrices. \&ldquo;MN\&rdquo; (<span class='snippet'>MacKay</span>-<span class='snippet'>Neal</span> (1995)) codes are recently invented, and \&ldquo;Gallager codes\&rdquo; were first investigated in 1962, but appear to have been largely forgotten, in spite of their excellent properties. The decoding of both codes can be tackled with a practical sum-product algorithm. We prove that these codes are \&ldquo;very <span class='snippet'>good</span>\&rdquo;, in that sequences of codes exist which, when optimally decoded, achieve information rates up to the Shannon limit. This result holds not only for the binary-symmetric channel but also for any channel with symmetric stationary ergodic noise. We give experimental results for binary-symmetric channels and Gaussian channels demonstrating that practical performance substantially better than that of standard convolutional and concatenated codes can be achieved; indeed, the performance of Gallager codes is almost as close to the Shannon limit as that of turbo codes}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{03}
+      \field{number}{2}
+      \field{title}{Good error-correcting codes based on very sparse matrices}
+      \field{volume}{45}
+      \field{year}{1999}
+      \field{pages}{399\bibrangedash 431}
+      \range{pages}{33}
+      \verb{doi}
+      \verb 10.1109/18.748992
+      \endverb
+      \verb{file}
+      \verb :MacKay - Good Error-Correcting Codes Based on Very Sparse Matrices.pdf:PDF
+      \endverb
+    \endentry
+    \entry{MacKay03InformationTheory}{book}{}
+      \name{author}{1}{}{%
+        {{hash=b6c8b97d961afd655f954101e50afebf}{MacKay}{M\bibinitperiod}{David\bibnamedelimb J.\bibnamedelimi C.}{D\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{b6c8b97d961afd655f954101e50afebf}
+      \strng{fullhash}{b6c8b97d961afd655f954101e50afebf}
+      \field{labelalpha}{Mac03}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Information Theory, Inference, and Learning Algorithms}
+      \field{year}{2003}
+      \verb{file}
+      \verb :MacKay - Information Theory, Inference, and Learning Algorithms.pdf:PDF
+      \endverb
+      \verb{url}
+      \verb http://www.inference.phy.cam.ac.uk/itprnn/book.html
+      \endverb
+    \endentry
+    \entry{MacWilliamsSloane77ECC}{book}{}
+      \name{author}{2}{}{%
+        {{hash=b6673df455bce7b59163732872c7a41f}{MacWilliams}{M\bibinitperiod}{Florence\bibnamedelima Jessie}{F\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{hash=2fd928c4180635b496fffc1207cc5641}{Sloane}{S\bibinitperiod}{Neil\bibnamedelimb James\bibnamedelima Alexander}{N\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {North-Holland}%
+      }
+      \strng{namehash}{d5d7f2e4d1730e2b327800375c5ea185}
+      \strng{fullhash}{d5d7f2e4d1730e2b327800375c5ea185}
+      \field{labelalpha}{MS77}
+      \field{sortinit}{M}
+      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{The Theory of Error-Correcting Codes}
+      \field{volume}{16}
+      \field{year}{1977}
+      \verb{file}
+      \verb :MacWilliams, Sloane - The Theory of Error-Correcting Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{NemhauserWolsey88}{book}{}
+      \name{author}{2}{}{%
+        {{hash=2f2326c5c81809981528c09b7720fad1}{Nemhauser}{N\bibinitperiod}{G.\bibnamedelimi L.}{G\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
+        {{hash=4dd105673b548efc71713f38840f9a9e}{Wolsey}{W\bibinitperiod}{L.\bibnamedelimi A.}{L\bibinitperiod\bibinitdelim A\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{2}{%
+        {Wiley-Interscience series in discrete mathematics}%
+        {optimization, John Wiley \& Sons}%
+      }
+      \strng{namehash}{5cadbd6ecde76013c380dc87f2e5c4f0}
+      \strng{fullhash}{5cadbd6ecde76013c380dc87f2e5c4f0}
+      \field{labelalpha}{NW88}
+      \field{sortinit}{N}
+      \field{sortinithash}{925374ca63e7594de7fafdb83e64d41d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Integer and Combinatorial Optimization}
+      \field{year}{1988}
+    \endentry
+    \entry{Punekar+10MinDistance}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=9f2b595f203b41d1852a81d3eeabad65}{Punekar}{P\bibinitperiod}{Mayur}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=8496e240f61be3880756704137e641c4}{Kienle}{K\bibinitperiod}{Frank}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=741ab3f183e3ab0819411f5006429a37}{Wehn}{W\bibinitperiod}{Norbert}{N\bibinitperiod}{}{}{}{}}%
+        {{hash=a36b3095f63695135adb71aea7962d41}{Tanatmis}{T\bibinitperiod}{Akın}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=b8481767cbd1c4eafc63bd211442a6da}{Hamacher}{H\bibinitperiod}{Horst\bibnamedelima W.}{H\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Brest, France}%
+      }
+      \strng{namehash}{b1be16ee3221174c5ec3a34c671001ea}
+      \strng{fullhash}{84e11431695ce57d396f5bbd6eaf7467}
+      \field{labelalpha}{Pun+10}
+      \field{sortinit}{P}
+      \field{sortinithash}{c0a4896d0e424f9ca4d7f14f2b3428e7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the International Symposium on Turbo Codes and Iterative Information Processing}
+      \field{month}{09}
+      \field{title}{Calculating the minimum distance of linear block codes via integer programming}
+      \field{year}{2010}
+      \field{pages}{329\bibrangedash 333}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ISTC.2010.5613894
+      \endverb
+      \verb{file}
+      \verb :Punekar et al - Calculating the MD of Linear Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{RichardsonUrbanke08ModernCodingTheory}{book}{}
+      \name{author}{2}{}{%
+        {{hash=8d3f3310d41cb4a7f99103683b0a5f08}{Richardson}{R\bibinitperiod}{Thomas\bibnamedelima J.}{T\bibinitperiod\bibinitdelim J\bibinitperiod}{}{}{}{}}%
+        {{hash=439574f8e4ce1b413ce12c8bba01a82f}{Urbanke}{U\bibinitperiod}{Rüdiger\bibnamedelima L.}{R\bibinitperiod\bibinitdelim L\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{ff4ba32d979b06cdcd576104c5a67966}
+      \strng{fullhash}{ff4ba32d979b06cdcd576104c5a67966}
+      \field{labelalpha}{RU08}
+      \field{sortinit}{R}
+      \field{sortinithash}{c7387613477035a752d935acfc3e3ea2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-0-521-85229-6}
+      \field{title}{Modern Coding Theory}
+      \field{year}{2008}
+      \verb{file}
+      \verb :Richardson, Urbanke - Modern Coding Theory.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Rosnes+14Pseudoweight3D}{article}{}
+      \name{author}{3}{}{%
+        {{hash=842c64a6d9e76c4d48eb77b59d56bce2}{Rosnes}{R\bibinitperiod}{Eirik}{E\bibinitperiod}{}{}{}{}}%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=233a1792db9450e487fc38053e9746bd}{Graell\bibnamedelimb i\bibnamedelima Amat}{G\bibinitperiod\bibinitdelim i\bibinitperiod\bibinitdelim A\bibinitperiod}{Alexandre}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{30d6acae4a33e1cca66882872d596208}
+      \strng{fullhash}{30d6acae4a33e1cca66882872d596208}
+      \field{labelalpha}{RHG14}
+      \field{sortinit}{R}
+      \field{sortinithash}{c7387613477035a752d935acfc3e3ea2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{{IEEE} Transactions on Communications}
+      \field{month}{07}
+      \field{number}{7}
+      \field{title}{Minimum Pseudoweight Analysis of 3-Dimensional Turbo Codes}
+      \field{volume}{62}
+      \field{year}{2014}
+      \field{pages}{2170\bibrangedash 2182}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1109/TCOMM.2014.2329690
+      \endverb
+      \verb{eprint}
+      \verb 1103.1559
+      \endverb
+      \verb{file}
+      \verb :Rosnes et al - Minimum Pseudoweight Analysis of 3-Dimensional Turbo Codes.pdf:PDF
+      \endverb
+      \warn{\item Overwriting field 'year' with year value from field 'date' for entry 'Rosnes+14Pseudoweight3D'}
+    \endentry
+    \entry{Scholl+12MLvsBP}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=99e02238b5cee1d49e54884863f609a4}{Scholl}{S\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=8496e240f61be3880756704137e641c4}{Kienle}{K\bibinitperiod}{Frank}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Gothenburg, Sweden}%
+      }
+      \strng{namehash}{f34acad995ae0523f3e50f165eb54005}
+      \strng{fullhash}{b0b246c8a64b76b542ec528e94189d67}
+      \field{labelalpha}{Sch+12}
+      \field{sortinit}{S}
+      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{It has been shown that non-binary LDPC codes have a better error correction performance than binary codes for short block lengths. However, this advantage was up to now only shown under belief propagation decoding. To gain new insights, we investigate binary and non-binary codes under ML decoding. Our analysis includes different modulation schemes and decoding algorithms. For ML decoding under different modulation schemes a flexible integer programming formulation is presented. In this paper, we show that with respect to ML decoding short non-binary LDPC codes are not necessarily superior to binary codes. The decoding gain observed under BP decoding originates mainly in the more powerful non-binary decoding algorithm.}
+      \field{booktitle}{Proceedings of the International Symposium on Turbo Codes and Iterative Information Processing}
+      \field{issn}{2165-4700}
+      \field{month}{08}
+      \field{title}{{ML} vs.\ {BP} decoding of binary and non-binary {LDPC} codes}
+      \field{year}{2012}
+      \field{pages}{71\bibrangedash 75}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ISTC.2012.6325201
+      \endverb
+      \verb{file}
+      \verb :Scholl et al - ML vs BP decoding of binary and nonbinary LDPC codes.pdf:PDF
+      \endverb
+      \keyw{Binary codes;Complexity theory;Decoding;Demodulation;IP networks;Parity check codes;binary codes;decoding;error correction;integer programming;parity check codes;BP decoding;ML decoding;belief propagation decoding;binary codes;error correction performance;flexible integer programming;modulation schemes;nonbinary LDPC codes;short block lengths;}
+    \endentry
+    \entry{Scholl+IPAnalysisChannelCodes}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=99e02238b5cee1d49e54884863f609a4}{Scholl}{S\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=8496e240f61be3880756704137e641c4}{Kienle}{K\bibinitperiod}{Frank}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=3b7280191006095182c928bc7ef4744d}{Helmling}{H\bibinitperiod}{Michael}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Munich, Germany}%
+      }
+      \strng{namehash}{f34acad995ae0523f3e50f165eb54005}
+      \strng{fullhash}{b0b246c8a64b76b542ec528e94189d67}
+      \field{labelalpha}{Sch+13}
+      \field{sortinit}{S}
+      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 9th international ITG conference on Systems, Communications and Coding}
+      \field{month}{01}
+      \field{title}{Integer Programming as a Tool for Analysis of Channel Codes}
+      \field{year}{2013}
+      \field{pages}{1\bibrangedash 6}
+      \range{pages}{6}
+      \verb{file}
+      \verb :Scholl et al - Integer Programming as a Tool for Analysis of Channel Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Schrijver86LinearIntegerProg}{book}{}
+      \name{author}{1}{}{%
+        {{hash=ad235a6cd52bb7640152c3268e10d19e}{Schrijver}{S\bibinitperiod}{A.}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \list{publisher}{1}{%
+        {John Wiley \& Sons}%
+      }
+      \strng{namehash}{ad235a6cd52bb7640152c3268e10d19e}
+      \strng{fullhash}{ad235a6cd52bb7640152c3268e10d19e}
+      \field{labelalpha}{Sch86}
+      \field{sortinit}{S}
+      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Theory of Linear and Integer Programming}
+      \field{year}{1986}
+      \verb{file}
+      \verb :Schrijver - Theory of Linear and Integer Programming.djvu:Djvu
+      \endverb
+    \endentry
+    \entry{Shannon48}{article}{}
+      \name{author}{1}{}{%
+        {{hash=4c25be95a25ab36580cf8ee914b6b3e6}{Shannon}{S\bibinitperiod}{Claude\bibnamedelima E.}{C\bibinitperiod\bibinitdelim E\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{4c25be95a25ab36580cf8ee914b6b3e6}
+      \strng{fullhash}{4c25be95a25ab36580cf8ee914b6b3e6}
+      \field{labelalpha}{Sha48}
+      \field{sortinit}{S}
+      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Bell System Technical Journal}
+      \field{month}{07 / 10}
+      \field{title}{A mathematical theory of communication}
+      \field{volume}{27}
+      \field{year}{1948}
+      \field{pages}{379\bibrangedash 423\bibrangessep 623\bibrangedash 656}
+      \range{pages}{79}
+      \verb{file}
+      \verb :Shannon - A Mathematical Theory of Communication.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Taghavi+11EfficientLPD}{article}{}
+      \name{author}{3}{}{%
+        {{hash=800136d86c2dd50c17a677924c45b933}{Taghavi}{T\bibinitperiod}{Mohammad\bibnamedelima H.}{M\bibinitperiod\bibinitdelim H\bibinitperiod}{}{}{}{}}%
+        {{hash=524e8b4c0770cdf981e23721ed01bbec}{Shokrollahi}{S\bibinitperiod}{Amin}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=721fe3cc12f02a51e3b7ef495a67091c}{Siegel}{S\bibinitperiod}{Paul\bibnamedelima H.}{P\bibinitperiod\bibinitdelim H\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{dd156fb69cf8c8e8a642996522e77921}
+      \strng{fullhash}{dd156fb69cf8c8e8a642996522e77921}
+      \field{labelalpha}{TSS11}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{09}
+      \field{number}{9}
+      \field{title}{Efficient implementation of linear programming decoding}
+      \field{volume}{57}
+      \field{year}{2011}
+      \field{pages}{5960\bibrangedash 5982}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1109/TIT.2011.2161920
+      \endverb
+      \verb{eprint}
+      \verb 0902.0657
+      \endverb
+      \verb{file}
+      \verb :Taghavi et al - Efficient Implementation of LP Decoding.pdf:PDF
+      \endverb
+    \endentry
+    \entry{TaghaviSiegelALP}{article}{}
+      \name{author}{2}{}{%
+        {{hash=800136d86c2dd50c17a677924c45b933}{Taghavi}{T\bibinitperiod}{Mohammad\bibnamedelima H.}{M\bibinitperiod\bibinitdelim H\bibinitperiod}{}{}{}{}}%
+        {{hash=721fe3cc12f02a51e3b7ef495a67091c}{Siegel}{S\bibinitperiod}{Paul\bibnamedelima H.}{P\bibinitperiod\bibinitdelim H\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{d0902e6e4715c9a267de632ad3ef487d}
+      \strng{fullhash}{d0902e6e4715c9a267de632ad3ef487d}
+      \field{labelalpha}{TS08}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{12}
+      \field{number}{12}
+      \field{title}{Adaptive methods for linear programming decoding}
+      \field{volume}{54}
+      \field{year}{2008}
+      \field{pages}{5396\bibrangedash 5410}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1109/TIT.2008.2006384
+      \endverb
+      \verb{eprint}
+      \verb cs/0703123
+      \endverb
+      \verb{file}
+      \verb :Taghavi, Siegel - Adaptive Methods for Linear Programming Decoding.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Tanatmis+10Lagrangian}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=a36b3095f63695135adb71aea7962d41}{Tanatmis}{T\bibinitperiod}{Akın}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=8496e240f61be3880756704137e641c4}{Kienle}{K\bibinitperiod}{Frank}{F\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Brest, France}%
+      }
+      \strng{namehash}{40ea53119ce179e8d453cb1d9aa47dae}
+      \strng{fullhash}{40ea53119ce179e8d453cb1d9aa47dae}
+      \field{labelalpha}{TRK10}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the International Symposium on Turbo Codes and Iterative Information Processing}
+      \field{month}{09}
+      \field{title}{A {L}agrangian relaxation based decoding algorithm for {LTE} turbo codes}
+      \field{year}{2010}
+      \field{pages}{369\bibrangedash 373}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ISTC.2010.5613906
+      \endverb
+      \verb{file}
+      \verb :Tanatmis et al - A Lagrangian Relaxation Based Decoding Algorithm for LTE Turbo Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Tanatmis+09ValidInequalities}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=a36b3095f63695135adb71aea7962d41}{Tanatmis}{T\bibinitperiod}{Akın}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=b8481767cbd1c4eafc63bd211442a6da}{Hamacher}{H\bibinitperiod}{Horst\bibnamedelima W.}{H\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{hash=9f2b595f203b41d1852a81d3eeabad65}{Punekar}{P\bibinitperiod}{Mayur}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=8496e240f61be3880756704137e641c4}{Kienle}{K\bibinitperiod}{Frank}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=741ab3f183e3ab0819411f5006429a37}{Wehn}{W\bibinitperiod}{Norbert}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Seoul, Korea}%
+      }
+      \strng{namehash}{48b3cf71c78f6edebcd7fbc4a2525f14}
+      \strng{fullhash}{9b0d4207c74a3625b564bd1bd07e9062}
+      \field{labelalpha}{Tan+09}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We study an integer programming (IP) based separation approach to find the maximum likelihood (ML) codeword for binary linear codes. An algorithm introduced in Tanatmis et al. is extended and improved with respect to decoding performance without increasing the worst case complexity. This is demonstrated on the LDPC and the BCH code classes. Moreover, we propose an integer programming formulation to calculate the minimum distance of a binary linear code. We exemplarily compute the minimum distance of the (204, 102) LDPC code and the (576, 288) WIMAX code. Using the minimum distance of a code, a new class of valid inequalities is introduced.}
+      \field{booktitle}{Proceedings of {IEEE} International Symposium on Information Theory}
+      \field{month}{06 / 07}
+      \field{title}{Valid inequalities for binary linear codes}
+      \field{year}{2009}
+      \field{pages}{2216\bibrangedash 2220}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ISIT.2009.5205846
+      \endverb
+      \verb{file}
+      \verb :Tanatmis et al - Valid Inequalities for Binary Linear Codes.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Tanatmis+10SeparationAlgorithm}{article}{}
+      \name{author}{6}{}{%
+        {{hash=a36b3095f63695135adb71aea7962d41}{Tanatmis}{T\bibinitperiod}{Akın}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=b8481767cbd1c4eafc63bd211442a6da}{Hamacher}{H\bibinitperiod}{Horst\bibnamedelima W.}{H\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{hash=9f2b595f203b41d1852a81d3eeabad65}{Punekar}{P\bibinitperiod}{Mayur}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=8496e240f61be3880756704137e641c4}{Kienle}{K\bibinitperiod}{Frank}{F\bibinitperiod}{}{}{}{}}%
+        {{hash=741ab3f183e3ab0819411f5006429a37}{Wehn}{W\bibinitperiod}{Norbert}{N\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{48b3cf71c78f6edebcd7fbc4a2525f14}
+      \strng{fullhash}{9b0d4207c74a3625b564bd1bd07e9062}
+      \field{labelalpha}{Tan+10}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{extraalpha}{1}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0018-9448}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{07}
+      \field{number}{7}
+      \field{title}{A separation algorithm for improved {LP}-decoding of linear block codes}
+      \field{volume}{56}
+      \field{year}{2010}
+      \field{pages}{3277\bibrangedash 3289}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1109/TIT.2010.2048489
+      \endverb
+      \verb{file}
+      \verb :Tanatmis et al - A Separation Algorithm for Improved LP-Decoding of Linear Block Codes.pdf:PDF
+      \endverb
+      \keyw{Gomory cuts;LDPC codes;LP-decoding;arbitrary linear block codes;belief propagation decoding;binary linear block codes;error-correcting performance;integer programming;linear programming;maximum likelihood decoding;optimal decoding algorithm;redundant parity checks;separation algorithm;block codes;decoding;error correction codes;integer programming;linear codes;maximum likelihood decoding;parity check codes;}
+    \endentry
+    \entry{Tanatmis+10NumericalComparison}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=a36b3095f63695135adb71aea7962d41}{Tanatmis}{T\bibinitperiod}{Akın}{A\bibinitperiod}{}{}{}{}}%
+        {{hash=d3317d5efcd5305c3c70adb8d1f77e9a}{Ruzika}{R\bibinitperiod}{Stefan}{S\bibinitperiod}{}{}{}{}}%
+        {{hash=9f2b595f203b41d1852a81d3eeabad65}{Punekar}{P\bibinitperiod}{Mayur}{M\bibinitperiod}{}{}{}{}}%
+        {{hash=8496e240f61be3880756704137e641c4}{Kienle}{K\bibinitperiod}{Frank}{F\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Cape Town, South Africa}%
+      }
+      \strng{namehash}{48b3cf71c78f6edebcd7fbc4a2525f14}
+      \strng{fullhash}{7ec719f843af15a9bedf48448c1d2084}
+      \field{labelalpha}{Tan+10}
+      \field{sortinit}{T}
+      \field{sortinithash}{423d138a005a533b47e6475e39378bf2}
+      \field{extraalpha}{2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{{IEEE} International Conference on Communications}
+      \field{month}{05}
+      \field{title}{Numerical comparison of {IP} formulations as {ML} decoders}
+      \field{year}{2010}
+      \field{pages}{1\bibrangedash 5}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.1109/ICC.2010.5502303
+      \endverb
+      \verb{file}
+      \verb :Tanatmis et al - Numerical Comparisons of IP Formulations as ML Decoders.pdf:PDF
+      \endverb
+    \endentry
+    \entry{Vardy97Intractability}{article}{}
+      \name{author}{1}{}{%
+        {{hash=88849df6131174fb81130678bf6dcee9}{Vardy}{V\bibinitperiod}{Alexander}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{88849df6131174fb81130678bf6dcee9}
+      \strng{fullhash}{88849df6131174fb81130678bf6dcee9}
+      \field{labelalpha}{Var97}
+      \field{sortinit}{V}
+      \field{sortinithash}{d18f5ce25ce0b5ca7f924e3f6c04870e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{11}
+      \field{number}{6}
+      \field{title}{The intractability of computing the minimum distance of a code}
+      \field{volume}{43}
+      \field{year}{1997}
+      \field{pages}{1757\bibrangedash 1766}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/18.641542
+      \endverb
+      \verb{file}
+      \verb :Vardy - The Intractability of Computing the MD of a Code.pdf:PDF
+      \endverb
+    \endentry
+    \entry{VontobelKoetter05GraphCover}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=48d3dbd22afc9c36ab53b46bedfa9f66}{Vontobel}{V\bibinitperiod}{Pascal\bibnamedelima O.}{P\bibinitperiod\bibinitdelim O\bibinitperiod}{}{}{}{}}%
+        {{hash=6302e376ce0da8c71ccdf7cd7bcf693f}{Koetter}{K\bibinitperiod}{Ralf}{R\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{ea5af0e047a7128bf325a0270a9c70b0}
+      \strng{fullhash}{ea5af0e047a7128bf325a0270a9c70b0}
+      \field{labelalpha}{VK05}
+      \field{sortinit}{V}
+      \field{sortinithash}{d18f5ce25ce0b5ca7f924e3f6c04870e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Graph-cover decoding and finite-length analysis of message-passing iterative decoding of {LDPC} codes}
+      \field{year}{2005}
+      \verb{eprint}
+      \verb cs/0512078
+      \endverb
+      \verb{file}
+      \verb :Vontobel, Koetter - Graph-Cover Decoding.pdf:PDF
+      \endverb
+    \endentry
+    \entry{ZhangSiegel11AdaptiveCut}{article}{}
+      \name{author}{2}{}{%
+        {{hash=0d9d72cc03ac9373f7f10695d99a99f3}{Zhang}{Z\bibinitperiod}{Xiaojie}{X\bibinitperiod}{}{}{}{}}%
+        {{hash=721fe3cc12f02a51e3b7ef495a67091c}{Siegel}{S\bibinitperiod}{Paul\bibnamedelima H.}{P\bibinitperiod\bibinitdelim H\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{72711637b006be9a04fb3ec65e566f15}
+      \strng{fullhash}{72711637b006be9a04fb3ec65e566f15}
+      \field{labelalpha}{ZS12}
+      \field{sortinit}{Z}
+      \field{sortinithash}{fdda4caaa6b5fa63e0c081dcb159543a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.IT}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{{IEEE} Transactions on Information Theory}
+      \field{month}{10}
+      \field{number}{10}
+      \field{title}{Adaptive cut generation algorithm for improved linear programming decoding of binary linear codes}
+      \field{volume}{58}
+      \field{year}{2012}
+      \field{pages}{6581\bibrangedash 6594}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1109/TIT.2012.2204955
+      \endverb
+      \verb{eprint}
+      \verb 1105.0703
+      \endverb
+      \verb{file}
+      \verb :Zhang, Siegel - Adaptive Cut Generation Algorithm for Improved LPD of Binary Linear Codes.pdf:PDF
+      \endverb
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+
