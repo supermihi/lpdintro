@@ -355,10 +355,12 @@ Since we have seen that any LP can be transformed into standard form, one can al
   \[ \min\set{c^T x \colon Ax=b,\ x ≥ 0} = \max\set{b^Ty\colon A^Ty ≤ c}\tk\]
   where we include the values $±∞$ as described on \cpageref{page:opt-intro}. If both are feasible, then both have an optimal solution.
 \end{theorem}
-\mpar{ %
-  \begin{tikzpicture}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[scale=1.5]
     \draw [->] (0,-2) -- node[anchor=west,pos=1.05] {$c^Tx\ /\ b^Ty$} (0, 2);
-    \draw (-.2,0) -- (.2,0) node[right] {$\textcolor{blue}{c^Tx^*} = \textcolor{DarkOrange}{b^Ty^*}$};
+    \draw (-.2,0) -- (.2,0) node[right] {$\textcolor{blue}{c^Tx^*} = \textcolor{DarkOrange}{b^Ty^*}$ (primal and dual optimum solution)};
     \draw[decorate,decoration=brace,DarkOrange] (.1,-.05) -- node[right,text width=2cm,xshift=2mm] {dual feasible solutions} (.1,-1.9);
     \draw[decorate,decoration=brace,blue] (.1, 1.9) --  node[right,text width=2cm,xshift=2mm] {primal feasible solutions} (.1, .05);
     \foreach \i [evaluate={\y=1.8*rnd;\z=-1.8*rnd}] in {1,...,7} {
@@ -367,9 +369,11 @@ Since we have seen that any LP can be transformed into standard form, one can al
     }
     \node[dot,blue] at (-.05,0){};
     \node[dot,DarkOrange] at (.05,0) {};
-  \end{tikzpicture} %
-}%
-Note that \cref{thm:intro-duality} implies the statement of \emph{weak duality}, namely that whenever $x$ is feasible for the primal and $y$ is feasible for the dual, then $c^Tx ≥ b^Ty$.
+  \end{tikzpicture}
+  \caption{Relationship between the objective values of primal and dual feasible solutions, respectively.}
+  \label{fig:example-priduobj}
+\end{figure}
+Note that \cref{thm:intro-duality} implies the statement of \emph{weak duality}, namely that whenever $x$ is feasible for the primal and $y$ is feasible for the dual, then $c^Tx ≥ b^Ty$ (see \cref{fig:example-priduobj}).
 
 LP duality is extremely useful because it allows for very compact proofs of optimality: if one wants to show that a certain solution $x^*$ of the primal LP is optimal, it suffices to provide a dual feasible $y^*$ with the property that $c^Tx^* = b^Ty^*$. Such a $y^*$ is called a \emph{witness} for the optimality of $x^*$.
 
