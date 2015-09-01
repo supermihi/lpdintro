@@ -445,6 +445,9 @@
       \field{title}{Advances in Mathematical Programming-Based Error-Correction Decoding}
       \field{type}{phdthesis}
       \field{year}{2015}
+      \verb{url}
+      \verb http://nbn-resolving.de/urn:nbn:de:hbz:kob7-11519
+      \endverb
     \endentry
     \entry{HelmlingRuzika13LPTurbo}{misc}{}
       \name{author}{2}{}{%
