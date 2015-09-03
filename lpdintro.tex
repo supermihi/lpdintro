@@ -242,7 +242,7 @@
   pdftitle      = \mytitle,
   pdfauthor     = \myauthor,
   pdfsubject    = LP Decoding,
-  pdfcreator    = nobody, % trick arXiv not to detect TeX (it won't compile LuaTeX documents but neither allows to submit TeX-based PDFs ...
+  pdfcreator    = LuaLaTeX,
   pdfproducer   = \myauthor,
   pdfduplex     = DuplexFlipLongEdge,
   pdfpagelayout = SinglePage,
@@ -259,6 +259,8 @@
 \title{\mytitle}
 \subtitle{A tutorial}
 \author{\myauthor}
+\publishers{University of Koblenz-Landau}
+\date{Last changed: September 3, 2015}
 \begin{document}
 \maketitle
 \tableofcontents
@@ -267,10 +269,12 @@
 This tutorial-style introduction into the topic of \emph{error-correction decoding based on mathematical programming}, including the most prominent application called \emph{LP decoding}, has emerged from the introductory chapter of my PhD thesis \cite{Helmling15PhD}. However, I have a priori intended to publish this introduction after my graduation, hoping that it might be useful to students and researchers beyond those who happen to come across my thesis – especially because there is to date, as far as I am aware, no introductory textbook on \enquote{LP decoding} that covers recent research, which makes it hard to get into the topic for newcomers. The best starting point so far is probably still \citeauthor{Feldman03PhD}'s thesis, which has become a little long in the tooth now.
 
 Of course, the text at hand is as well biased to the specific topics that I have worked with. My hope is, however, that others (\ie, you!) will help to improve and extend the document by contributing bugfixes, new sections, examples, proofs or whatever you fell is missing. To that end, the \LaTeX{} sources are publicly available via GitHub\footnote{\url{https://github.com/supermihi/lpdintro}}, and I encourage everyone to contribute via bug reports or pull requests.
+
+Being originated as part of my dissertation, the work presented here was partially supported by the DFG (grant RU-1524/2-1).
 \begin{FlushRight}
   Michael Helmling\\
-  Koblenz, Germany\\
-  2015
+  \href{mailto:michaelhelmling@posteo.de}{michaelhelmling@posteo.de}\\
+  Koblenz, Germany, 2015
 \end{FlushRight}
 
 \addchap{Introduction}
